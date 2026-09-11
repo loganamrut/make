@@ -1,0 +1,101 @@
+'use client';
+
+import React, { useState } from 'react';
+import { ResumeData, TemplateId } from '@/lib/types';
+import { ResumeDocument } from './ResumeDocument';
+import { triggerPrintResume } from '@/lib/print-pdf';
+import { Download, Printer, ZoomIn, ZoomOut } from 'lucide-react';
+
+interface ResumePreviewProps {
+  resume: ResumeData;
+  onTemplateChange?: (tpl: TemplateId) => void;
+}
+
+export function ResumePreview({ resume, onTemplateChange }: ResumePreviewProps) {
+  const [zoom, setZoom] = useState<number>(100);
+
+  const handleZoomIn = () => setZoom(prev => Math.min(130, prev + 10));
+  const handleZoomOut = () => setZoom(prev => Math.max(70, prev - 10));
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Action Toolbar */}
+      <div className="sticky top-0 z-30 p-3 bg-white/95 backdrop-blur-sm border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 no-print">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+            <button
+              type="button"
+              onClick={handleZoomOut}
+              className="p-1.5 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+              title="Zoom out"
+            >
+              <ZoomOut className="w-4 h-4" />
+            </button>
+            <span className="text-xs font-bold text-slate-700 w-10 text-center">
+              {zoom}%
+            </span>
+            <button
+              type="button"
+              onClick={handleZoomIn}
+              className="p-1.5 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+              title="Zoom in"
+            >
+              <ZoomIn className="w-4 h-4" />
+            </button>
+          </div>
+
+          {onTemplateChange && (
+            <select
+              value={resume.style.template}
+              onChange={e => onTemplateChange(e.target.value as TemplateId)}
+              className="px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+            >
+              <option value="ats">ATS Standard</option>
+              <option value="modern">Modern</option>
+              <option value="professional">Professional</option>
+              <option value="simple">Simple</option>
+              <option value="minimal">Minimal</option>
+              <option value="executive">Executive</option>
+              <option value="student">Student</option>
+              <option value="graduate">Graduate</option>
+              <option value="creative">Creative</option>
+            </select>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => triggerPrintResume(resume.personalInfo.fullName)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-colors"
+          >
+            <Printer className="w-4 h-4" />
+            Print
+          </button>
+          <button
+            type="button"
+            onClick={() => triggerPrintResume(resume.personalInfo.fullName)}
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
+          >
+            <Download className="w-4 h-4" />
+            Download PDF
+          </button>
+        </div>
+      </div>
+
+      {/* Live Canvas Area */}
+      <div className="flex-1 overflow-auto p-4 sm:p-8 bg-slate-100 flex justify-center items-start print-container">
+        <div
+          style={{
+            transform: `scale(${zoom / 100})`,
+            transformOrigin: 'top center',
+            transition: 'transform 0.15s ease-out',
+          }}
+          className="w-full max-w-[850px]"
+        >
+          <ResumeDocument resume={resume} />
+        </div>
+      </div>
+    </div>
+  );
+}
