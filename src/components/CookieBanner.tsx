@@ -45,7 +45,7 @@ export function CookieBanner() {
               </h4>
               <span className="text-[11px] font-bold text-emerald-800 flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-emerald-700" />
-                Zero Tracking Cookies
+                Privacy-First Analytics &amp; Local Storage
               </span>
             </div>
           </div>
@@ -60,7 +60,7 @@ export function CookieBanner() {
         </div>
 
         <p className="text-xs text-slate-700 leading-relaxed">
-          CVMake uses <strong className="text-slate-900 font-semibold">zero advertising cookies</strong>, <strong className="text-slate-900 font-semibold">zero third-party pixels</strong>, and <strong className="text-slate-900 font-semibold">no invasive tracking scripts</strong>. We only use essential browser storage (<code className="text-[10px] bg-slate-100 text-slate-800 font-mono px-1 py-0.5 rounded font-medium">localStorage</code>) to save your resume drafts locally on your device.
+          CVMake uses privacy-friendly Google Analytics to monitor site performance, <strong className="text-slate-900 font-semibold">zero advertising cookies</strong>, and <strong className="text-slate-900 font-semibold">no data selling</strong>. We use essential local browser storage (<code className="text-[10px] bg-slate-100 text-slate-800 font-mono px-1 py-0.5 rounded font-medium">localStorage</code>) to keep your resume drafts private on your device.
         </p>
 
         <div className="flex items-center justify-between gap-2 pt-1">

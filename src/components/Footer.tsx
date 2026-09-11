@@ -203,7 +203,7 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300 font-medium">
           <p>© {new Date().getFullYear()} CVMake.dev. All rights reserved. Private AI Resume Builder & CV Maker.</p>
           <div className="flex items-center gap-4">
-            <span>No Cookies Tracked</span>
+            <span>Privacy-First Analytics</span>
             <span>•</span>
             <span>No Ads</span>
             <span>•</span>

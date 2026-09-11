@@ -158,8 +158,11 @@ export default function PrivacyPage() {
         {/* Tracking & Analytics */}
         <section className="space-y-4">
           <h2 className="text-xl font-bold text-slate-900">
-            5. No Invasive Analytics & No Advertising Trackers
+            5. Privacy-First Analytics &amp; No Advertising Trackers
           </h2>
+          <p>
+            We use Google Analytics 4 (GA4) with IP anonymization to monitor aggregate website traffic, popular template usage, and Core Web Vitals performance. We do not transmit your resume text, work experience, personal contact details, or documents to Google Analytics or any third party.
+          </p>
           <p>
             We do not install invasive session replay tools (such as Hotjar or FullStory), ad remarketing pixels (Meta Pixel, Google Ads), or data broker SDKs. We do not sell, rent, or monetize your resume data under any circumstance.
           </p>
