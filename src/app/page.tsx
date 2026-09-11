@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
-import { WebApplicationSchema, OrganizationSchema } from '@/components/seo/JsonLd';
+import { WebApplicationSchema, OrganizationSchema, HowToSchema } from '@/components/seo/JsonLd';
 import {
   Sparkles,
   ShieldCheck,
@@ -87,6 +87,28 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col bg-white">
       <WebApplicationSchema />
       <OrganizationSchema />
+      <HowToSchema
+        name="How to Create a Professional ATS Resume with AI"
+        description="Learn how to generate an ATS-optimized resume using CVMake in four easy steps without saving data on external servers."
+        steps={[
+          {
+            name: "Enter Your Experience and Information",
+            text: "Add your contact details, work history, education, and skills or load sample profile data.",
+          },
+          {
+            name: "Enhance Resume Content with AI",
+            text: "Transform passive job duties into quantifiable XYZ achievement bullets and generate executive summaries.",
+          },
+          {
+            name: "Choose an ATS-Friendly Resume Template",
+            text: "Select from 9 ATS-friendly layouts engineered for high parser readability, and customize fonts and colors.",
+          },
+          {
+            name: "Download Clean Vector PDF",
+            text: "Export clean, unwatermarked vector PDFs or print directly from your browser with zero data stored on external servers.",
+          },
+        ]}
+      />
       <Header />
 
       {/* Hero Section */}

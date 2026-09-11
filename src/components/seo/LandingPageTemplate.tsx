@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
-import { WebApplicationSchema, BreadcrumbSchema } from '@/components/seo/JsonLd';
+import { WebApplicationSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/JsonLd';
 import { SeoLandingPageData } from '@/lib/seo-data';
 import {
   Sparkles,
@@ -29,6 +29,16 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
         url={`https://cvmake.dev/${data.slug}/`}
       />
       <BreadcrumbSchema items={breadcrumbItems} />
+      {data.howItWorksSteps && data.howItWorksSteps.length > 0 && (
+        <HowToSchema
+          name={`How to use ${data.h1}`}
+          description={data.metaDescription}
+          steps={data.howItWorksSteps.map(step => ({
+            name: step.title,
+            text: step.description,
+          }))}
+        />
+      )}
       <Header />
 
       {/* Hero Section */}

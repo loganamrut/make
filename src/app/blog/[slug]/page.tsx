@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { BreadcrumbSchema } from '@/components/seo/JsonLd';
+import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/JsonLd';
 import { BLOG_POSTS_CONTENT } from '@/lib/blog-content';
 import { Sparkles, Clock, Calendar, ArrowLeft, ShieldCheck } from 'lucide-react';
 
@@ -50,6 +50,12 @@ export default function BlogPostPage({ params }: Props) {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <BreadcrumbSchema items={breadcrumbItems} />
+      <ArticleSchema
+        headline={post.title}
+        description={post.description}
+        url={`https://cvmake.dev/blog/${post.slug}/`}
+        datePublished="2026-09-01"
+      />
       <Header />
 
       {/* Article Header */}
