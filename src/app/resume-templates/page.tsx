@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
 import { WebApplicationSchema, BreadcrumbSchema } from '@/components/seo/JsonLd';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { TEMPLATE_SHOWCASES, SEO_LANDING_PAGES } from '@/lib/seo-data';
 import { Sparkles, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
@@ -39,6 +40,7 @@ export default function ResumeTemplatesPage() {
       />
       <BreadcrumbSchema items={breadcrumbItems} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
 
       <main id="main-content" className="flex-1">
         {/* Hero */}

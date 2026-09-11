@@ -33,9 +33,9 @@ export interface SeoLandingPageData {
 export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   'ai-resume-builder': {
     slug: 'ai-resume-builder',
-    title: 'AI Resume Builder – Create an ATS Resume With AI | CVMake',
+    title: 'AI Resume Builder – Free ATS-Friendly Resume Maker | CVMake',
     metaDescription:
-      'Build an interview-winning, ATS-friendly resume in minutes with our privacy-first AI resume builder. Free templates, instant feedback, and zero server storage.',
+      'Build an interview-winning, ATS-friendly resume in minutes with our free AI resume builder. 100% private, no sign-up, real-time scoring, and instant vector PDF.',
     h1: 'AI Resume Builder',
     subtitle:
       'Generate polished, ATS-optimized resumes with smart AI suggestions — right inside your browser with complete privacy.',
@@ -123,9 +123,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'ai-cv-maker': {
     slug: 'ai-cv-maker',
-    title: 'AI CV Maker – Create a Professional CV With AI | CVMake',
+    title: 'AI CV Maker – Free Online Curriculum Vitae Builder | CVMake',
     metaDescription:
-      'Craft a comprehensive academic or international Curriculum Vitae with our privacy-first AI CV maker. Tailored sections for publications, research, and skills.',
+      'Craft a professional academic or international Curriculum Vitae with our free AI CV maker. Multi-section templates, research sections, and instant vector PDF download.',
     h1: 'AI CV Maker',
     subtitle:
       'Design comprehensive, multi-page Curriculum Vitae with intelligent AI drafting for academic, European, and international career paths.',
@@ -204,9 +204,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'resume-maker-ai': {
     slug: 'resume-maker-ai',
-    title: 'Resume Maker AI – Build Your Resume With AI | CVMake',
+    title: 'Resume Maker AI – Create Professional Resumes with AI | CVMake',
     metaDescription:
-      'Supercharge your job search with Resume Maker AI. Generate achievement-oriented bullets, ATS-optimized summaries, and beautiful templates in seconds.',
+      'Supercharge your job applications with Resume Maker AI. Generate quantified Google XYZ bullets, ATS summaries, and recruiter-approved templates without sign-up.',
     h1: 'Resume Maker AI',
     subtitle:
       'Intelligent resume creation powered by modern AI heuristics. Fast, professional, and completely private.',
@@ -279,9 +279,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'free-ai-resume-builder': {
     slug: 'free-ai-resume-builder',
-    title: 'Free AI Resume Builder – 100% Free Resume Maker | CVMake',
+    title: 'Free AI Resume Builder – 100% Free Resume Maker (No Sign-Up) | CVMake',
     metaDescription:
-      'Looking for a genuinely free AI resume builder? No hidden fees, no subscription traps, no watermarks. Create and download your ATS resume today.',
+      'Create a professional resume 100% free with our AI resume builder. No subscription traps, no hidden fees, no credit card required. Free vector PDF export.',
     h1: 'Free AI Resume Builder',
     subtitle:
       'Zero paywalls. Zero hidden trial fees. Zero watermarks. Build, edit, and export your resume completely free.',
@@ -348,9 +348,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'free-ai-cv-maker': {
     slug: 'free-ai-cv-maker',
-    title: 'Free AI CV Maker – Create a Professional CV at No Cost | CVMake',
+    title: 'Free AI CV Maker – 100% Free Online CV Builder & Templates | CVMake',
     metaDescription:
-      'Build a comprehensive academic or professional CV for free with AI. Multi-page layout support, ATS compatibility, and no hidden credit card traps.',
+      'Build your Curriculum Vitae 100% free with AI assistance. Choose from modern and academic CV templates, customize sections, and download clean PDFs without sign-up.',
     h1: 'Free AI CV Maker',
     subtitle:
       'Format and draft comprehensive Curriculum Vitae for academia, healthcare, and global opportunities with zero cost.',
@@ -769,9 +769,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'ats-resume-builder': {
     slug: 'ats-resume-builder',
-    title: 'ATS Resume Builder – Create an ATS-Friendly Resume | CVMake',
+    title: 'ATS Resume Builder – Free ATS-Friendly Resume Maker & Scanner | CVMake',
     metaDescription:
-      'Build a 100% ATS-friendly resume guaranteed to parse cleanly through Workday, Taleo, Greenhouse, and Lever. Free ATS templates and real-time score audit.',
+      'Build a 100% ATS-friendly resume guaranteed to pass Workday, Taleo, Greenhouse, and Lever. Free ATS templates, instant score audits, and zero server storage.',
     h1: 'ATS Resume Builder',
     subtitle:
       'Engineered specifically to defeat parser errors, pass applicant tracking systems, and land your resume in front of human recruiters.',
@@ -845,9 +845,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'resume-templates': {
     slug: 'resume-templates',
-    title: 'Resume Templates – Professional & ATS-Friendly Templates | CVMake',
+    title: 'Free Resume Templates – 9 Professional ATS-Friendly Layouts | CVMake',
     metaDescription:
-      'Browse 9 professionally designed, ATS-friendly resume templates. Switch designs in real time, customize colors and fonts, and download instantly.',
+      'Choose from 9 free ATS-friendly resume templates: Modern, Professional, Minimal, Executive, Student, and more. Customize fonts and colors with live preview.',
     h1: 'Professional Resume Templates',
     subtitle:
       'Clean, recruiter-approved resume templates designed for every stage of your career. Fully ATS-compliant and customizable.',
@@ -963,9 +963,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'ats-resume-template': {
     slug: 'ats-resume-template',
-    title: 'ATS Resume Template – Guaranteed Clean Parser Layout | CVMake',
+    title: 'ATS Resume Templates – 9 Recruiter-Approved Formats (Free PDF) | CVMake',
     metaDescription:
-      'Free ATS resume template tested against leading applicant tracking systems. Simple headings, single-column design, zero parsing errors.',
+      'Browse 9 ATS-friendly resume templates engineered for Workday, Taleo, Greenhouse, and Lever. Free instant vector PDF download with complete browser privacy.',
     h1: 'ATS-Friendly Resume Template',
     subtitle:
       'The gold-standard template designed to sail through applicant tracking systems with maximum clarity and 100% parsing accuracy.',
@@ -1024,9 +1024,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'resume-checker': {
     slug: 'resume-checker',
-    title: 'Resume Checker – Free Instant Resume Review & Score | CVMake',
+    title: 'AI Resume Checker – Free ATS Resume Scanner & Scorer Online | CVMake',
     metaDescription:
-      'Check your resume for formatting errors, weak verbs, and missing metrics. Get a real-time score and actionable advice to boost interview callbacks.',
+      'Audit your resume format, keyword density, and bullet impact in real time. Free client-side ATS checker with instant 0-100 score and actionable recommendations.',
     h1: 'Free Online Resume Checker',
     subtitle:
       'Run an instant, private review of your resume. Discover hidden errors, evaluate bullet strength, and optimize for recruiter impact.',
@@ -1084,9 +1084,9 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
   },
   'resume-improver': {
     slug: 'resume-improver',
-    title: 'Resume Improver – Upgrade Your Resume With AI | CVMake',
+    title: 'AI Resume Improver – Enhance Bullet Points & Impact Free | CVMake',
     metaDescription:
-      'Turn basic resume bullets into high-impact, quantified achievements. Use our AI resume improver to enhance phrasing and impress hiring managers.',
+      'Upgrade your resume bullets with quantified metrics and high-impact action verbs. Turn passive duties into recruiter-approved achievements with AI.',
     h1: 'AI Resume Improver',
     subtitle:
       'Transform ordinary task descriptions into captivating, results-focused achievements that command attention.',

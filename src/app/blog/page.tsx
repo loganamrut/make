@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BreadcrumbSchema } from '@/components/seo/JsonLd';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { BLOG_POSTS } from '@/lib/seo-data';
 import { BookOpen, Clock, ArrowRight } from 'lucide-react';
 
@@ -26,23 +27,25 @@ export default function BlogIndexPage() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <BreadcrumbSchema items={breadcrumbItems} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
 
-      <section className="pt-12 pb-16 bg-white border-b border-slate-200 text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold mb-3">
-            <BookOpen className="w-3.5 h-3.5" />
-            Career Advice & Strategy
+      <main id="main-content" className="flex-1">
+        <section className="pt-12 pb-16 bg-white border-b border-slate-200 text-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold mb-3">
+              <BookOpen className="w-3.5 h-3.5" />
+              Career Advice & Strategy
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+              CVMake Career & Resume Guides
+            </h1>
+            <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+              Practical, actionable advice written for modern job seekers. Zero fluff, real recruiter formulas, and concrete examples.
+            </p>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-            CVMake Career & Resume Guides
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Practical, actionable advice written for modern job seekers. Zero fluff, real recruiter formulas, and concrete examples.
-          </p>
-        </div>
-      </section>
+        </section>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 w-full flex-1">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {BLOG_POSTS.map(post => (
             <article
@@ -80,6 +83,7 @@ export default function BlogIndexPage() {
               </div>
             </article>
           ))}
+        </div>
         </div>
       </main>
 

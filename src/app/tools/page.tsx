@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BreadcrumbSchema } from '@/components/seo/JsonLd';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { MICRO_TOOLS_DATA } from '@/lib/seo-data';
 import {
   Wrench,
@@ -31,29 +32,31 @@ export default function ToolsHubPage() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <BreadcrumbSchema items={breadcrumbItems} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
 
-      {/* Hero */}
-      <section className="pt-12 pb-16 bg-white border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-4">
-            <Wrench className="w-3.5 h-3.5" />
-            100% Free Client-Side Tools
+      <main id="main-content" className="flex-1">
+        {/* Hero */}
+        <section className="pt-12 pb-16 bg-white border-b border-slate-200">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-4">
+              <Wrench className="w-3.5 h-3.5" />
+              100% Free Client-Side Tools
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+              Free AI Resume & Career Tools
+            </h1>
+            <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+              Interactive, browser-based utilities to optimize your resume bullets, analyze ATS compliance, discover role-specific skills, and generate cover letters.
+            </p>
+            <div className="mt-4 flex items-center justify-center gap-2 text-xs font-medium text-emerald-700">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              Zero server retention • All tools operate directly in your browser
+            </div>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-            Free AI Resume & Career Tools
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Interactive, browser-based utilities to optimize your resume bullets, analyze ATS compliance, discover role-specific skills, and generate cover letters.
-          </p>
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs font-medium text-emerald-700">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            Zero server retention • All tools operate directly in your browser
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Grid of Tools */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        {/* Grid of Tools */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {MICRO_TOOLS_DATA.map(tool => (
             <div
@@ -88,6 +91,7 @@ export default function ToolsHubPage() {
               </div>
             </div>
           ))}
+        </div>
         </div>
       </main>
 

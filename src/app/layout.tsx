@@ -24,8 +24,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://cvmake.dev'),
   title: {
-    default: 'AI Resume Builder & AI CV Maker | CVMake',
-    template: '%s | CVMake',
+    default: 'Free AI Resume Builder & AI CV Maker (ATS-Friendly) | CVMake',
+    template: '%s',
   },
   description:
     'Create a professional resume with our free AI resume builder and AI CV maker. Build ATS-friendly resumes, improve your CV, and download it instantly.',

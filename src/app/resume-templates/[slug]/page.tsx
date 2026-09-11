@@ -6,6 +6,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
 import { WebApplicationSchema, BreadcrumbSchema } from '@/components/seo/JsonLd';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { ResumeDocument } from '@/components/builder/ResumeDocument';
 import { SAMPLE_RESUME } from '@/lib/sample-data';
 import { TEMPLATE_SHOWCASES } from '@/lib/seo-data';
@@ -83,6 +84,7 @@ export default function TemplateCategoryPage({ params }: Props) {
       />
       <BreadcrumbSchema items={breadcrumbItems} />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
 
       {/* Hero Section */}
       <section className="pt-12 pb-12 bg-white border-b border-slate-200">

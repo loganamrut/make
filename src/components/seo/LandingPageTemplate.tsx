@@ -4,6 +4,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
 import { WebApplicationSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/JsonLd';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { SeoLandingPageData } from '@/lib/seo-data';
 import {
   Sparkles,
@@ -40,6 +41,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
         />
       )}
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
 
       <main id="main-content" className="flex-1">
         {/* Hero Section */}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/JsonLd';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { BLOG_POSTS_CONTENT } from '@/lib/blog-content';
 import { Sparkles, Clock, Calendar, ArrowLeft, ShieldCheck } from 'lucide-react';
 
@@ -57,6 +58,7 @@ export default function BlogPostPage({ params }: Props) {
         datePublished="2026-09-01"
       />
       <Header />
+      <Breadcrumbs items={breadcrumbItems} />
 
       {/* Article Header */}
       <header className="pt-12 pb-10 bg-slate-50 border-b border-slate-200">

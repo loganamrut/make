@@ -21,31 +21,52 @@ import {
   Briefcase,
   Globe,
   Compass,
+  Check,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'AI Resume Builder & AI CV Maker | CVMake',
+  title: 'Free AI Resume Builder & AI CV Maker (ATS-Friendly) | CVMake',
   description:
-    'Create a professional resume with our free AI resume builder and AI CV maker. Build ATS-friendly resumes, improve your CV, and download it instantly.',
+    'Create an interview-winning resume with our free AI resume builder, AI CV maker, and resume maker AI. 100% browser-based privacy, ATS-friendly templates, and instant vector PDF download without signing up.',
   keywords: [
     'ai resume builder',
     'ai cv maker',
     'resume maker ai',
-    'AI resume builder free',
-    'free AI resume builder',
-    'ATS resume builder',
-    'ATS friendly resume',
+    'free ai resume builder',
+    'ai resume builder free',
+    'ai resume maker',
+    'ai cv builder',
+    'ai cv maker free',
+    'resume builder ai',
+    'resume maker',
+    'cv maker',
+    'cv builder',
+    'ats resume builder',
+    'ats friendly resume',
+    'ats resume template',
+    'resume creator',
+    'ai resume generator',
+    'create resume with ai',
+    'create cv with ai',
+    'resume builder online',
+    'professional resume builder',
   ],
   alternates: {
     canonical: 'https://cvmake.dev/',
   },
   openGraph: {
-    title: 'AI Resume Builder & AI CV Maker | CVMake',
+    title: 'Free AI Resume Builder & AI CV Maker (ATS-Friendly) | CVMake',
     description:
-      'Create a professional, ATS-friendly resume with AI — privately in your browser with zero server database storage.',
+      'Create a professional, ATS-friendly resume with AI — privately in your browser with zero server database storage and instant vector PDF download.',
     url: 'https://cvmake.dev/',
     siteName: 'CVMake',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free AI Resume Builder & AI CV Maker | CVMake',
+    description:
+      'Private, browser-based AI resume builder and AI CV maker. 100% free vector PDF download.',
   },
 };
 
@@ -611,6 +632,182 @@ export default function HomePage() {
               <h3 className="font-bold text-slate-900 text-sm mb-1">Executives & VPs</h3>
               <p className="text-xs text-slate-500">
                 Commanding layouts designed to present P&L responsibility, team scaling, and revenue gains.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Table Section */}
+      <section className="py-20 bg-slate-50 border-b border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
+              Honest Comparison
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              CVMake vs Traditional Resume Builders
+            </h2>
+            <p className="mt-3 text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+              See why job seekers are switching from paywalled corporate platforms to our privacy-first AI resume maker.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-slate-100/75 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <tr>
+                  <th scope="col" className="py-4 px-6">Feature</th>
+                  <th scope="col" className="py-4 px-6 text-indigo-700 bg-indigo-50/50">CVMake (Free & Private)</th>
+                  <th scope="col" className="py-4 px-6 text-slate-500">Traditional Resume Builders</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">Pricing & Hidden Fees</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    100% Free Forever
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    $15 – $30/month subscription traps
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">Data Storage & Privacy</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    Zero server database (100% in browser)
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    Uploaded to remote corporate servers
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">Account Requirement</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    No sign-up or email required
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    Mandatory registration before download
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">PDF Download Quality</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    Clean vector PDF (no watermarks)
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    Watermarked or locked behind credit cards
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">ATS Parsing Optimization</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    Recruiter-tested linear layouts
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    Complex two-column grids that choke ATS
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">AI Bullet Optimization</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    Google XYZ quantified formula
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    Generic, unmeasured text snippets
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-slate-900">Ad Trackers & Cookies</td>
+                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    Zero third-party tracking cookies
+                  </td>
+                  <td className="py-4 px-6 text-slate-500">
+                    Extensive ad network surveillance
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/builder"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all active:scale-95"
+            >
+              <Sparkles className="w-4 h-4" />
+              Build Your Free ATS Resume Now &rarr;
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Recruiter Guide: The 4 Rules to Pass Any ATS */}
+      <section className="py-20 bg-white border-b border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              The 4 Recruiter Rules to Pass Any ATS
+            </h2>
+            <p className="mt-3 text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+              Over 75% of job applications are filtered by Workday, Taleo, Greenhouse, or Lever before human eyes see them. Here is how CVMake guarantees your resume passes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
+              <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-sm flex items-center justify-center mb-4">
+                1
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                Single-Column Linear Hierarchy
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Many modern graphic design resumes rely on two-column sidebars, floating text frames, and icon bars. ATS parsers read horizontally across columns, scrambling your job titles with unrelated bullet points. CVMake enforces clean, linear reading flow so every parser indexes your history in chronological order.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
+              <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-sm flex items-center justify-center mb-4">
+                2
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                Standard Semantic Headings
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Creative headings like "Where I’ve Been" or "My Toolbox" confuse automated categorization algorithms. CVMake automatically uses standardized headings: <strong>Professional Summary</strong>, <strong>Work Experience</strong>, <strong>Education</strong>, and <strong>Technical Skills</strong>, matching exact recruiter taxonomy.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
+              <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-sm flex items-center justify-center mb-4">
+                3
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                Pure Selectable Vector Text Layers
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Resumes exported as flattened images or canvas drawings are completely invisible to text scanners. Our native browser print engine exports clean vector PDFs where every letter retains its raw character encoding, ensuring 100% parsing fidelity across every applicant tracking platform.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
+              <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-sm flex items-center justify-center mb-4">
+                4
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                Quantified Google XYZ Achievement Bullets
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Recruiters prioritize measurable impact over passive task descriptions. Using our built-in AI bullet assistant, you transform generic responsibilities into high-scoring XYZ achievements: <em>"Accomplished [X] as measured by [Y], by doing [Z]"</em>, raising both your ATS keyword score and recruiter callback rate.
               </p>
             </div>
           </div>
