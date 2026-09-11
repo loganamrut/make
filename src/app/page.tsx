@@ -111,7 +111,8 @@ export default function HomePage() {
       />
       <Header />
 
-      {/* Hero Section */}
+      <main id="main-content" className="flex-1">
+        {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-indigo-50/50 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           {/* Privacy Pill Badge */}
@@ -418,7 +419,7 @@ export default function HomePage() {
                   <span className="font-bold">PASSED</span>
                 </div>
               </div>
-              <p className="text-[11px] text-slate-400 italic pt-2">
+              <p className="text-xs text-slate-300 italic pt-2 font-medium">
                 Audited locally using CVMake’s client-side diagnostic evaluator.
               </p>
             </div>
@@ -624,12 +625,12 @@ export default function HomePage() {
       />
 
       {/* Bottom CTA */}
-      <section className="py-20 bg-indigo-600 text-white text-center">
+      <section className="py-20 bg-indigo-700 text-white text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
             Ready to Build Your Winning ATS Resume?
           </h2>
-          <p className="mt-4 text-indigo-100 text-base sm:text-lg max-w-xl mx-auto">
+          <p className="mt-4 text-white/95 text-base sm:text-lg max-w-xl mx-auto font-medium">
             Join thousands of professionals creating recruiter-ready resumes with complete privacy. No account required.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -641,16 +642,17 @@ export default function HomePage() {
             </Link>
             <Link
               href="/resume-templates"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl border border-indigo-300 text-white font-bold text-base hover:bg-indigo-700 transition-all"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl border-2 border-white/80 text-white font-bold text-base hover:bg-white/10 transition-all"
             >
               Browse Templates
             </Link>
           </div>
-          <p className="mt-4 text-xs text-indigo-200">
+          <p className="mt-4 text-xs text-white font-medium">
             🔒 Private by design — your resume stays in your browser.
           </p>
         </div>
       </section>
+      </main>
 
       <Footer />
     </div>

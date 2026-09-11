@@ -40,7 +40,8 @@ export default function ResumeTemplatesPage() {
       <BreadcrumbSchema items={breadcrumbItems} />
       <Header />
 
-      {/* Hero */}
+      <main id="main-content" className="flex-1">
+        {/* Hero */}
       <section className="pt-12 pb-16 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
@@ -174,6 +175,7 @@ export default function ResumeTemplatesPage() {
         title="Frequently Asked Questions About Our Templates"
         faqs={pageData.faqs}
       />
+      </main>
 
       <Footer />
     </div>

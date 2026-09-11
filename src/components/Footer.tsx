@@ -16,7 +16,7 @@ export function Footer() {
               <h3 className="text-white font-semibold text-sm">
                 Private by Design — Your Resume Stays in Your Browser
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Zero database. We do not store your name, email, work history, or documents on our servers.
               </p>
             </div>
@@ -43,10 +43,10 @@ export function Footer() {
                 CV<span className="text-indigo-400">Make</span>
               </span>
             </Link>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
+            <p className="text-sm text-slate-300 leading-relaxed max-w-sm">
               The privacy-first AI resume builder and AI CV maker. Create ATS-friendly resumes, optimize achievement bullet points, and export high-resolution PDFs without creating an account or storing data on remote servers.
             </p>
-            <div className="pt-2 flex items-center gap-2 text-xs text-slate-400">
+            <div className="pt-2 flex items-center gap-2 text-xs text-slate-300 font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               Browser-only client storage active
             </div>
@@ -200,14 +200,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300 font-medium">
           <p>© {new Date().getFullYear()} CVMake.dev. All rights reserved. Private AI Resume Builder & CV Maker.</p>
           <div className="flex items-center gap-4">
             <span>No Cookies Tracked</span>
             <span>•</span>
             <span>No Ads</span>
             <span>•</span>
-            <span className="inline-flex items-center gap-1 text-slate-300">
+            <span className="inline-flex items-center gap-1 text-slate-200">
               Made for job seekers everywhere
             </span>
           </div>

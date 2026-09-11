@@ -41,7 +41,8 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
       )}
       <Header />
 
-      {/* Hero Section */}
+      <main id="main-content" className="flex-1">
+        {/* Hero Section */}
       <section className="pt-12 pb-16 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
@@ -185,12 +186,12 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
       </section>
 
       {/* Bottom CTA Banner */}
-      <section className="py-16 bg-indigo-600 text-white text-center">
+      <section className="py-16 bg-indigo-700 text-white text-center">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-black">
             Get Started with {data.h1} Today
           </h2>
-          <p className="mt-3 text-indigo-100 text-sm sm:text-base">
+          <p className="mt-3 text-white/95 text-sm sm:text-base font-medium">
             Build your resume privately in your browser with no sign-up wall.
           </p>
           <div className="mt-6">
@@ -204,6 +205,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer />
     </div>
