@@ -72,10 +72,10 @@ export const metadata: Metadata = {
       'Create a professional, ATS-friendly resume with AI — privately in your browser with zero server database storage.',
     images: [
       {
-        url: '/icon.svg',
-        width: 512,
-        height: 512,
-        alt: 'CVMake – Private AI Resume Builder & AI CV Maker',
+        url: 'https://cvmake.dev/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'CVMake – Free AI Resume Builder & AI CV Maker',
       },
     ],
   },
@@ -84,12 +84,20 @@ export const metadata: Metadata = {
     title: 'AI Resume Builder & AI CV Maker | CVMake',
     description:
       'Create a professional, ATS-friendly resume with AI — privately in your browser with zero server database storage.',
-    images: ['/icon.svg'],
+    images: ['https://cvmake.dev/og-image.png'],
   },
+  manifest: '/site.webmanifest',
   icons: {
-    icon: '/icon.svg',
-    shortcut: '/icon.svg',
-    apple: '/icon.svg',
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32 16x16 48x48' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 
@@ -101,7 +109,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white`}

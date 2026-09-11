@@ -61,12 +61,21 @@ export const metadata: Metadata = {
     url: 'https://cvmake.dev/',
     siteName: 'CVMake',
     type: 'website',
+    images: [
+      {
+        url: 'https://cvmake.dev/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'CVMake – Free AI Resume Builder & AI CV Maker',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Free AI Resume Builder & AI CV Maker | CVMake',
     description:
       'Private, browser-based AI resume builder and AI CV maker. 100% free vector PDF download.',
+    images: ['https://cvmake.dev/og-image.png'],
   },
 };
 

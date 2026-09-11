@@ -1,17 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4f46e5" />
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4338ca" />
+      <stop offset="40%" stop-color="#4f46e5" />
       <stop offset="100%" stop-color="#3730a3" />
     </linearGradient>
+    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="50%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#1e1b4b" flood-opacity="0.4" />
+    </filter>
   </defs>
-  <rect width="48" height="48" rx="12" fill="url(#grad)" />
-  <!-- Document icon -->
-  <path d="M14 10h14l8 8v20a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V12a2 2 0 0 1 2-2z" fill="#ffffff" opacity="0.9" />
-  <path d="M28 10v8h8" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <!-- Document text lines -->
-  <path d="M17 22h14M17 27h14M17 32h9" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" />
-  <!-- Sparkle AI badge -->
-  <circle cx="36" cy="12" r="4" fill="#10b981" />
-  <path d="M36 10v4M34 12h4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- Squircle Base -->
+  <rect width="512" height="512" rx="116" fill="url(#bg)" />
+  <rect x="8" y="8" width="496" height="496" rx="108" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.15" />
+
+  <!-- Document Sheet -->
+  <g filter="url(#shadow)">
+    <path d="M136 104 C136 90.7 146.7 80 160 80 L296 80 L376 160 L376 408 C376 421.3 365.3 432 352 432 L160 432 C146.7 432 136 421.3 136 408 Z" fill="#ffffff" />
+    <!-- Folded Corner -->
+    <path d="M296 80 L376 160 L312 160 C303.2 160 296 152.8 296 144 Z" fill="#c7d2fe" />
+  </g>
+
+  <!-- Resume Content Bars -->
+  <!-- Name / Job Title Header -->
+  <rect x="172" y="132" width="96" height="24" rx="6" fill="#4338ca" />
+  <rect x="172" y="168" width="100" height="12" rx="4" fill="#818cf8" />
+
+  <!-- Section 1: Experience -->
+  <rect x="172" y="206" width="168" height="12" rx="4" fill="#4f46e5" />
+  <rect x="172" y="230" width="168" height="10" rx="4" fill="#94a3b8" />
+  <rect x="172" y="250" width="144" height="10" rx="4" fill="#cbd5e1" />
+  <rect x="172" y="270" width="156" height="10" rx="4" fill="#cbd5e1" />
+
+  <!-- Section 2: Skills & Impact -->
+  <rect x="172" y="304" width="120" height="12" rx="4" fill="#4f46e5" />
+  <rect x="172" y="328" width="168" height="10" rx="4" fill="#94a3b8" />
+  <rect x="172" y="348" width="136" height="10" rx="4" fill="#cbd5e1" />
+
+  <!-- Decorative Badge / Tag -->
+  <rect x="172" y="380" width="52" height="16" rx="6" fill="#e0e7ff" />
+  <rect x="232" y="380" width="52" height="16" rx="6" fill="#e0e7ff" />
+
+  <!-- Primary AI Sparkle (Top Right) -->
+  <g filter="url(#shadow)">
+    <path d="M396 68 C396 102 411 117 445 117 C411 117 396 132 396 166 C396 132 381 117 347 117 C381 117 396 102 396 68 Z" fill="url(#sparkleGrad)" />
+    <circle cx="396" cy="117" r="6" fill="#ffffff" />
+  </g>
+
+  <!-- Secondary Mini Sparkle -->
+  <path d="M446 172 C446 186 452 192 466 192 C452 192 446 198 446 212 C446 198 440 192 426 192 C440 192 446 186 446 172 Z" fill="#34d399" />
 </svg>
