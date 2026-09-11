@@ -48,8 +48,8 @@ export default function ToolsHubPage() {
             <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
               Interactive, browser-based utilities to optimize your resume bullets, analyze ATS compliance, discover role-specific skills, and generate cover letters.
             </p>
-            <div className="mt-4 flex items-center justify-center gap-2 text-xs font-medium text-emerald-700">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <div className="mt-4 flex items-center justify-center gap-2 text-xs font-semibold text-emerald-800">
+              <ShieldCheck className="w-4 h-4 text-emerald-700" />
               Zero server retention • All tools operate directly in your browser
             </div>
           </div>
@@ -68,10 +68,10 @@ export default function ToolsHubPage() {
                   <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full">
                     {tool.badge}
                   </span>
-                  <Sparkles className="w-4 h-4 text-indigo-400" />
+                  <Sparkles className="w-4 h-4 text-indigo-600" />
                 </div>
                 <h2 className="text-lg font-bold text-slate-900 mb-2">
-                  <Link href={tool.href} className="hover:text-indigo-600 transition-colors">
+                  <Link href={tool.href} className="hover:text-indigo-700 transition-colors">
                     {tool.title}
                   </Link>
                 </h2>
@@ -83,11 +83,11 @@ export default function ToolsHubPage() {
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                 <Link
                   href={tool.href}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-800"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-700 hover:text-indigo-900"
                 >
                   Launch Tool <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
-                <span className="text-[10px] text-slate-400">Client-Side</span>
+                <span className="text-[11px] text-slate-600 font-medium">Client-Side</span>
               </div>
             </div>
           ))}

@@ -110,7 +110,7 @@ export default function TemplateCategoryPage({ params }: Props) {
             </Link>
           </div>
 
-          <p className="mt-3 text-xs text-slate-500">
+          <p className="mt-3 text-xs text-slate-700 font-medium">
             🔒 100% Free • No account required • Stays in your browser
           </p>
         </div>
@@ -126,22 +126,22 @@ export default function TemplateCategoryPage({ params }: Props) {
                 Template Specifications
               </h2>
               <div>
-                <span className="block text-xs font-bold uppercase text-slate-500 tracking-wider">
+                <span className="block text-xs font-bold uppercase text-slate-700 tracking-wider">
                   Recommended For
                 </span>
-                <p className="text-sm font-semibold text-slate-800 mt-0.5">
+                <p className="text-sm font-semibold text-slate-900 mt-0.5">
                   {tpl.bestFor}
                 </p>
               </div>
 
               <div>
-                <span className="block text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">
+                <span className="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                   Key Design Features
                 </span>
                 <div className="space-y-2">
                   {tpl.features.map((feat, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs text-slate-700">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-800">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -160,8 +160,8 @@ export default function TemplateCategoryPage({ params }: Props) {
             </div>
 
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 text-emerald-950 text-xs leading-relaxed space-y-2">
-              <div className="flex items-center gap-1.5 font-bold text-emerald-900">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <div className="flex items-center gap-1.5 font-bold text-emerald-950">
+                <ShieldCheck className="w-4 h-4 text-emerald-700" />
                 Browser-Side Privacy Guarantee
               </div>
               <p>

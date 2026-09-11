@@ -62,8 +62,8 @@ function BuilderContent() {
       <Header />
 
       {/* Privacy Callout Banner */}
-      <div className="bg-emerald-50/90 border-b border-emerald-100 py-1.5 px-4 text-center text-xs font-medium text-emerald-800 flex items-center justify-center gap-1.5 no-print">
-        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+      <div className="bg-emerald-50 border-b border-emerald-200 py-1.5 px-4 text-center text-xs font-semibold text-emerald-950 flex items-center justify-center gap-1.5 no-print">
+        <ShieldCheck className="w-4 h-4 text-emerald-700" />
         <span>
           Private by design — Your resume stays in your browser. We don’t store your data on any server.
         </span>
@@ -76,8 +76,8 @@ function BuilderContent() {
           onClick={() => setMobileTab('edit')}
           className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
             mobileTab === 'edit'
-              ? 'border-indigo-600 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-indigo-700 text-indigo-700'
+              : 'border-transparent text-slate-700 hover:text-slate-900'
           }`}
         >
           <Edit3 className="w-3.5 h-3.5" />
@@ -88,8 +88,8 @@ function BuilderContent() {
           onClick={() => setMobileTab('preview')}
           className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
             mobileTab === 'preview'
-              ? 'border-indigo-600 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-indigo-700 text-indigo-700'
+              : 'border-transparent text-slate-700 hover:text-slate-900'
           }`}
         >
           <Eye className="w-3.5 h-3.5" />

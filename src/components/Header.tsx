@@ -27,7 +27,7 @@ export function Header() {
                     Private
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-500 font-medium leading-none hidden sm:block">
+                <span className="text-[10px] text-slate-600 font-semibold leading-none hidden sm:block">
                   Privacy-First AI Builder
                 </span>
               </div>
@@ -120,8 +120,8 @@ export function Header() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-3">
-          <div className="px-2 py-1.5 bg-emerald-50 rounded-lg text-xs font-medium text-emerald-800 flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="px-2 py-1.5 bg-emerald-50 rounded-lg text-xs font-semibold text-emerald-900 flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             100% Client-Side. Zero server database.
           </div>
           <div className="grid grid-cols-1 gap-1 pt-1 text-base font-medium text-slate-800">
@@ -131,7 +131,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               AI Resume Builder
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/ai-cv-maker"
@@ -139,7 +139,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               AI CV Maker
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/resume-templates"
@@ -147,7 +147,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               Resume Templates
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/ats-resume-builder"
@@ -155,7 +155,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               ATS Resume Builder
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/ai-resume-writer"
@@ -163,7 +163,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               AI Resume Writer
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/cover-letter-builder"
@@ -171,7 +171,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               Cover Letter Generator
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/tools"
@@ -179,7 +179,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               Free Career Tools
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
             <Link
               href="/blog"
@@ -187,7 +187,7 @@ export function Header() {
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100"
             >
               Career & Resume Guides
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-500" />
             </Link>
           </div>
           <div className="pt-2">

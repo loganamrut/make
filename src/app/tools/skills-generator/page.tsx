@@ -60,8 +60,8 @@ export default function SkillsGeneratorPage() {
           <p className="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
             Discover the exact technical proficiencies, software tools, and competencies ATS parsers scan for in your role.
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-700 font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-800 font-semibold">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             100% Client-Side • Instant Results
           </div>
         </div>

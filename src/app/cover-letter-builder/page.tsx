@@ -68,8 +68,8 @@ export default function CoverLetterBuilderPage() {
       <Header />
 
       {/* Top Banner */}
-      <div className="bg-emerald-50 border-b border-emerald-100 py-2 px-4 text-center text-xs font-medium text-emerald-800 flex items-center justify-center gap-1.5 no-print">
-        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+      <div className="bg-emerald-50 border-b border-emerald-200 py-2 px-4 text-center text-xs font-semibold text-emerald-950 flex items-center justify-center gap-1.5 no-print">
+        <ShieldCheck className="w-4 h-4 text-emerald-700" />
         <span>Private AI Cover Letter Generator — Created locally in your browser.</span>
       </div>
 
@@ -201,7 +201,7 @@ export default function CoverLetterBuilderPage() {
                   onClick={copyToClipboard}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold"
                 >
-                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Copy className="w-3.5 h-3.5" />}
                   {copied ? 'Copied!' : 'Copy Text'}
                 </button>
                 <button

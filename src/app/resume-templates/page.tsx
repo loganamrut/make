@@ -47,7 +47,7 @@ export default function ResumeTemplatesPage() {
       <section className="pt-12 pb-16 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             <span>9 Recruiter-Approved Layouts • 100% Free</span>
           </div>
 
@@ -55,7 +55,7 @@ export default function ResumeTemplatesPage() {
             {pageData.h1}
           </h1>
 
-          <p className="mt-4 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-base sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed">
             {pageData.subtitle}
           </p>
 
@@ -69,7 +69,7 @@ export default function ResumeTemplatesPage() {
             </Link>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">
+          <p className="mt-4 text-xs text-slate-700 font-medium">
             No account required. All templates are 100% ATS-friendly.
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function ResumeTemplatesPage() {
                     </span>
                     <Link
                       href={`/builder?template=${tpl.slug}`}
-                      className="text-xs font-bold text-indigo-600 bg-white px-2.5 py-1 rounded shadow-sm hover:bg-indigo-50 border border-slate-200 inline-flex items-center gap-1"
+                      className="text-xs font-bold text-indigo-700 bg-white px-2.5 py-1 rounded shadow-sm hover:bg-indigo-50 border border-slate-200 inline-flex items-center gap-1"
                     >
                       Use Template &rarr;
                     </Link>
@@ -120,12 +120,12 @@ export default function ResumeTemplatesPage() {
                     <h3 className="text-lg font-bold text-slate-900 mb-1">
                       <Link
                         href={`/resume-templates/${tpl.slug}`}
-                        className="hover:text-indigo-600 transition-colors"
+                        className="hover:text-indigo-700 transition-colors"
                       >
                         {tpl.title}
                       </Link>
                     </h3>
-                    <p className="text-xs text-slate-500 italic mb-2">
+                    <p className="text-xs text-slate-700 italic mb-2 font-medium">
                       Best for: {tpl.bestFor}
                     </p>
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -135,8 +135,8 @@ export default function ResumeTemplatesPage() {
 
                   <div className="space-y-1.5 pt-2 border-t border-slate-100">
                     {tpl.features.map((feat, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-slate-600">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                      <div key={i} className="flex items-center gap-2 text-xs text-slate-700">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
                         <span>{feat}</span>
                       </div>
                     ))}

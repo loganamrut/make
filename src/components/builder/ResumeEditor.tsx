@@ -721,7 +721,7 @@ export function ResumeEditor({ resume, onChange }: ResumeEditorProps) {
 
                   {exp.bullets.map((bullet, bIdx) => (
                     <div key={bIdx} className="flex items-start gap-2">
-                      <span className="text-slate-400 mt-2 text-xs">•</span>
+                      <span className="text-slate-600 mt-2 text-xs font-bold">•</span>
                       <textarea
                         rows={2}
                         value={bullet}
@@ -749,7 +749,7 @@ export function ResumeEditor({ resume, onChange }: ResumeEditorProps) {
                       <button
                         type="button"
                         onClick={() => removeBullet(exp.id, bIdx)}
-                        className="p-1.5 text-slate-400 hover:text-rose-600 flex-shrink-0"
+                        className="p-1.5 text-slate-500 hover:text-rose-600 flex-shrink-0"
                         title="Remove bullet"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -938,7 +938,7 @@ export function ResumeEditor({ resume, onChange }: ResumeEditorProps) {
                     <button
                       type="button"
                       onClick={() => removeSkill('technical', sk)}
-                      className="text-slate-400 hover:text-rose-600"
+                      className="text-slate-600 hover:text-rose-600 font-bold ml-0.5"
                     >
                       &times;
                     </button>
@@ -974,7 +974,7 @@ export function ResumeEditor({ resume, onChange }: ResumeEditorProps) {
                     <button
                       type="button"
                       onClick={() => removeSkill('tools', sk)}
-                      className="text-slate-400 hover:text-rose-600"
+                      className="text-slate-600 hover:text-rose-600 font-bold ml-0.5"
                     >
                       &times;
                     </button>
@@ -1010,7 +1010,7 @@ export function ResumeEditor({ resume, onChange }: ResumeEditorProps) {
                     <button
                       type="button"
                       onClick={() => removeSkill('soft', sk)}
-                      className="text-slate-400 hover:text-rose-600"
+                      className="text-slate-600 hover:text-rose-600 font-bold ml-0.5"
                     >
                       &times;
                     </button>

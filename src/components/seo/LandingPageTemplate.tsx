@@ -48,7 +48,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
       <section className="pt-12 pb-16 bg-gradient-to-b from-indigo-50/40 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             <span>{data.badge}</span>
           </div>
 
@@ -56,7 +56,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
             {data.h1}
           </h1>
 
-          <p className="mt-4 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-base sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed">
             {data.subtitle}
           </p>
 
@@ -76,7 +76,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
             </Link>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">
+          <p className="mt-4 text-xs text-slate-700 font-medium">
             Private by design — your resume stays in your browser.
           </p>
         </div>
@@ -170,7 +170,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
       {/* Internal Linking Cluster */}
       <section className="py-12 bg-slate-50 border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-4">
             Related Tools & Resources
           </h3>
           <div className="flex flex-wrap items-center justify-center gap-3">

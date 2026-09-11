@@ -52,15 +52,15 @@ export function AISuggestionModal({
                 {type === 'skills' && 'AI Skills Suggestions'}
                 {type === 'improver' && 'AI Text Improver'}
               </h3>
-              <p className="text-xs text-slate-500 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <p className="text-xs text-slate-700 flex items-center gap-1 font-medium">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
                 Runs client-side in browser • Zero server retention
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/60"
+            className="text-slate-600 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-200/60"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -373,7 +373,7 @@ export function AISuggestionModal({
                 </div>
                 <p className="text-xs sm:text-sm text-slate-800 leading-relaxed">
                   {improveResumeText(improverText, improverMode) || (
-                    <span className="italic text-slate-400">Enter text above to see the enhanced version...</span>
+                    <span className="italic text-slate-600 font-medium">Enter text above to see the enhanced version...</span>
                   )}
                 </p>
               </div>

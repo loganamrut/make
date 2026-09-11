@@ -52,8 +52,8 @@ export default function ResumeKeywordCheckerPage() {
           <p className="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
             Scan your resume for high-impact executive action verbs and weed out overused passive clichés.
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-700 font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-800 font-semibold">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             100% Client-Side • Instant Analysis
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function ResumeKeywordCheckerPage() {
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2">
               <h2 className="text-sm font-bold text-emerald-900 flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                 Power Action Verbs Found ({detectedVerbs.length})
               </h2>
             </div>
@@ -94,7 +94,7 @@ export default function ResumeKeywordCheckerPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-slate-500 italic">
+              <p className="text-xs text-slate-700 italic">
                 No major power action verbs detected. Try starting bullets with Spearheaded, Engineered, or Automated.
               </p>
             )}
@@ -104,7 +104,7 @@ export default function ResumeKeywordCheckerPage() {
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2">
               <h2 className="text-sm font-bold text-amber-900 flex items-center gap-1.5">
-                <AlertTriangle className="w-4 h-4 text-amber-600" />
+                <AlertTriangle className="w-4 h-4 text-amber-700" />
                 Overused Clichés & Passive Terms ({detectedCliches.length})
               </h2>
             </div>
@@ -113,14 +113,14 @@ export default function ResumeKeywordCheckerPage() {
                 {detectedCliches.map((c, i) => (
                   <span
                     key={i}
-                    className="px-2.5 py-1 rounded-md text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200"
+                    className="px-2.5 py-1 rounded-md text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200"
                   >
                     ⚠️ {c}
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-emerald-600 font-medium">
+              <p className="text-xs text-emerald-800 font-semibold">
                 Great job! No common weak clichés detected.
               </p>
             )}

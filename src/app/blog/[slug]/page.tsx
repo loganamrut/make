@@ -127,8 +127,8 @@ export default function BlogPostPage({ params }: Props) {
         </div>
 
         {/* Privacy Note */}
-        <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+        <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-950 text-xs font-medium flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
           <span>
             CVMake operates 100% locally in your browser. We never store your resume or credentials on remote servers.
           </span>

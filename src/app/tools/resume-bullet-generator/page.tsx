@@ -70,8 +70,8 @@ export default function ResumeBulletGeneratorPage() {
           <p className="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
             Transform ordinary task descriptions into high-impact, quantified achievement bullet points that impress recruiters.
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-700 font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-800 font-semibold">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             Runs client-side in browser • Zero server database
           </div>
         </div>
@@ -150,9 +150,9 @@ export default function ResumeBulletGeneratorPage() {
                   <button
                     type="button"
                     onClick={() => handleCopy(b, idx)}
-                    className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-900 border border-slate-200 px-2.5 py-1 rounded-md"
+                    className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-slate-700 hover:text-slate-900 border border-slate-300 px-2.5 py-1 rounded-md"
                   >
-                    {copiedIdx === idx ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedIdx === idx ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Copy className="w-3.5 h-3.5" />}
                     {copiedIdx === idx ? 'Copied' : 'Copy'}
                   </button>
                 </div>

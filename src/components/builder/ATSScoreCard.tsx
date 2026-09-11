@@ -15,15 +15,15 @@ export function ATSScoreCard({ resume, onFixShortcut: _onFixShortcut }: ATSScore
   const result = evaluateATS(resume);
 
   const getScoreColor = (score: number) => {
-    if (score >= 85) return 'text-emerald-600 border-emerald-500 bg-emerald-50';
-    if (score >= 70) return 'text-amber-600 border-amber-500 bg-amber-50';
-    return 'text-rose-600 border-rose-500 bg-rose-50';
+    if (score >= 85) return 'text-emerald-800 border-emerald-500 bg-emerald-50';
+    if (score >= 70) return 'text-amber-800 border-amber-500 bg-amber-50';
+    return 'text-rose-800 border-rose-500 bg-rose-50';
   };
 
   const getProgressColor = (score: number) => {
-    if (score >= 85) return 'bg-emerald-500';
-    if (score >= 70) return 'bg-amber-500';
-    return 'bg-rose-500';
+    if (score >= 85) return 'bg-emerald-600';
+    if (score >= 70) return 'bg-amber-600';
+    return 'bg-rose-600';
   };
 
   return (
@@ -45,7 +45,7 @@ export function ATSScoreCard({ resume, onFixShortcut: _onFixShortcut }: ATSScore
                 Grade: {result.grade}
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5 max-w-xs line-clamp-1">
+            <p className="text-xs text-slate-600 mt-0.5 max-w-xs line-clamp-1">
               {result.summary}
             </p>
           </div>
@@ -74,25 +74,25 @@ export function ATSScoreCard({ resume, onFixShortcut: _onFixShortcut }: ATSScore
       {/* Quick Metrics Bar */}
       <div className="grid grid-cols-4 gap-2 mt-3 pt-3 border-t border-slate-100 text-center">
         <div className="bg-slate-50 rounded-lg p-1.5">
-          <span className="block text-[10px] text-slate-500 font-medium">Words</span>
+          <span className="block text-[10px] text-slate-700 font-medium">Words</span>
           <span className="text-xs font-bold text-slate-800">
             {result.metrics.wordCount}
           </span>
         </div>
         <div className="bg-slate-50 rounded-lg p-1.5">
-          <span className="block text-[10px] text-slate-500 font-medium">Action Verbs</span>
+          <span className="block text-[10px] text-slate-700 font-medium">Action Verbs</span>
           <span className="text-xs font-bold text-slate-800">
             {result.metrics.actionVerbCount}
           </span>
         </div>
         <div className="bg-slate-50 rounded-lg p-1.5">
-          <span className="block text-[10px] text-slate-500 font-medium">Metrics</span>
+          <span className="block text-[10px] text-slate-700 font-medium">Metrics</span>
           <span className="text-xs font-bold text-slate-800">
             {result.metrics.quantifiableResultsCount}
           </span>
         </div>
         <div className="bg-slate-50 rounded-lg p-1.5">
-          <span className="block text-[10px] text-slate-500 font-medium">Read Time</span>
+          <span className="block text-[10px] text-slate-700 font-medium">Read Time</span>
           <span className="text-xs font-bold text-slate-800">
             ~{result.metrics.estimatedReadingMinutes}m
           </span>
@@ -102,10 +102,10 @@ export function ATSScoreCard({ resume, onFixShortcut: _onFixShortcut }: ATSScore
       {/* Expanded Checklist */}
       {expanded && (
         <div className="mt-4 pt-4 border-t border-slate-200 space-y-2.5 max-h-72 overflow-y-auto">
-          <div className="flex items-center justify-between text-xs text-slate-500 pb-1">
+          <div className="flex items-center justify-between text-xs text-slate-700 pb-1 font-medium">
             <span>ATS Diagnostic Checklist</span>
-            <span className="text-[11px] font-medium text-emerald-600 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
+            <span className="text-[11px] font-bold text-emerald-800 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
               Audited 100% locally
             </span>
           </div>
@@ -122,7 +122,7 @@ export function ATSScoreCard({ resume, onFixShortcut: _onFixShortcut }: ATSScore
               }`}
             >
               {issue.passed ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5" />
               ) : issue.severity === 'critical' ? (
                 <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
               ) : (

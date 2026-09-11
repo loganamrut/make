@@ -75,8 +75,8 @@ export default function JobDescriptionToResumePage() {
           <p className="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
             Paste a job description and your resume text to uncover missing keywords and boost your match rate.
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-700 font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-800 font-semibold">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             100% In-Browser Analysis • Zero Data Uploaded
           </div>
         </div>

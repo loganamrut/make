@@ -138,7 +138,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           {/* Privacy Pill Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             <span>Private by design — your resume stays in your browser.</span>
           </div>
 
@@ -149,7 +149,7 @@ export default function HomePage() {
           </h1>
 
           {/* Hero Subtitle */}
-          <p className="mt-5 text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-5 text-lg sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed">
             Create a professional, ATS-friendly resume with AI — privately in your browser.
             Zero server database. Zero tracking. Instant vector PDF download.
           </p>
@@ -173,21 +173,21 @@ export default function HomePage() {
           </div>
 
           {/* Trust badges */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-700 font-medium">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
               100% Free & Unrestricted
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Tested for ATS Parsers
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+              No Account Required
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              No Credit Card or Sign-Up
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+              ATS Parser Compatible
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
               No Database Storage
             </span>
           </div>
@@ -200,10 +200,10 @@ export default function HomePage() {
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Create Your Resume With AI — Privately & Accurately
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed text-justify sm:text-center">
+          <p className="text-slate-700 text-base sm:text-lg leading-relaxed text-justify sm:text-center">
             Welcome to CVMake, the privacy-first AI resume builder and AI CV maker designed to give job seekers an authentic competitive edge. In a job market dominated by automated applicant tracking algorithms and high-volume recruiting pipelines, your resume must communicate measurable value in seconds.
           </p>
-          <p className="text-slate-600 text-base leading-relaxed text-justify sm:text-center">
+          <p className="text-slate-700 text-base leading-relaxed text-justify sm:text-center">
             Unlike other platforms that monetize your personal employment records or lock your finished PDF behind deceitful subscription traps, CVMake executes entirely within your browser. You retain complete ownership of your career data while benefiting from state-of-the-art AI achievement drafting and real-time ATS optimization.
           </p>
         </div>
@@ -327,7 +327,7 @@ export default function HomePage() {
             </div>
 
             <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/50">
-              <ShieldCheck className="w-6 h-6 text-emerald-600 mb-3" />
+              <ShieldCheck className="w-6 h-6 text-emerald-700 mb-3" />
               <h3 className="font-bold text-slate-900 text-base mb-1.5">Browser-Based Privacy</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Your personal contact details and employment trajectory never leave your device. Zero cloud tracking.
@@ -335,7 +335,7 @@ export default function HomePage() {
             </div>
 
             <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/50">
-              <Database className="w-6 h-6 text-emerald-600 mb-3" />
+              <Database className="w-6 h-6 text-emerald-700 mb-3" />
               <h3 className="font-bold text-slate-900 text-base mb-1.5">No Database Architecture</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 We operate with zero application database. No leaks, no data selling, no password accounts required.
@@ -560,7 +560,7 @@ export default function HomePage() {
                 <GraduationCap className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Students</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Highlight coursework, academic projects, and campus leadership with zero prior job experience.
               </p>
             </div>
@@ -570,7 +570,7 @@ export default function HomePage() {
                 <Award className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Recent Graduates</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Bridge the gap between internships and entry-level positions with strong technical skills showcase.
               </p>
             </div>
@@ -580,7 +580,7 @@ export default function HomePage() {
                 <Briefcase className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Active Job Seekers</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Rapidly tailor resumes to specific job postings and maximize ATS callback ratios.
               </p>
             </div>
@@ -590,7 +590,7 @@ export default function HomePage() {
                 <Users className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Mid-Career Pros</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Quantify career progression, leadership achievements, and cross-functional project wins.
               </p>
             </div>
@@ -600,7 +600,7 @@ export default function HomePage() {
                 <Compass className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Career Changers</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Spotlight transferable skills and strategic problem-solving for pivot industries.
               </p>
             </div>
@@ -610,7 +610,7 @@ export default function HomePage() {
                 <Globe className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Remote Workers</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Emphasize async collaboration, independent velocity, and distributed systems proficiency.
               </p>
             </div>
@@ -620,17 +620,17 @@ export default function HomePage() {
                 <Zap className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Freelancers</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Package independent client engagements and notable portfolio projects cleanly.
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-slate-200 text-center">
               <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-3">
-                <ShieldCheck className="w-5 h-5" />
+                <ShieldCheck className="w-5 h-5 text-emerald-700" />
               </div>
               <h3 className="font-bold text-slate-900 text-sm mb-1">Executives & VPs</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 Commanding layouts designed to present P&L responsibility, team scaling, and revenue gains.
               </p>
             </div>
@@ -660,77 +660,77 @@ export default function HomePage() {
                 <tr>
                   <th scope="col" className="py-4 px-6">Feature</th>
                   <th scope="col" className="py-4 px-6 text-indigo-700 bg-indigo-50/50">CVMake (Free & Private)</th>
-                  <th scope="col" className="py-4 px-6 text-slate-500">Traditional Resume Builders</th>
+                  <th scope="col" className="py-4 px-6 text-slate-700">Traditional Resume Builders</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">Pricing & Hidden Fees</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     100% Free Forever
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     $15 – $30/month subscription traps
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">Data Storage & Privacy</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     Zero server database (100% in browser)
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     Uploaded to remote corporate servers
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">Account Requirement</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     No sign-up or email required
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     Mandatory registration before download
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">PDF Download Quality</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     Clean vector PDF (no watermarks)
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     Watermarked or locked behind credit cards
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">ATS Parsing Optimization</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     Recruiter-tested linear layouts
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     Complex two-column grids that choke ATS
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">AI Bullet Optimization</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     Google XYZ quantified formula
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     Generic, unmeasured text snippets
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="py-4 px-6 font-semibold text-slate-900">Ad Trackers & Cookies</td>
-                  <td className="py-4 px-6 text-emerald-700 font-bold bg-indigo-50/20 flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <td className="py-4 px-6 text-emerald-800 font-bold bg-indigo-50/20 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                     Zero third-party tracking cookies
                   </td>
-                  <td className="py-4 px-6 text-slate-500">
+                  <td className="py-4 px-6 text-slate-700 font-medium">
                     Extensive ad network surveillance
                   </td>
                 </tr>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -15,7 +15,6 @@ import {
   AlertTriangle,
   AlertCircle,
   Sparkles,
-  RotateCcw,
 } from 'lucide-react';
 
 const ATS_CHECKER_FAQS = [
@@ -37,7 +36,7 @@ const ATS_CHECKER_FAQS = [
 ];
 
 export default function AtsResumeCheckerPage() {
-  const [resume, setResume] = useState<ResumeData>(SAMPLE_RESUME);
+  const resume: ResumeData = SAMPLE_RESUME;
   const result = evaluateATS(resume);
 
   return (
@@ -56,8 +55,8 @@ export default function AtsResumeCheckerPage() {
           <p className="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
             Get an instant 0-100 ATS score and prioritized diagnostic checklist before submitting your job application.
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-700 font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="mt-3 flex items-center justify-center gap-1 text-xs text-emerald-800 font-semibold">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
             100% Client-Side In Browser • Zero Server Database
           </div>
         </div>
@@ -68,24 +67,21 @@ export default function AtsResumeCheckerPage() {
         <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             <div
-              className={`w-20 h-20 rounded-2xl flex flex-col items-center justify-center font-black text-3xl border-2 ${
+              className={`w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-black border-4 ${
                 result.score >= 85
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                  ? 'border-emerald-500 text-emerald-700 bg-emerald-50'
                   : result.score >= 70
-                  ? 'border-amber-500 bg-amber-50 text-amber-700'
-                  : 'border-rose-500 bg-rose-50 text-rose-700'
+                  ? 'border-amber-500 text-amber-700 bg-amber-50'
+                  : 'border-rose-500 text-rose-700 bg-rose-50'
               }`}
             >
-              <span>{result.score}</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider -mt-1">/ 100</span>
+              {result.score}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold text-slate-900">
-                  Overall ATS Grade: {result.grade}
-                </h2>
-                <span className="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700">
-                  {result.score >= 85 ? 'Excellent' : result.score >= 70 ? 'Good' : 'Needs Work'}
+                <h2 className="text-xl font-bold text-slate-900">Your ATS Score</h2>
+                <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+                  Grade {result.grade}
                 </span>
               </div>
               <p className="text-sm text-slate-600 mt-1 max-w-md">
@@ -94,46 +90,36 @@ export default function AtsResumeCheckerPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setResume(SAMPLE_RESUME)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              Reset Sample
-            </button>
-            <Link
-              href="/builder"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition-all"
-            >
-              <Sparkles className="w-4 h-4" />
-              Edit in Full Builder
-            </Link>
-          </div>
+          <Link
+            href="/builder"
+            className="w-full md:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
+          >
+            <Sparkles className="w-4 h-4" />
+            Fix My Resume in Builder &rarr;
+          </Link>
         </div>
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <span className="text-xs text-slate-500 font-medium">Total Word Count</span>
+            <span className="text-xs text-slate-700 font-semibold">Total Word Count</span>
             <p className="text-xl font-black text-slate-900 mt-1">{result.metrics.wordCount}</p>
-            <span className="text-[10px] text-slate-400">Target: 400-800 words</span>
+            <span className="text-[11px] text-slate-600 font-medium">Target: 400-800 words</span>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <span className="text-xs text-slate-500 font-medium">Action Verbs Found</span>
+            <span className="text-xs text-slate-700 font-semibold">Action Verbs Found</span>
             <p className="text-xl font-black text-slate-900 mt-1">{result.metrics.actionVerbCount}</p>
-            <span className="text-[10px] text-slate-400">Target: 4+ strong verbs</span>
+            <span className="text-[11px] text-slate-600 font-medium">Target: 4+ strong verbs</span>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <span className="text-xs text-slate-500 font-medium">Quantified Metrics</span>
+            <span className="text-xs text-slate-700 font-semibold">Quantified Metrics</span>
             <p className="text-xl font-black text-slate-900 mt-1">{result.metrics.quantifiableResultsCount}</p>
-            <span className="text-[10px] text-slate-400">Target: 3+ with %, $ or figures</span>
+            <span className="text-[11px] text-slate-600 font-medium">Target: 3+ with %, $ or figures</span>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-200 text-center">
-            <span className="text-xs text-slate-500 font-medium">Est. Recruiter Scan</span>
+            <span className="text-xs text-slate-700 font-semibold">Est. Recruiter Scan</span>
             <p className="text-xl font-black text-slate-900 mt-1">~{result.metrics.estimatedReadingMinutes} min</p>
-            <span className="text-[10px] text-slate-400">Optimal reading pace</span>
+            <span className="text-[11px] text-slate-600 font-medium">Optimal reading pace</span>
           </div>
         </div>
 
@@ -141,7 +127,7 @@ export default function AtsResumeCheckerPage() {
         <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <h3 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center justify-between">
             <span>ATS Diagnostic Checklist</span>
-            <span className="text-xs font-semibold text-slate-500">
+            <span className="text-xs font-semibold text-slate-700">
               {result.issues.filter(i => i.passed).length} Passed / {result.issues.length} Checks
             </span>
           </h3>
@@ -159,7 +145,7 @@ export default function AtsResumeCheckerPage() {
                 }`}
               >
                 {issue.passed ? (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
                 ) : issue.severity === 'critical' ? (
                   <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
                 ) : (

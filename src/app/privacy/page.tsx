@@ -32,7 +32,7 @@ export default function PrivacyPage() {
           <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             "Your resume stays in your browser. We don't store your resume or personal information on our servers."
           </p>
-          <div className="mt-4 text-xs text-slate-500">
+          <div className="mt-4 text-xs text-slate-700 font-medium">
             Last Updated: September 2026 • Effective Immediately
           </div>
         </div>
@@ -43,7 +43,7 @@ export default function PrivacyPage() {
         {/* Core Manifesto Box */}
         <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-3">
           <h2 className="text-lg font-bold text-emerald-950 flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-600" />
+            <ShieldCheck className="w-5 h-5 text-emerald-700" />
             Our Core Privacy Commitment
           </h2>
           <p className="text-xs sm:text-sm text-emerald-900">
@@ -64,19 +64,19 @@ export default function PrivacyPage() {
           </p>
           <div className="space-y-2">
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-1" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-1" />
               <span>
                 <strong>No Remote Database:</strong> We do not run PostgreSQL, MongoDB, Firebase, Supabase, Redis, or any server-side database storing user resumes.
               </span>
             </div>
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-1" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-1" />
               <span>
                 <strong>No Mandatory Accounts:</strong> You are not forced to register an email, create a password, or authenticate with Google or Facebook.
               </span>
             </div>
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-1" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-1" />
               <span>
                 <strong>Client-Side PDF Generation:</strong> Resumes and cover letters are rendered using client-side vector print formatting. No documents are uploaded to third-party PDF rendering microservices.
               </span>
