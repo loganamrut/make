@@ -48,7 +48,7 @@ export default function ResumeTemplatesPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
             <ShieldCheck className="w-4 h-4 text-emerald-700" />
-            <span>9 Recruiter-Approved Layouts • 100% Free</span>
+            <span>{TEMPLATE_SHOWCASES.length} Recruiter-Approved Layouts • 100% Free</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
@@ -80,14 +80,14 @@ export default function ResumeTemplatesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Explore Our 9 Resume Templates
+              Explore Our {TEMPLATE_SHOWCASES.length} Resume Templates
             </h2>
             <p className="mt-2 text-sm sm:text-base text-slate-600">
               Click any template to learn more or launch it directly in the live builder.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {TEMPLATE_SHOWCASES.map(tpl => (
               <div
                 key={tpl.slug}

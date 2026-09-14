@@ -155,14 +155,14 @@ function BuilderContent() {
             <button
               type="button"
               onClick={() => setCurrentStep('templates')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex-shrink-0 ${
                 currentStep === 'templates'
                   ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
               <LayoutTemplate className="w-3.5 h-3.5" />
-              <span>2. Choose Template (14)</span>
+              <span>2. Templates (17)</span>
             </button>
 
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
@@ -263,15 +263,15 @@ function BuilderContent() {
 
       {/* STEP 3: INTERACTIVE EDIT & MODIFY SPLIT-SCREEN WORKSPACE */}
       {currentStep === 'edit' && (
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-0">
           {/* Mobile Tab Switcher */}
-          <div className="lg:hidden flex border-b border-slate-200 bg-white sticky top-[49px] z-20 no-print">
+          <div className="lg:hidden flex border-b border-slate-200 bg-white sticky top-0 z-20 no-print">
             <button
               type="button"
               onClick={() => setMobileTab('edit')}
-              className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
+              className={`flex-1 min-h-[44px] py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
                 mobileTab === 'edit'
-                  ? 'border-indigo-700 text-indigo-700'
+                  ? 'border-indigo-700 text-indigo-700 bg-indigo-50/40'
                   : 'border-transparent text-slate-700 hover:text-slate-900'
               }`}
             >
@@ -281,9 +281,9 @@ function BuilderContent() {
             <button
               type="button"
               onClick={() => setMobileTab('preview')}
-              className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
+              className={`flex-1 min-h-[44px] py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
                 mobileTab === 'preview'
-                  ? 'border-indigo-700 text-indigo-700'
+                  ? 'border-indigo-700 text-indigo-700 bg-indigo-50/40'
                   : 'border-transparent text-slate-700 hover:text-slate-900'
               }`}
             >
@@ -293,7 +293,7 @@ function BuilderContent() {
           </div>
 
           {/* Main Split-Screen Workspace */}
-          <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+          <main className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
             {/* Left Column: Form Controls & ATS Diagnostics */}
             <div
               className={`w-full lg:w-[48%] xl:w-[45%] h-full overflow-y-auto p-4 sm:p-6 lg:border-r border-slate-200 space-y-6 ${

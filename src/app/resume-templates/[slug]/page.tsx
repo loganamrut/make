@@ -172,8 +172,10 @@ export default function TemplateCategoryPage({ params }: Props) {
 
           {/* Right Column: Live Resume Document Sheet */}
           <div className="lg:col-span-8 flex justify-center">
-            <div className="w-full max-w-[800px]">
-              <ResumeDocument resume={previewResume} />
+            <div className="w-full max-w-[816px] overflow-x-auto sm:overflow-visible flex justify-center -mx-4 px-4 sm:mx-0 sm:px-0 pb-4">
+              <div className="flex-shrink-0">
+                <ResumeDocument resume={previewResume} />
+              </div>
             </div>
           </div>
         </div>

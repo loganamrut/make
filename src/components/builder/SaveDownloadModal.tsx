@@ -155,8 +155,8 @@ export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 no-print">
-      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-xl w-full p-6 sm:p-8 space-y-6 animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 no-print overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-xl w-full max-h-[92dvh] overflow-y-auto p-5 sm:p-8 space-y-5 sm:space-y-6 animate-in zoom-in-95 duration-200 my-auto">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
           <div>

@@ -297,10 +297,10 @@ export function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-1.5">
             <Link
               href="/builder?step=upload"
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-xs font-bold whitespace-nowrap shadow-xs"
+              className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold whitespace-nowrap shadow-xs min-h-[38px]"
               title="Launch AI Studio"
             >
               <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
@@ -309,7 +309,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="p-2 min-h-[44px] min-w-[44px] rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -322,7 +322,7 @@ export function Header() {
 
       {/* Mobile Drawer Navigation with Structured Semantic Sections */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-6 space-y-4 animate-in slide-in-from-top-2 duration-150">
+        <div className="lg:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-8 space-y-4 max-h-[calc(100dvh-4rem)] overflow-y-auto animate-in slide-in-from-top-2 duration-150 shadow-xl">
           
           {/* Privacy Trust Banner */}
           <div className="px-3 py-2 bg-emerald-50 border border-emerald-200/80 rounded-xl text-xs font-semibold text-emerald-900 flex items-center gap-2">

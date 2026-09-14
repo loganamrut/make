@@ -260,6 +260,18 @@ export function TemplateSelectorStep({
   const [modalZoom, setModalZoom] = useState<number>(85);
   const currentTemplate = resume.style.template;
 
+  // Auto-fit modal zoom on mobile viewports
+  React.useEffect(() => {
+    if (modalTemplateId && typeof window !== 'undefined') {
+      const w = window.innerWidth;
+      if (w < 860) {
+        setModalZoom(Math.max(32, Math.min(85, Math.floor(((w - 36) / 816) * 100))));
+      } else {
+        setModalZoom(85);
+      }
+    }
+  }, [modalTemplateId]);
+
   const filteredTemplates = activeCategory === 'all'
     ? TEMPLATES
     : TEMPLATES.filter(t => t.category === activeCategory);
@@ -351,7 +363,7 @@ export function TemplateSelectorStep({
       {/* Customizer Toolbar */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
         {/* Category Filters */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 -mx-1 px-1 scrollbar-none">
           {[
             { id: 'all', label: `All (${TEMPLATES.length})` },
             { id: 'modern', label: 'Colorful & Modern' },
@@ -364,7 +376,7 @@ export function TemplateSelectorStep({
               key={tab.id}
               type="button"
               onClick={() => setActiveCategory(tab.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex-shrink-0 ${
                 activeCategory === tab.id
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -657,29 +669,37 @@ export function TemplateSelectorStep({
           </div>
 
           {/* Modal Document Body */}
-          <div className="flex-1 overflow-auto my-3 sm:my-4 flex justify-center items-start p-2">
+          <div className="flex-1 overflow-auto my-2 sm:my-4 flex justify-center items-start p-1 sm:p-2">
             <div
               style={{
-                width: '816px',
-                minWidth: '816px',
-                maxWidth: '816px',
-                flexShrink: 0,
-                transform: `scale(${modalZoom / 100})`,
-                transformOrigin: 'top center',
-                transition: 'transform 0.15s ease-out',
+                width: modalZoom < 100 ? `${Math.round(816 * (modalZoom / 100))}px` : '816px',
+                minWidth: modalZoom < 100 ? `${Math.round(816 * (modalZoom / 100))}px` : '816px',
+                height: modalZoom < 100 ? `${Math.round(1056 * (modalZoom / 100))}px` : undefined,
+                position: 'relative',
+                transition: 'width 0.15s ease-out, height 0.15s ease-out',
               }}
-              className="shadow-2xl rounded-sm bg-white"
+              className="shadow-2xl rounded-sm bg-white flex justify-center flex-shrink-0"
             >
-              <ResumeDocument
-                resume={{
-                  ...resume,
-                  style: {
-                    ...resume.style,
-                    template: modalTemplateId,
-                  },
+              <div
+                style={{
+                  width: '816px',
+                  minWidth: '816px',
+                  transform: `scale(${modalZoom / 100})`,
+                  transformOrigin: modalZoom < 100 ? 'top left' : 'top center',
+                  transition: 'transform 0.15s ease-out',
                 }}
-                id="modal-preview-doc"
-              />
+              >
+                <ResumeDocument
+                  resume={{
+                    ...resume,
+                    style: {
+                      ...resume.style,
+                      template: modalTemplateId,
+                    },
+                  }}
+                  id="modal-preview-doc"
+                />
+              </div>
             </div>
           </div>
         </div>

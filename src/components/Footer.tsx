@@ -32,9 +32,9 @@ export function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Col */}
-          <div className="col-span-2 space-y-4">
+          <div className="col-span-1 sm:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white font-bold">
                 <FileText className="w-4 h-4" />
