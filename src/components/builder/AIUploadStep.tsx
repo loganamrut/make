@@ -1,13 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { ResumeData } from '@/lib/types';
 import { SAMPLE_RESUME } from '@/lib/sample-data';
-import {
-  parseResumeDocumentsWithGemini,
-  UploadedDocumentFile,
-  setCustomGeminiApiKey,
-} from '@/lib/gemini-client';
+import { parseResumeDocumentsWithGemini, UploadedDocumentFile } from '@/lib/gemini-client';
 import { performOcrOnImage, extractTextFromPdf } from '@/lib/ocr-service';
 import {
   Upload,
@@ -27,8 +23,6 @@ import {
   Copy,
   Check,
   Loader2,
-  KeyRound,
-  CheckCheck,
 } from 'lucide-react';
 
 interface AIUploadStepProps {
@@ -48,33 +42,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [previewOcrFileIdx, setPreviewOcrFileIdx] = useState<number | null>(null);
   const [copiedOcr, setCopiedOcr] = useState(false);
-  const [showKeySettings, setShowKeySettings] = useState(false);
-  const [customKeyInput, setCustomKeyInput] = useState('');
-  const [hasCustomKey, setHasCustomKey] = useState(false);
-  const [keySavedStatus, setKeySavedStatus] = useState<'idle' | 'saved' | 'cleared'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('cvmake_gemini_api_key');
-      if (saved && saved.trim()) {
-        setCustomKeyInput(saved.trim());
-        setHasCustomKey(true);
-      }
-    }
-  }, []);
-
-  const handleSaveCustomKey = () => {
-    setCustomGeminiApiKey(customKeyInput);
-    if (customKeyInput.trim()) {
-      setHasCustomKey(true);
-      setKeySavedStatus('saved');
-    } else {
-      setHasCustomKey(false);
-      setKeySavedStatus('cleared');
-    }
-    setTimeout(() => setKeySavedStatus('idle'), 3000);
-  };
 
   const processFile = async (file: File): Promise<UploadedDocumentFile> => {
     const isImage = file.type.startsWith('image/');
@@ -539,92 +507,12 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
         </div>
       </div>
 
-      {/* Privacy Callout & API Key Settings */}
-      <div className="space-y-3">
-        <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-emerald-950">
-          <div className="flex items-center gap-2.5">
-            <ShieldCheck className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-            <span>
-              <strong>100% Private &amp; Client-Side:</strong> Document OCR and text extraction run directly inside your browser. We never store or log your documents on any server.
-            </span>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setShowKeySettings(!showKeySettings)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-semibold text-xs transition-colors flex-shrink-0 shadow-sm"
-          >
-            <KeyRound className="w-3.5 h-3.5 text-emerald-700" />
-            <span>{hasCustomKey ? 'Custom AI Key Active' : 'API Key Settings'}</span>
-          </button>
-        </div>
-
-        {/* API Key Drawer */}
-        {showKeySettings && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-lg space-y-4 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <KeyRound className="w-4 h-4 text-indigo-600" />
-                <h4 className="text-sm font-bold text-slate-900">Custom Gemini API Key (Optional)</h4>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowKeySettings(false)}
-                className="text-slate-400 hover:text-slate-600 text-xs font-semibold"
-              >
-                Close &times;
-              </button>
-            </div>
-
-            <p className="text-xs text-slate-500 leading-relaxed">
-              CVMake includes built-in AI access out of the box. If you prefer to use your own personal Google AI Studio API key, you can enter it below. Your key is stored exclusively inside your browser&apos;s encrypted local storage and is never saved to our servers.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="password"
-                value={customKeyInput}
-                onChange={e => setCustomKeyInput(e.target.value)}
-                placeholder="Enter Gemini API key... (Leave empty to use built-in key)"
-                className="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-mono text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-              />
-              <button
-                type="button"
-                onClick={handleSaveCustomKey}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-sm flex-shrink-0"
-              >
-                <Check className="w-3.5 h-3.5" />
-                Save Key
-              </button>
-              {hasCustomKey && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCustomKeyInput('');
-                    setCustomGeminiApiKey('');
-                    setHasCustomKey(false);
-                    setKeySavedStatus('cleared');
-                    setTimeout(() => setKeySavedStatus('idle'), 3000);
-                  }}
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 text-xs font-semibold border border-slate-200 transition-colors flex-shrink-0"
-                >
-                  Reset to Default
-                </button>
-              )}
-            </div>
-
-            {keySavedStatus === 'saved' && (
-              <p className="text-xs text-emerald-600 font-semibold flex items-center gap-1.5">
-                <CheckCheck className="w-4 h-4" /> Custom API key saved to browser local storage.
-              </p>
-            )}
-            {keySavedStatus === 'cleared' && (
-              <p className="text-xs text-slate-600 font-medium">
-                Reset to CVMake default built-in AI key.
-              </p>
-            )}
-          </div>
-        )}
+      {/* Privacy Callout */}
+      <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-center gap-2.5 text-xs text-emerald-950">
+        <ShieldCheck className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+        <span>
+          <strong>100% Private &amp; Client-Side:</strong> Document OCR and AI extraction run directly inside your browser. We never store or log your resumes on any server.
+        </span>
       </div>
 
       {/* OCR Extracted Text Review & Edit Modal */}
