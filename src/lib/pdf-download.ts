@@ -41,19 +41,19 @@ export async function downloadDocumentAsPdf({
   const pdfWidthMm = isA4 ? 210 : 215.9;
   const pdfHeightMm = isA4 ? 297 : 279.4;
   const targetWidthPx = isA4 ? 794 : 816; // 96 DPI pixel equivalent
+  const targetHeightPx = Math.round(targetWidthPx * (pdfHeightMm / pdfWidthMm)); // 1056px Letter, 1123px A4
 
   // Create an off-screen staging wrapper attached to document.body
-  // This guarantees styles, fonts, and child SVG elements are computed cleanly
-  // regardless of preview zoom, parent transform, or hidden responsive tabs.
+  // Positioned at top: 0, left: 0 with opacity: 0 to ensure full font rasterization,
+  // subpixel rendering, and CSS styles are calculated cleanly by the browser.
   const stagingContainer = document.createElement('div');
   stagingContainer.id = 'pdf-staging-container';
   stagingContainer.style.position = 'fixed';
-  stagingContainer.style.left = '-99999px';
+  stagingContainer.style.left = '0';
   stagingContainer.style.top = '0';
   stagingContainer.style.width = `${targetWidthPx}px`;
-  stagingContainer.style.minHeight = `${Math.round(targetWidthPx * (pdfHeightMm / pdfWidthMm))}px`;
-  stagingContainer.style.background = '#ffffff';
-  stagingContainer.style.zIndex = '-99999';
+  stagingContainer.style.zIndex = '-9999';
+  stagingContainer.style.opacity = '0';
   stagingContainer.style.overflow = 'visible';
   stagingContainer.style.pointerEvents = 'none';
 
@@ -61,10 +61,14 @@ export async function downloadDocumentAsPdf({
   clonedNode.id = `${elementId}-export-clone`;
   clonedNode.style.transform = 'none';
   clonedNode.style.width = `${targetWidthPx}px`;
+  clonedNode.style.minWidth = `${targetWidthPx}px`;
   clonedNode.style.maxWidth = `${targetWidthPx}px`;
+  clonedNode.style.minHeight = `${targetHeightPx}px`;
   clonedNode.style.margin = '0';
   clonedNode.style.boxShadow = 'none';
   clonedNode.style.border = 'none';
+  clonedNode.style.boxSizing = 'border-box';
+  clonedNode.style.backgroundColor = '#ffffff';
   clonedNode.style.display = 'block';
   clonedNode.style.visibility = 'visible';
 
@@ -72,8 +76,8 @@ export async function downloadDocumentAsPdf({
   document.body.appendChild(stagingContainer);
 
   try {
-    // Brief settle time to allow cloned DOM and font styles to evaluate
-    await new Promise((resolve) => setTimeout(resolve, 120));
+    // Brief settle time to allow cloned DOM, font metrics, and layout to evaluate
+    await new Promise((resolve) => setTimeout(resolve, 150));
 
     // Dynamically import html2canvas and jsPDF to preserve SSR and zero initial bundle overhead
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
@@ -81,14 +85,14 @@ export async function downloadDocumentAsPdf({
       import('jspdf'),
     ]);
 
-    // Render with 2x scale for crisp, retina 200+ DPI print quality
+    // Render with 2.5x scale for retina 240+ DPI print quality
     const canvas = await html2canvas(clonedNode, {
-      scale: 2,
+      scale: 2.5,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
       logging: false,
-      windowWidth: targetWidthPx + 100,
+      windowWidth: targetWidthPx,
     });
 
     const pdf = new jsPDF({
@@ -98,15 +102,27 @@ export async function downloadDocumentAsPdf({
       compress: true,
     });
 
-    // Calculate height of one page in canvas pixels
-    const pageCanvasHeight = Math.floor(canvas.width * (pdfHeightMm / pdfWidthMm));
+    // Calculate height of one standard page in canvas pixels
+    const pageCanvasHeight = Math.round(canvas.width * (pdfHeightMm / pdfWidthMm));
     const totalHeight = canvas.height;
 
-    // Single-page document (with small buffer)
-    if (totalHeight <= pageCanvasHeight + 24) {
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
-      const renderedHeightMm = Math.min(pdfHeightMm, (totalHeight * pdfWidthMm) / canvas.width);
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidthMm, renderedHeightMm, undefined, 'FAST');
+    // Single-page document:
+    // If total content fits within one page, fill the full page so page background and
+    // layout proportions look identical to standard printed sheets.
+    if (totalHeight <= pageCanvasHeight + 40) {
+      const pageCanvas = document.createElement('canvas');
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = pageCanvasHeight;
+
+      const pageCtx = pageCanvas.getContext('2d');
+      if (pageCtx) {
+        pageCtx.fillStyle = '#ffffff';
+        pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
+        pageCtx.drawImage(canvas, 0, 0);
+
+        const pageData = pageCanvas.toDataURL('image/png');
+        pdf.addImage(pageData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
+      }
     } else {
       // Multi-page document: slice canvas page-by-page
       const totalPages = Math.ceil(totalHeight / pageCanvasHeight);
@@ -139,8 +155,8 @@ export async function downloadDocumentAsPdf({
             sourceHeight
           );
 
-          const pageData = pageCanvas.toDataURL('image/jpeg', 0.98);
-          pdf.addImage(pageData, 'JPEG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
+          const pageData = pageCanvas.toDataURL('image/png');
+          pdf.addImage(pageData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
         }
       }
     }
