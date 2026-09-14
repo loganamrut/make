@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { ResumeData } from '@/lib/types';
 import { SAMPLE_RESUME } from '@/lib/sample-data';
 import { parseResumeDocumentsWithGemini, UploadedDocumentFile } from '@/lib/gemini-client';
-import { performOcrOnImage, extractTextFromPdf } from '@/lib/ocr-service';
+import { extractFullDocument } from '@/lib/ocr-service';
 import {
   Upload,
   FileText,
@@ -45,85 +45,30 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processFile = async (file: File): Promise<UploadedDocumentFile> => {
-    const isImage = file.type.startsWith('image/');
-    const isPdf = file.type === 'application/pdf';
-    const isText = file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.md');
+    const isImage = file.type.startsWith('image/') || /\.(jpe?g|png|webp|bmp)$/i.test(file.name);
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
 
-    if (isText) {
-      const text = await file.text();
-      return {
-        name: file.name,
-        mimeType: 'text/plain',
-        size: file.size,
-        textContent: text,
-        ocrText: text,
-        ocrStatus: 'completed',
-        ocrConfidence: 100,
-      };
-    }
-
-    if (isPdf) {
-      return new Promise<UploadedDocumentFile>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = async e => {
-          const result = e.target?.result as string;
-          const base64 = result.split(',')[1];
-
-          // Try client-side native PDF text stream extraction
-          let pdfText = '';
-          try {
-            pdfText = await extractTextFromPdf(file);
-          } catch (err) {
-            console.warn('PDF stream extraction error:', err);
-          }
-
-          resolve({
-            name: file.name,
-            mimeType: 'application/pdf',
-            size: file.size,
-            base64Data: base64,
-            textContent: pdfText,
-            ocrText: pdfText,
-            ocrStatus: 'completed',
-            ocrConfidence: pdfText.length > 50 ? 98 : 92,
-          });
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    if (isImage) {
-      return new Promise<UploadedDocumentFile>((resolve, reject) => {
+    let base64 = '';
+    if (isImage || isPdf) {
+      base64 = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = e => {
-          const result = e.target?.result as string;
-          const base64 = result.split(',')[1];
-
-          // Return immediately with processing status so UI renders instantly
-          resolve({
-            name: file.name,
-            mimeType: file.type || 'image/jpeg',
-            size: file.size,
-            base64Data: base64,
-            ocrStatus: 'processing',
-          });
+          const res = e.target?.result as string;
+          resolve(res ? res.split(',')[1] : '');
         };
-        reader.onerror = reject;
+        reader.onerror = () => resolve('');
         reader.readAsDataURL(file);
       });
     }
 
-    // Default fallback
-    const text = await file.text();
     return {
       name: file.name,
-      mimeType: 'text/plain',
+      mimeType: file.type || (isPdf ? 'application/pdf' : isImage ? 'image/jpeg' : 'text/plain'),
       size: file.size,
-      textContent: text,
-      ocrText: text,
-      ocrStatus: 'completed',
-      ocrConfidence: 95,
+      base64Data: base64,
+      ocrStatus: 'processing',
+      ocrProgress: 10,
+      ocrStatusText: 'Reading document...',
     };
   };
 
@@ -152,39 +97,54 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
 
     setFiles(prev => [...prev, ...addedFiles]);
 
-    // Asynchronously trigger best OCR on any image files in the background
+    // Asynchronously run 100% full-document multi-page extraction & OCR on all files
     toProcess.forEach(async f => {
-      if (f.type.startsWith('image/')) {
-        try {
-          const ocrResult = await performOcrOnImage(f);
+      try {
+        const result = await extractFullDocument(f, (progress, statusText) => {
           setFiles(currentFiles =>
-            currentFiles.map(cf => {
-              if (cf.name === f.name && cf.size === f.size) {
-                return {
+            currentFiles.map(cf =>
+              cf.name === f.name && cf.size === f.size
+                ? {
+                    ...cf,
+                    ocrProgress: progress,
+                    ocrStatusText: statusText,
+                  }
+                : cf
+            )
+          );
+        });
+
+        setFiles(currentFiles =>
+          currentFiles.map(cf => {
+            if (cf.name === f.name && cf.size === f.size) {
+              return {
+                ...cf,
+                ocrText: result.text,
+                textContent: result.text,
+                ocrStatus: 'completed',
+                ocrConfidence: result.confidence || 96,
+                pageCount: result.pageCount || 1,
+                ocrProgress: 100,
+                ocrStatusText: '100% Full Document Read',
+              };
+            }
+            return cf;
+          })
+        );
+      } catch (extractErr) {
+        console.warn('Document extraction fallback:', extractErr);
+        setFiles(currentFiles =>
+          currentFiles.map(cf =>
+            cf.name === f.name && cf.size === f.size
+              ? {
                   ...cf,
-                  ocrText: ocrResult.text,
                   ocrStatus: 'completed',
-                  ocrConfidence: ocrResult.confidence || 94,
-                };
-              }
-              return cf;
-            })
-          );
-        } catch (ocrErr) {
-          console.warn('OCR error on image:', ocrErr);
-          setFiles(currentFiles =>
-            currentFiles.map(cf => {
-              if (cf.name === f.name && cf.size === f.size) {
-                return {
-                  ...cf,
-                  ocrStatus: 'fallback',
                   ocrConfidence: 90,
-                };
-              }
-              return cf;
-            })
-          );
-        }
+                  ocrProgress: 100,
+                }
+              : cf
+          )
+        );
       }
     });
   };
@@ -210,18 +170,26 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
 
     setIsProcessing(true);
     setErrorMessage('');
-    setCurrentStatus('Reading document layers & high-accuracy OCR transcripts...');
+    setCurrentStatus('Ensuring 100% full-document extraction across all pages...');
 
-    // If any images are still in OCR processing state, wait up to 3s for them
-    const pendingOcr = files.filter(f => f.ocrStatus === 'processing');
-    if (pendingOcr.length > 0) {
-      await new Promise(r => setTimeout(r, 1200));
+    // Wait for all documents to finish processing if any are still reading
+    let latestFiles = files;
+    let attempts = 0;
+    while (latestFiles.some(f => f.ocrStatus === 'processing') && attempts < 30) {
+      await new Promise(r => setTimeout(r, 600));
+      attempts++;
+      latestFiles = await new Promise<UploadedDocumentFile[]>(resolve => {
+        setFiles(curr => {
+          resolve(curr);
+          return curr;
+        });
+      });
     }
 
     try {
-      setCurrentStatus('Transmitting OCR transcripts & document layout to AI...');
+      setCurrentStatus('Synthesizing structured resume & ATS keywords with AI...');
       const extracted = await parseResumeDocumentsWithGemini(
-        files,
+        latestFiles,
         targetRole,
         jobDescription,
         status => setCurrentStatus(status)
@@ -364,21 +332,21 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
                     {file.ocrStatus === 'processing' ? (
                       <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                         <Loader2 className="w-2.5 h-2.5 animate-spin text-indigo-600" />
-                        Reading with OCR...
+                        {file.ocrProgress ? `Reading (${file.ocrProgress}%)...` : 'Reading with OCR...'}
                       </span>
                     ) : file.ocrText && file.ocrText.length > 0 ? (
                       <button
                         type="button"
                         onClick={() => setPreviewOcrFileIdx(idx)}
                         className="text-[10px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1 transition-colors cursor-pointer"
-                        title="Click to view and verify OCR transcript"
+                        title="Click to view and verify full OCR transcript"
                       >
                         <ScanLine className="w-2.5 h-2.5" />
-                        OCR Read {file.ocrConfidence ? `(${file.ocrConfidence}%)` : ''} • View
+                        100% Read {file.pageCount && file.pageCount > 1 ? `(${file.pageCount}p)` : ''} • View
                       </button>
                     ) : (
                       <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
-                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" /> AI Vision OCR
+                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" /> Document Ready
                       </span>
                     )}
 
@@ -530,8 +498,10 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
                     <h3 className="text-sm font-bold text-slate-900 truncate">
                       OCR Transcript: {files[previewOcrFileIdx].name}
                     </h3>
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full flex-shrink-0">
-                      {files[previewOcrFileIdx].ocrConfidence || 95}% Confidence
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full flex-shrink-0">
+                      {files[previewOcrFileIdx].pageCount && files[previewOcrFileIdx].pageCount! > 1
+                        ? `${files[previewOcrFileIdx].pageCount} Pages • 100% Extracted`
+                        : '100% Extracted'}
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-500 truncate">

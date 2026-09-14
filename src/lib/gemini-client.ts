@@ -51,6 +51,9 @@ export interface UploadedDocumentFile {
   ocrText?: string;
   ocrStatus?: 'pending' | 'processing' | 'completed' | 'fallback';
   ocrConfidence?: number;
+  pageCount?: number;
+  ocrProgress?: number;
+  ocrStatusText?: string;
 }
 
 function generateId(prefix: string): string {
