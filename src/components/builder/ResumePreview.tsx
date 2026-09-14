@@ -9,9 +9,10 @@ import { Download, Printer, ZoomIn, ZoomOut } from 'lucide-react';
 interface ResumePreviewProps {
   resume: ResumeData;
   onTemplateChange?: (tpl: TemplateId) => void;
+  onOpenDownloadModal?: () => void;
 }
 
-export function ResumePreview({ resume, onTemplateChange }: ResumePreviewProps) {
+export function ResumePreview({ resume, onTemplateChange, onOpenDownloadModal }: ResumePreviewProps) {
   const [zoom, setZoom] = useState<number>(100);
 
   const handleZoomIn = () => setZoom(prev => Math.min(130, prev + 10));
@@ -50,15 +51,20 @@ export function ResumePreview({ resume, onTemplateChange }: ResumePreviewProps) 
               onChange={e => onTemplateChange(e.target.value as TemplateId)}
               className="px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-800 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
             >
-              <option value="ats">ATS Standard</option>
-              <option value="modern">Modern</option>
-              <option value="professional">Professional</option>
-              <option value="simple">Simple</option>
-              <option value="minimal">Minimal</option>
-              <option value="executive">Executive</option>
-              <option value="student">Student</option>
-              <option value="graduate">Graduate</option>
-              <option value="creative">Creative</option>
+              <option value="ats">ATS Standard (100% Safe)</option>
+              <option value="modern">Modern Accent</option>
+              <option value="tech">Tech & Software Engineer</option>
+              <option value="hybrid">Two-Column Hybrid</option>
+              <option value="compact">Compact 1-Page Pro</option>
+              <option value="executive">Executive Leadership</option>
+              <option value="elegant">Elegant Executive</option>
+              <option value="professional">Corporate Professional</option>
+              <option value="simple">Simple Classic</option>
+              <option value="minimal">Minimal Clean</option>
+              <option value="student">Student & Academic</option>
+              <option value="graduate">Career Pivot / Graduate</option>
+              <option value="creative">Creative Portfolio</option>
+              <option value="academic">Academic CV</option>
             </select>
           )}
         </div>
@@ -72,14 +78,25 @@ export function ResumePreview({ resume, onTemplateChange }: ResumePreviewProps) 
             <Printer className="w-4 h-4" />
             Print
           </button>
-          <button
-            type="button"
-            onClick={() => triggerPrintResume(resume.personalInfo.fullName)}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
-          >
-            <Download className="w-4 h-4" />
-            Download PDF
-          </button>
+          {onOpenDownloadModal ? (
+            <button
+              type="button"
+              onClick={onOpenDownloadModal}
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
+            >
+              <Download className="w-4 h-4" />
+              Save &amp; Export
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => triggerPrintResume(resume.personalInfo.fullName)}
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
+            >
+              <Download className="w-4 h-4" />
+              Download PDF
+            </button>
+          )}
         </div>
       </div>
 

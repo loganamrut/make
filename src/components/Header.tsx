@@ -89,21 +89,22 @@ export function Header() {
           {/* Right Action Button */}
           <div className="hidden sm:flex items-center gap-3">
             <Link
-              href="/builder"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold text-sm shadow-sm hover:bg-indigo-700 active:scale-[0.98] transition-all"
+              href="/builder?step=upload"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-sm shadow-md shadow-indigo-200 active:scale-[0.98] transition-all"
             >
-              <Sparkles className="w-4 h-4" />
-              Create Resume
+              <Sparkles className="w-4 h-4 text-emerald-300 animate-pulse" />
+              AI Resume Studio
             </Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="flex lg:hidden items-center gap-2">
             <Link
-              href="/builder"
-              className="inline-flex items-center px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold"
+              href="/builder?step=upload"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold"
             >
-              Build
+              <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+              AI Studio
             </Link>
             <button
               type="button"

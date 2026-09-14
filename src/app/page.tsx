@@ -145,39 +145,44 @@ export default function HomePage() {
         {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-indigo-50/50 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          {/* Privacy Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-emerald-700" />
-            <span>Private by design — your resume stays in your browser.</span>
+          {/* Privacy & Gemini Flash Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold shadow-sm">
+              <ShieldCheck className="w-4 h-4 text-emerald-700" />
+              <span>Private by design — 100% In-Browser</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-pulse" />
+              <span>Google Gemini 2.5 Flash Powered</span>
+            </div>
           </div>
 
           {/* Main H1 */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight max-w-4xl mx-auto leading-[1.15]">
-            AI Resume Builder & <br className="hidden sm:inline" />
+            AI Resume Builder &amp; <br className="hidden sm:inline" />
             <span className="text-indigo-600">AI CV Maker</span>
           </h1>
 
           {/* Hero Subtitle */}
           <p className="mt-5 text-lg sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed">
-            Create a professional, ATS-friendly resume with AI — privately in your browser.
-            Zero server database. Zero tracking. Instant vector PDF download.
+            Upload up to 3 documents (PDF, DOCX, scans, or text) and let Gemini 2.5 Flash extract, optimize, and format an ATS-winning resume across 14 pro templates.
           </p>
 
           {/* CTAs */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/builder"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base shadow-lg shadow-indigo-200 active:scale-[0.98] transition-all"
+              href="/builder?step=upload"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-base shadow-lg shadow-indigo-200 active:scale-[0.98] transition-all"
             >
-              <Sparkles className="w-5 h-5" />
-              Create My Resume
+              <Sparkles className="w-5 h-5 text-emerald-300 animate-pulse" />
+              Upload Documents &amp; Build with AI
             </Link>
             <Link
-              href="/builder"
+              href="/builder?step=templates"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-base shadow-sm transition-all"
             >
               <FileCheck className="w-5 h-5 text-indigo-600" />
-              Build My CV
+              Browse 14 ATS Templates
             </Link>
           </div>
 
@@ -240,10 +245,10 @@ export default function HomePage() {
                 1
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Enter Your Information
+                Upload Documents (Max 3)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Add your contact details, employment history, degrees, and core competencies. Load our curated sample profile to get an instant head start.
+                Upload up to 3 files (PDF, DOCX, scans/images, or plain text). Gemini 2.5 Flash neural engine automatically extracts your career history, contacts, and skills.
               </p>
             </div>
 
@@ -253,10 +258,10 @@ export default function HomePage() {
                 2
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Improve Your Resume With AI
+                Choose from 14 Pro Templates
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Transform passive duties into quantified XYZ achievement bullets. Generate high-impact summaries and audit your live ATS score.
+                Preview your actual data live across 14 ATS-tested layouts: Tech, Two-Column Hybrid, Compact 1-Page, Executive, and Academic styles.
               </p>
             </div>
 
@@ -266,10 +271,10 @@ export default function HomePage() {
                 3
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Choose a Professional Template
+                Edit &amp; Polish with Gemini
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Select from 9 ATS-friendly layouts ranging from minimal single-column formats to executive and academic styles. Customize fonts and accents.
+                Enhance bullet points into Google XYZ quantified achievements, generate executive summaries, and check live ATS compatibility scores.
               </p>
             </div>
 
@@ -279,20 +284,20 @@ export default function HomePage() {
                 4
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Download Your Resume
+                Save &amp; Multi-Format Export
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Export clean, unwatermarked vector PDFs or print directly. Your document is immediately ready for submission to top employers.
+                Download unwatermarked vector ATS PDFs, plain text for legacy portals, or JSON data backups. 100% free with zero database storage.
               </p>
             </div>
           </div>
 
           <div className="mt-12 text-center">
             <Link
-              href="/builder"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow transition-all"
+              href="/builder?step=upload"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-200 hover:shadow-lg transition-all"
             >
-              Start Step 1 Now &rarr;
+              Launch AI Studio &rarr;
             </Link>
           </div>
         </div>

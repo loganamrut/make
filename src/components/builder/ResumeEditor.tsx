@@ -38,15 +38,20 @@ interface ResumeEditorProps {
 }
 
 const TEMPLATE_OPTIONS: { id: TemplateId; label: string }[] = [
-  { id: 'ats', label: 'ATS Standard' },
-  { id: 'modern', label: 'Modern' },
-  { id: 'professional', label: 'Professional' },
-  { id: 'simple', label: 'Simple' },
-  { id: 'minimal', label: 'Minimal' },
-  { id: 'executive', label: 'Executive' },
-  { id: 'student', label: 'Student' },
-  { id: 'graduate', label: 'Graduate' },
-  { id: 'creative', label: 'Creative' },
+  { id: 'ats', label: 'ATS Standard (100% Verified)' },
+  { id: 'modern', label: 'Modern Accent' },
+  { id: 'tech', label: 'Tech & Software Engineer' },
+  { id: 'hybrid', label: 'Two-Column Hybrid' },
+  { id: 'compact', label: 'Compact 1-Page Pro' },
+  { id: 'executive', label: 'Executive Leadership' },
+  { id: 'elegant', label: 'Elegant Executive Serif' },
+  { id: 'professional', label: 'Corporate Professional' },
+  { id: 'simple', label: 'Simple Classic' },
+  { id: 'minimal', label: 'Minimal Clean' },
+  { id: 'student', label: 'Student & Academic' },
+  { id: 'graduate', label: 'Career Pivot / Graduate' },
+  { id: 'creative', label: 'Creative Portfolio' },
+  { id: 'academic', label: 'Academic CV' },
 ];
 
 const COLOR_PALETTE = [

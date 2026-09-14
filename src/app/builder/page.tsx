@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ResumeData, TemplateId } from '@/lib/types';
 import { SAMPLE_RESUME } from '@/lib/sample-data';
@@ -8,16 +8,32 @@ import { loadSavedResume, saveResumeToLocal } from '@/lib/storage';
 import { ResumeEditor } from '@/components/builder/ResumeEditor';
 import { ResumePreview } from '@/components/builder/ResumePreview';
 import { ATSScoreCard } from '@/components/builder/ATSScoreCard';
+import { AIUploadStep } from '@/components/builder/AIUploadStep';
+import { TemplateSelectorStep } from '@/components/builder/TemplateSelectorStep';
+import { SaveDownloadModal } from '@/components/builder/SaveDownloadModal';
 import { Header } from '@/components/Header';
-import { ShieldCheck, Edit3, Eye, Sparkles } from 'lucide-react';
-import { Suspense } from 'react';
+import {
+  ShieldCheck,
+  Edit3,
+  Eye,
+  Sparkles,
+  Upload,
+  LayoutTemplate,
+  Download,
+  ChevronRight
+} from 'lucide-react';
+
+type StudioStep = 'upload' | 'templates' | 'edit';
 
 function BuilderContent() {
   const searchParams = useSearchParams();
   const templateParam = searchParams.get('template') as TemplateId | null;
+  const stepParam = searchParams.get('step') as StudioStep | null;
 
   const [resume, setResume] = useState<ResumeData>(SAMPLE_RESUME);
+  const [currentStep, setCurrentStep] = useState<StudioStep>(stepParam || 'edit');
   const [mobileTab, setMobileTab] = useState<'edit' | 'preview'>('edit');
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Load from local storage on mount
@@ -27,8 +43,11 @@ function BuilderContent() {
       saved.style.template = templateParam;
     }
     setResume(saved);
+    if (stepParam) {
+      setCurrentStep(stepParam);
+    }
     setMounted(true);
-  }, [templateParam]);
+  }, [templateParam, stepParam]);
 
   // Autosave to client-side localStorage on change
   const handleResumeChange = (updated: ResumeData) => {
@@ -46,12 +65,17 @@ function BuilderContent() {
     });
   };
 
+  const handleUploadSuccess = (extractedResume: ResumeData) => {
+    handleResumeChange(extractedResume);
+    setCurrentStep('templates');
+  };
+
   if (!mounted) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex items-center gap-2 text-indigo-600 font-semibold text-sm">
           <Sparkles className="w-5 h-5 animate-spin" />
-          Loading private browser builder...
+          Loading private AI resume studio...
         </div>
       </div>
     );
@@ -61,69 +85,166 @@ function BuilderContent() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
 
-      {/* Privacy Callout Banner */}
+      {/* Studio Flow Navigation Bar */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+          {/* Step Breadcrumbs */}
+          <div className="flex items-center gap-1 sm:gap-2 text-xs font-bold overflow-x-auto py-1">
+            {/* Step 1: Upload */}
+            <button
+              type="button"
+              onClick={() => setCurrentStep('upload')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+                currentStep === 'upload'
+                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span>1. Upload &amp; AI Parse</span>
+            </button>
+
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+
+            {/* Step 2: Templates */}
+            <button
+              type="button"
+              onClick={() => setCurrentStep('templates')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+                currentStep === 'templates'
+                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <LayoutTemplate className="w-3.5 h-3.5" />
+              <span>2. Choose Template (14)</span>
+            </button>
+
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+
+            {/* Step 3: Edit & Modify */}
+            <button
+              type="button"
+              onClick={() => setCurrentStep('edit')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+                currentStep === 'edit'
+                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>3. Edit &amp; Refine</span>
+            </button>
+          </div>
+
+          {/* Quick Action Buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsDownloadModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>4. Download &amp; Save</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Privacy Notice Banner */}
       <div className="bg-emerald-50 border-b border-emerald-200 py-1.5 px-4 text-center text-xs font-semibold text-emerald-950 flex items-center justify-center gap-1.5 no-print">
         <ShieldCheck className="w-4 h-4 text-emerald-700" />
         <span>
-          Private by design — Your resume stays in your browser. We don’t store your data on any server.
+          Private by design — Powered by Google Gemini 2.5 Flash in-browser. Zero server database storage.
         </span>
       </div>
 
-      {/* Mobile Tab Switcher */}
-      <div className="lg:hidden flex border-b border-slate-200 bg-white sticky top-16 z-20 no-print">
-        <button
-          type="button"
-          onClick={() => setMobileTab('edit')}
-          className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
-            mobileTab === 'edit'
-              ? 'border-indigo-700 text-indigo-700'
-              : 'border-transparent text-slate-700 hover:text-slate-900'
-          }`}
-        >
-          <Edit3 className="w-3.5 h-3.5" />
-          Editor & Content
-        </button>
-        <button
-          type="button"
-          onClick={() => setMobileTab('preview')}
-          className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
-            mobileTab === 'preview'
-              ? 'border-indigo-700 text-indigo-700'
-              : 'border-transparent text-slate-700 hover:text-slate-900'
-          }`}
-        >
-          <Eye className="w-3.5 h-3.5" />
-          Live Preview & Download
-        </button>
-      </div>
+      {/* STEP 1: UPLOAD DOCUMENTS (MAX 3) */}
+      {currentStep === 'upload' && (
+        <AIUploadStep
+          onSuccess={handleUploadSuccess}
+          onSkip={() => setCurrentStep('templates')}
+        />
+      )}
 
-      {/* Main Split-Screen Workspace */}
-      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* Left Column: Form Controls & ATS Diagnostics */}
-        <div
-          className={`w-full lg:w-[48%] xl:w-[45%] h-full overflow-y-auto p-4 sm:p-6 lg:border-r border-slate-200 space-y-6 ${
-            mobileTab === 'edit' ? 'block' : 'hidden lg:block'
-          } no-print`}
-        >
-          {/* ATS Scorecard widget */}
-          <ATSScoreCard resume={resume} />
+      {/* STEP 2: TEMPLATE SELECTOR (14 TEMPLATES) */}
+      {currentStep === 'templates' && (
+        <TemplateSelectorStep
+          resume={resume}
+          onSelectTemplate={handleResumeChange}
+          onBack={() => setCurrentStep('upload')}
+          onNext={() => setCurrentStep('edit')}
+        />
+      )}
 
-          {/* Form sections editor */}
-          <ResumeEditor resume={resume} onChange={handleResumeChange} />
+      {/* STEP 3: INTERACTIVE EDIT & MODIFY SPLIT-SCREEN WORKSPACE */}
+      {currentStep === 'edit' && (
+        <div className="flex-1 flex flex-col">
+          {/* Mobile Tab Switcher */}
+          <div className="lg:hidden flex border-b border-slate-200 bg-white sticky top-[49px] z-20 no-print">
+            <button
+              type="button"
+              onClick={() => setMobileTab('edit')}
+              className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
+                mobileTab === 'edit'
+                  ? 'border-indigo-700 text-indigo-700'
+                  : 'border-transparent text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              Editor &amp; AI Content
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileTab('preview')}
+              className={`flex-1 py-3 text-center text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
+                mobileTab === 'preview'
+                  ? 'border-indigo-700 text-indigo-700'
+                  : 'border-transparent text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Eye className="w-3.5 h-3.5" />
+              Live Preview &amp; Export
+            </button>
+          </div>
+
+          {/* Main Split-Screen Workspace */}
+          <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            {/* Left Column: Form Controls & ATS Diagnostics */}
+            <div
+              className={`w-full lg:w-[48%] xl:w-[45%] h-full overflow-y-auto p-4 sm:p-6 lg:border-r border-slate-200 space-y-6 ${
+                mobileTab === 'edit' ? 'block' : 'hidden lg:block'
+              } no-print`}
+            >
+              {/* ATS Scorecard widget */}
+              <ATSScoreCard resume={resume} />
+
+              {/* Form sections editor */}
+              <ResumeEditor resume={resume} onChange={handleResumeChange} />
+            </div>
+
+            {/* Right Column: Live Resume Preview */}
+            <div
+              className={`w-full lg:w-[52%] xl:w-[55%] h-full overflow-y-auto ${
+                mobileTab === 'preview' ? 'block' : 'hidden lg:block'
+              }`}
+            >
+              <ResumePreview
+                resume={resume}
+                onTemplateChange={handleTemplateChange}
+                onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
+              />
+            </div>
+          </main>
         </div>
+      )}
 
-        {/* Right Column: Live Resume Preview */}
-        <div
-          className={`w-full lg:w-[52%] xl:w-[55%] h-full overflow-y-auto ${
-            mobileTab === 'preview' ? 'block' : 'hidden lg:block'
-          }`}
-        >
-          <ResumePreview
-            resume={resume}
-            onTemplateChange={handleTemplateChange}
-          />
-        </div>
-      </main>
+      {/* STEP 4: SAVE & DOWNLOAD MODAL */}
+      <SaveDownloadModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+        resume={resume}
+      />
     </div>
   );
 }
@@ -134,7 +255,7 @@ export default function BuilderPage() {
       fallback={
         <div className="min-h-screen bg-slate-50 flex items-center justify-center">
           <div className="text-slate-600 text-sm font-semibold">
-            Loading CVMake Builder...
+            Loading CVMake Studio...
           </div>
         </div>
       }

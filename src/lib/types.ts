@@ -7,7 +7,12 @@ export type TemplateId =
   | 'executive'
   | 'student'
   | 'graduate'
-  | 'creative';
+  | 'creative'
+  | 'tech'
+  | 'compact'
+  | 'elegant'
+  | 'hybrid'
+  | 'academic';
 
 export type FontFamily = 'sans' | 'serif' | 'mono';
 export type FontSize = 'compact' | 'normal' | 'spacious';
