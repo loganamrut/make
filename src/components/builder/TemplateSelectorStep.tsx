@@ -172,6 +172,83 @@ const COLOR_PALETTES = [
   { name: 'Amber', value: '#d97706' },
 ];
 
+interface TemplatePreviewThumbnailProps {
+  resume: ResumeData;
+  templateId: TemplateId;
+}
+
+function TemplatePreviewThumbnail({ resume, templateId }: TemplatePreviewThumbnailProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  // Default scale ~0.32: for standard 4-column card (container ~270px -> 800 * 0.32 = ~256px + 14px padding)
+  const [scale, setScale] = React.useState<number>(0.32);
+
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+
+    const computeScale = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.clientWidth;
+        // Leave 16px horizontal margin (8px on each side) for clean paper document look
+        const targetWidth = Math.max(width - 16, 160);
+        // Base document design width is 800px
+        const newScale = targetWidth / 800;
+        setScale(newScale);
+      }
+    };
+
+    computeScale();
+
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(computeScale);
+      ro.observe(containerRef.current);
+    }
+
+    return () => {
+      if (ro) ro.disconnect();
+    };
+  }, []);
+
+  const previewResume: ResumeData = {
+    ...resume,
+    style: {
+      ...resume.style,
+      template: templateId,
+    },
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative h-80 bg-slate-100/80 overflow-hidden flex justify-center items-start pt-2 px-2 select-none"
+    >
+      {/* 
+        CRITICAL FIX: 
+        We enforce fixed width 800px with minWidth and flexShrink 0.
+        This prevents parent flexbox from squishing the 800px layout down to 260px,
+        which previously caused the transform to scale down to 88px with broken 1-character line wraps.
+      */}
+      <div
+        style={{
+          width: '800px',
+          minWidth: '800px',
+          maxWidth: '800px',
+          flexShrink: 0,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top center',
+          pointerEvents: 'none',
+        }}
+        className="shadow-md rounded-xs bg-white border border-slate-200"
+      >
+        <ResumeDocument resume={previewResume} id={`preview-${templateId}`} />
+      </div>
+
+      {/* Subtle bottom fade to indicate continuation of document */}
+      <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-100/90 to-transparent pointer-events-none" />
+    </div>
+  );
+}
+
 export function TemplateSelectorStep({
   resume,
   onSelectTemplate,
@@ -342,14 +419,6 @@ export function TemplateSelectorStep({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredTemplates.map(tpl => {
           const isSelected = currentTemplate === tpl.id;
-          // Create clone with this template for live miniature render
-          const previewResume: ResumeData = {
-            ...resume,
-            style: {
-              ...resume.style,
-              template: tpl.id,
-            },
-          };
 
           return (
             <div
@@ -390,32 +459,21 @@ export function TemplateSelectorStep({
               {/* Live Miniature Document Preview Container */}
               <div
                 onClick={() => handleTemplateClick(tpl.id)}
-                className="relative h-72 bg-slate-100/70 overflow-hidden flex justify-center items-start p-2 cursor-pointer"
+                className="relative cursor-pointer group/preview"
               >
-                <div
-                  style={{
-                    transform: 'scale(0.34)',
-                    transformOrigin: 'top center',
-                    width: '800px',
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                  }}
-                  className="shadow-md rounded-xs bg-white"
-                >
-                  <ResumeDocument resume={previewResume} />
-                </div>
+                <TemplatePreviewThumbnail resume={resume} templateId={tpl.id} />
 
                 {/* Hover overlay with dual actions: Select & Full Size Preview */}
-                <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-4">
+                <div className="absolute inset-0 z-10 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2.5 p-4">
                   <button
                     type="button"
                     onClick={e => {
                       e.stopPropagation();
                       handleTemplateClick(tpl.id);
                     }}
-                    className="w-full max-w-[180px] py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-1.5"
+                    className="w-full max-w-[190px] py-2.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xl transition-transform active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    <Check className="w-4 h-4 stroke-[3]" />
                     {isSelected ? 'Selected' : 'Use Template'}
                   </button>
                   <button
@@ -424,9 +482,9 @@ export function TemplateSelectorStep({
                       e.stopPropagation();
                       setModalTemplateId(tpl.id);
                     }}
-                    className="w-full max-w-[180px] py-2 px-3 bg-white/95 hover:bg-white text-slate-800 text-xs font-bold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-1.5"
+                    className="w-full max-w-[190px] py-2.5 px-3 bg-white/95 hover:bg-white text-slate-800 text-xs font-bold rounded-xl shadow-xl transition-transform active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <Eye className="w-3.5 h-3.5 text-indigo-600" />
+                    <Eye className="w-4 h-4 text-indigo-600" />
                     Full Size Preview
                   </button>
                 </div>
@@ -602,11 +660,15 @@ export function TemplateSelectorStep({
           <div className="flex-1 overflow-auto my-3 sm:my-4 flex justify-center items-start p-2">
             <div
               style={{
+                width: '800px',
+                minWidth: '800px',
+                maxWidth: '800px',
+                flexShrink: 0,
                 transform: `scale(${modalZoom / 100})`,
                 transformOrigin: 'top center',
                 transition: 'transform 0.15s ease-out',
               }}
-              className="shadow-2xl rounded-sm"
+              className="shadow-2xl rounded-sm bg-white"
             >
               <ResumeDocument
                 resume={{
@@ -616,6 +678,7 @@ export function TemplateSelectorStep({
                     template: modalTemplateId,
                   },
                 }}
+                id="modal-preview-doc"
               />
             </div>
           </div>

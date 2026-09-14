@@ -18,9 +18,12 @@ import {
 
 interface ResumeDocumentProps {
   resume: ResumeData;
+  id?: string;
+  className?: string;
 }
 
-export function ResumeDocument({ resume }: ResumeDocumentProps) {
+export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentProps) {
+  const documentId = id || 'resume-print-area';
   const { template, primaryColor, fontFamily, fontSize, lineSpacing } = resume.style;
 
   const fontClass =
@@ -845,20 +848,20 @@ export function ResumeDocument({ resume }: ResumeDocumentProps) {
   if (template === 'infographic') {
     return (
       <div
-        id="resume-print-area"
-        className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass}`}
+        id={documentId}
+        className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto w-full max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass} ${className}`}
         style={{ boxSizing: 'border-box' }}
       >
         {renderHeader()}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mt-2">
+        <div className="grid grid-cols-12 gap-6 mt-2">
           {/* Left Infographic Sidebar (4 cols) */}
-          <aside className="md:col-span-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-4">
+          <aside className="col-span-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-4">
             {renderSkills(true)}
             {renderEducation()}
             {renderCertifications()}
           </aside>
           {/* Right Main Content (8 cols) */}
-          <main className="md:col-span-8 space-y-4">
+          <main className="col-span-8 space-y-4">
             {renderSummary()}
             {renderExperience()}
             {renderProjects()}
@@ -873,20 +876,20 @@ export function ResumeDocument({ resume }: ResumeDocumentProps) {
   if (template === 'hybrid') {
     return (
       <div
-        id="resume-print-area"
-        className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass}`}
+        id={documentId}
+        className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto w-full max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass} ${className}`}
         style={{ boxSizing: 'border-box' }}
       >
         {renderHeader()}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="grid grid-cols-12 gap-6">
           {/* Left Rail / Sidebar (4 cols) */}
-          <aside className="md:col-span-4 space-y-4 border-r border-slate-200 pr-4">
+          <aside className="col-span-4 space-y-4 border-r border-slate-200 pr-4">
             {renderSkills(true)}
             {renderEducation()}
             {renderCertifications()}
           </aside>
           {/* Right Main Content (8 cols) */}
-          <main className="md:col-span-8 space-y-4">
+          <main className="col-span-8 space-y-4">
             {renderSummary()}
             {renderExperience()}
             {renderProjects()}
@@ -900,8 +903,8 @@ export function ResumeDocument({ resume }: ResumeDocumentProps) {
   // Single-column layout for all other templates
   return (
     <div
-      id="resume-print-area"
-      className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass}`}
+      id={documentId}
+      className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto w-full max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass} ${className}`}
       style={{ boxSizing: 'border-box' }}
     >
       {renderHeader()}
