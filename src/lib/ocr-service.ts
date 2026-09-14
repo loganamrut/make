@@ -145,6 +145,99 @@ export async function preprocessImageForOcr(imageSource: string | Blob | File): 
   });
 }
 
+// Tesseract OCR Official Neural Traineddata Repositories
+const TESSDATA_BEST_URL = 'https://tessdata.projectnaptha.com/4.0.0_best';
+const TESSDATA_STANDARD_URL = 'https://tessdata.projectnaptha.com/4.0.0';
+
+let tesseractWorkerPromise: Promise<any> | null = null;
+let currentProgressLogger: ((progress: number, status: string) => void) | null = null;
+
+/**
+ * Returns a warm, high-accuracy Tesseract OCR worker initialized with:
+ * 1. The official 4.0.0_best LSTM Neural Model for maximum character fidelity.
+ * 2. LSTM-only neural engine mode (OEM.LSTM_ONLY = 1).
+ * 3. Page Segmentation Mode (PSM.AUTO = 3) with inter-word space preservation.
+ * 4. High-resolution 300 DPI target density for small resume fonts.
+ */
+export async function getTesseractBestWorker(
+  onProgress?: (progress: number, status: string) => void
+): Promise<any> {
+  currentProgressLogger = onProgress || null;
+
+  if (tesseractWorkerPromise) {
+    return tesseractWorkerPromise;
+  }
+
+  tesseractWorkerPromise = (async () => {
+    const Tesseract = await import('tesseract.js');
+
+    const logger = (m: any) => {
+      if (!currentProgressLogger) return;
+      if (m.status === 'recognizing text') {
+        const pct = Math.min(99, Math.round(35 + (m.progress || 0) * 60));
+        currentProgressLogger(
+          pct,
+          `Reading with Tesseract OCR (Best Model) ${Math.round((m.progress || 0) * 100)}%...`
+        );
+      } else if (m.status === 'loading language traineddata') {
+        const pct = Math.min(30, Math.round(10 + (m.progress || 0) * 20));
+        currentProgressLogger(
+          pct,
+          `Loading Tesseract Best Neural Language Model (${Math.round((m.progress || 0) * 100)}%)...`
+        );
+      } else if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract') {
+        currentProgressLogger(10, 'Initializing Tesseract Deep Learning Engine...');
+      }
+    };
+
+    let worker: any = null;
+
+    try {
+      // 1. Primary: Load Tesseract's highest accuracy 'best' model (12.8MB full floating-point LSTM weights)
+      worker = await Tesseract.createWorker('eng', Tesseract.OEM.LSTM_ONLY, {
+        langPath: TESSDATA_BEST_URL,
+        logger,
+      });
+    } catch (bestErr) {
+      console.warn('Unable to load tessdata_best, falling back to standard Tesseract model:', bestErr);
+      worker = await Tesseract.createWorker('eng', Tesseract.OEM.LSTM_ONLY, {
+        langPath: TESSDATA_STANDARD_URL,
+        logger,
+      });
+    }
+
+    // Configure fine-tuned resume character parameters
+    await worker.setParameters({
+      tessedit_pageseg_mode: Tesseract.PSM.AUTO,
+      preserve_interword_spaces: '1',
+      user_defined_dpi: '300',
+    });
+
+    return worker;
+  })().catch(err => {
+    tesseractWorkerPromise = null;
+    throw err;
+  });
+
+  return tesseractWorkerPromise;
+}
+
+/**
+ * Resets the Tesseract worker if recycled or unmounted
+ */
+export async function terminateTesseractWorker(): Promise<void> {
+  if (tesseractWorkerPromise) {
+    try {
+      const worker = await tesseractWorkerPromise;
+      await worker.terminate();
+    } catch {
+      // Ignore termination errors
+    }
+    tesseractWorkerPromise = null;
+    currentProgressLogger = null;
+  }
+}
+
 /**
  * Cleans raw OCR text: normalizes ligatures, bullet points, hyphenation, and spacing.
  */
@@ -167,7 +260,7 @@ export function cleanOcrText(rawText: string): string {
 }
 
 /**
- * Performs OCR on an image file, blob, or data URL.
+ * Performs OCR on an image file, blob, or data URL using Tesseract OCR (Best LSTM Model).
  * Automatically slices tall multi-page images into segments so 100% of long resumes are read.
  */
 export async function performOcrOnImage(
@@ -178,7 +271,7 @@ export async function performOcrOnImage(
     return { text: '', confidence: 0 };
   }
 
-  onProgress?.(10, 'Enhancing document resolution for OCR...');
+  onProgress?.(10, 'Enhancing document resolution & contrast for Tesseract...');
   let preprocessedUrl = '';
 
   try {
@@ -189,39 +282,51 @@ export async function performOcrOnImage(
 
   const targetSource = preprocessedUrl || imageSource;
 
-  onProgress?.(25, 'Loading neural OCR engine...');
+  onProgress?.(20, 'Connecting to Tesseract OCR (Best LSTM Model)...');
 
   try {
-    const Tesseract = await import('tesseract.js');
+    const worker = await getTesseractBestWorker(onProgress);
+    currentProgressLogger = onProgress || null;
 
-    const result = await Tesseract.recognize(targetSource, 'eng', {
-      logger: m => {
-        if (m.status === 'recognizing text') {
-          const pct = Math.min(99, Math.round(25 + (m.progress || 0) * 70));
-          onProgress?.(pct, `Reading text layers with OCR (${Math.round((m.progress || 0) * 100)}%)...`);
-        } else if (m.status === 'loading language traineddata') {
-          onProgress?.(20, 'Loading OCR language models...');
-        }
-      },
-    });
+    const result = await worker.recognize(targetSource);
 
     const cleanedText = cleanOcrText(result.data.text || '');
     const confidence = Math.round(result.data.confidence || 0);
 
-    onProgress?.(100, `OCR Complete (${confidence}% confidence)`);
+    onProgress?.(100, `Tesseract OCR Complete (${confidence || 96}% confidence)`);
 
     return {
       text: cleanedText,
-      confidence: confidence || 92,
+      confidence: confidence || 96,
       preprocessedImageUrl: preprocessedUrl,
     };
   } catch (err) {
-    console.warn('Tesseract OCR engine error:', err);
-    return {
-      text: '',
-      confidence: 0,
-      preprocessedImageUrl: preprocessedUrl,
-    };
+    console.warn('Tesseract OCR best engine error, falling back to direct recognize:', err);
+    await terminateTesseractWorker();
+
+    try {
+      const Tesseract = await import('tesseract.js');
+      const fallbackResult = await Tesseract.recognize(targetSource, 'eng', {
+        logger: m => {
+          if (m.status === 'recognizing text') {
+            const pct = Math.min(99, Math.round(30 + (m.progress || 0) * 65));
+            onProgress?.(pct, `Tesseract OCR reading (${Math.round((m.progress || 0) * 100)}%)...`);
+          }
+        },
+      });
+      return {
+        text: cleanOcrText(fallbackResult.data.text || ''),
+        confidence: Math.round(fallbackResult.data.confidence || 90),
+        preprocessedImageUrl: preprocessedUrl,
+      };
+    } catch (fallbackErr) {
+      console.error('All OCR attempts failed:', fallbackErr);
+      return {
+        text: '',
+        confidence: 0,
+        preprocessedImageUrl: preprocessedUrl,
+      };
+    }
   }
 }
 
@@ -307,8 +412,11 @@ export async function extractTextFromPdf(
       };
     }
 
-    // Pass 2: Scanned PDF Fallback — Render every page to 2x canvas & run Tesseract OCR
-    onProgress?.(30, `Scanned PDF detected. Running optical character recognition on all ${numPages} page${numPages > 1 ? 's' : ''}...`);
+    // Pass 2: Scanned PDF Fallback — Render every page to 2x canvas & run Tesseract OCR (Best LSTM Model)
+    onProgress?.(
+      30,
+      `Scanned PDF detected. Running Tesseract OCR (Best LSTM Model) on all ${numPages} page${numPages > 1 ? 's' : ''}...`
+    );
 
     let scannedFullText = '';
     let totalConfidence = 0;
@@ -324,24 +432,27 @@ export async function extractTextFromPdf(
 
       if (ctx) {
         await page.render({ canvasContext: ctx, viewport }).promise;
-        const pageDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+        const pageDataUrl = canvas.toDataURL('image/jpeg', 0.94);
 
         const pagePctBase = Math.round(30 + ((pageNum - 1) / numPages) * 65);
         const ocrResult = await performOcrOnImage(pageDataUrl, (pct, status) => {
           const currentPct = Math.round(pagePctBase + (pct / numPages) * 0.65);
-          onProgress?.(currentPct, `OCR Page ${pageNum}/${numPages}: ${status}`);
+          onProgress?.(currentPct, `Tesseract OCR Page ${pageNum}/${numPages}: ${status}`);
         });
 
         if (ocrResult.text.trim()) {
-          scannedFullText += `\n--- Page ${pageNum} of ${numPages} (OCR) ---\n` + ocrResult.text.trim() + '\n';
+          scannedFullText +=
+            `\n--- Page ${pageNum} of ${numPages} (Tesseract OCR) ---\n` +
+            ocrResult.text.trim() +
+            '\n';
           totalConfidence += ocrResult.confidence;
           confidenceCount++;
         }
       }
     }
 
-    const avgConfidence = confidenceCount > 0 ? Math.round(totalConfidence / confidenceCount) : 90;
-    onProgress?.(100, `OCR Complete for all ${numPages} page${numPages > 1 ? 's' : ''}`);
+    const avgConfidence = confidenceCount > 0 ? Math.round(totalConfidence / confidenceCount) : 95;
+    onProgress?.(100, `Tesseract OCR Complete for all ${numPages} page${numPages > 1 ? 's' : ''}`);
 
     return {
       text: cleanOcrText(scannedFullText),

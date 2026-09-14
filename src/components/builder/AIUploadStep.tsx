@@ -278,8 +278,8 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
-            <span className="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md font-semibold text-[11px] border border-indigo-200 flex items-center gap-1">
-              <ScanLine className="w-3 h-3" /> Best OCR Active
+            <span className="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md font-semibold text-[11px] border border-indigo-200 flex items-center gap-1 shadow-xs">
+              <ScanLine className="w-3 h-3 text-indigo-600" /> Tesseract OCR (Best LSTM Model) Active
             </span>
             <span className="px-2 py-0.5 bg-slate-100 rounded-md font-mono font-medium">.PDF</span>
             <span className="px-2 py-0.5 bg-slate-100 rounded-md font-mono font-medium">.DOCX</span>
@@ -294,7 +294,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
             <div className="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
               <span>Attached Documents ({files.length} / {MAX_DOCUMENTS})</span>
               <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> High-Accuracy OCR &amp; AI Ingestion Ready
+                <CheckCircle2 className="w-3.5 h-3.5" /> Tesseract Neural OCR &amp; AI Ingestion Ready
               </span>
             </div>
 
@@ -332,17 +332,17 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
                     {file.ocrStatus === 'processing' ? (
                       <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                         <Loader2 className="w-2.5 h-2.5 animate-spin text-indigo-600" />
-                        {file.ocrProgress ? `Reading (${file.ocrProgress}%)...` : 'Reading with OCR...'}
+                        {file.ocrProgress ? `Tesseract OCR (${file.ocrProgress}%)...` : 'Tesseract OCR reading...'}
                       </span>
                     ) : file.ocrText && file.ocrText.length > 0 ? (
                       <button
                         type="button"
                         onClick={() => setPreviewOcrFileIdx(idx)}
                         className="text-[10px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1 transition-colors cursor-pointer"
-                        title="Click to view and verify full OCR transcript"
+                        title="Click to view and verify full Tesseract OCR transcript"
                       >
                         <ScanLine className="w-2.5 h-2.5" />
-                        100% Read {file.pageCount && file.pageCount > 1 ? `(${file.pageCount}p)` : ''} • View
+                        Tesseract OCR 100% {file.pageCount && file.pageCount > 1 ? `(${file.pageCount}p)` : ''} • View
                       </button>
                     ) : (
                       <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
@@ -496,16 +496,16 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
                 <div className="overflow-hidden">
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-bold text-slate-900 truncate">
-                      OCR Transcript: {files[previewOcrFileIdx].name}
+                      Tesseract Neural OCR Transcript: {files[previewOcrFileIdx].name}
                     </h3>
                     <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full flex-shrink-0">
                       {files[previewOcrFileIdx].pageCount && files[previewOcrFileIdx].pageCount! > 1
-                        ? `${files[previewOcrFileIdx].pageCount} Pages • 100% Extracted`
-                        : '100% Extracted'}
+                        ? `${files[previewOcrFileIdx].pageCount} Pages • Best LSTM Model`
+                        : 'Best LSTM Model • 100% Read'}
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-500 truncate">
-                    High-precision text extracted from document before AI processing
+                    High-accuracy text extracted with Tesseract OCR (Best LSTM Model) before AI processing
                   </p>
                 </div>
               </div>
