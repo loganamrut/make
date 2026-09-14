@@ -129,9 +129,9 @@ export function triggerPrintResume(fullName: string = 'Resume'): void {
       console.error('Iframe print error, falling back to window.print():', err);
       window.print();
     } finally {
-      document.title = originalTitle;
-      // Clean up after print finishes
+      // Clean up after print finishes and restore original page title
       setTimeout(() => {
+        document.title = originalTitle;
         if (iframe.parentNode) {
           iframe.parentNode.removeChild(iframe);
         }
