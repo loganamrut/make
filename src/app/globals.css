@@ -45,13 +45,29 @@ body {
     padding: 0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    overflow: visible !important;
+    height: auto !important;
   }
 
-  .no-print {
+  /* Hide everything that is NOT the resume */
+  .no-print,
+  header,
+  nav,
+  aside {
     display: none !important;
   }
 
+  /* Force the split-screen main area to be a simple block */
+  main {
+    display: block !important;
+    overflow: visible !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  /* The print canvas wrapper */
   .print-container {
+    display: block !important;
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
@@ -59,8 +75,19 @@ body {
     border: none !important;
     width: 100% !important;
     max-width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
+  /* Remove CSS scale/zoom from the preview zoom wrapper */
+  .print-container > div {
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* The resume paper itself */
   .resume-paper {
     box-shadow: none !important;
     border: none !important;
@@ -71,3 +98,4 @@ body {
     break-after: avoid !important;
   }
 }
+
