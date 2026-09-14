@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ResumeData } from '@/lib/types';
 import { triggerPrintResume } from '@/lib/print-pdf';
+import { downloadDocumentAsPdf } from '@/lib/pdf-download';
 import {
   Download,
   FileText,
@@ -10,9 +11,10 @@ import {
   Copy,
   Check,
   X,
-  ShieldCheck,
   HardDrive,
-  Sparkles
+  Sparkles,
+  Loader2,
+  Printer,
 } from 'lucide-react';
 
 interface SaveDownloadModalProps {
@@ -23,6 +25,8 @@ interface SaveDownloadModalProps {
 
 export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModalProps) {
   const [copied, setCopied] = useState(false);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+  const [pdfDownloaded, setPdfDownloaded] = useState(false);
 
   if (!isOpen) return null;
 
@@ -122,6 +126,23 @@ export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModal
     URL.revokeObjectURL(url);
   };
 
+  const handleDownloadPdf = async () => {
+    setIsDownloadingPdf(true);
+    setPdfDownloaded(false);
+    try {
+      const ok = await downloadDocumentAsPdf({
+        fullName: resume.personalInfo.fullName,
+        elementId: 'resume-print-area',
+      });
+      if (ok) {
+        setPdfDownloaded(true);
+        setTimeout(() => setPdfDownloaded(false), 4000);
+      }
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
+
   const handleCopyText = async () => {
     const text = generatePlainTextATS();
     try {
@@ -134,7 +155,7 @@ export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 no-print">
       <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-xl w-full p-6 sm:p-8 space-y-6 animate-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
@@ -147,7 +168,7 @@ export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModal
               Save &amp; Download Your Resume
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Export in vector ATS PDF, plain text for legacy application forms, or JSON backup.
+              Directly download your pixel-perfect ATS PDF, or export text / JSON backup.
             </p>
           </div>
           <button
@@ -161,28 +182,35 @@ export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModal
 
         {/* Download Options Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          {/* Option 1: Vector PDF */}
+          {/* Option 1: Direct Download PDF */}
           <button
             type="button"
-            onClick={() => {
-              triggerPrintResume(resume.personalInfo.fullName);
-              onClose();
-            }}
-            className="p-4 rounded-2xl border-2 border-indigo-600 bg-indigo-50/50 hover:bg-indigo-100/60 text-left transition-all group flex flex-col justify-between"
+            disabled={isDownloadingPdf}
+            onClick={handleDownloadPdf}
+            className="p-4 rounded-2xl border-2 border-indigo-600 bg-indigo-50/50 hover:bg-indigo-100/60 text-left transition-all group flex flex-col justify-between cursor-pointer disabled:opacity-75"
           >
             <div>
               <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center mb-3 shadow-md shadow-indigo-200">
-                <Download className="w-5 h-5" />
+                {isDownloadingPdf ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : pdfDownloaded ? (
+                  <Check className="w-5 h-5 text-emerald-300" />
+                ) : (
+                  <Download className="w-5 h-5" />
+                )}
               </div>
-              <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                Download Vector PDF
+              <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                Download PDF
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-indigo-200/80 text-indigo-900">
+                  Direct .PDF
+                </span>
               </h4>
               <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                Print-ready, pixel-perfect ATS vector PDF formatted for US Letter and A4.
+                Directly downloads high-resolution ATS PDF file to your device.
               </p>
             </div>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 mt-3">
-              Generate PDF &rarr;
+              {isDownloadingPdf ? 'Generating PDF...' : pdfDownloaded ? '✓ Downloaded!' : 'Download PDF Now →'}
             </span>
           </button>
 
@@ -253,17 +281,24 @@ export function SaveDownloadModal({ isOpen, onClose, resume }: SaveDownloadModal
           </button>
         </div>
 
-        {/* Local Storage Autosave Status */}
-        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs text-slate-600">
+        {/* Print Option & Local Storage Autosave Status */}
+        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-600">
           <div className="flex items-center gap-2">
-            <HardDrive className="w-4 h-4 text-emerald-600" />
+            <HardDrive className="w-4 h-4 text-emerald-600 flex-shrink-0" />
             <span>
-              <strong>Autosaved:</strong> Preserved locally in your browser storage.
+              <strong>100% Private:</strong> Data stays in your browser memory.
             </span>
           </div>
-          <span className="text-[11px] font-semibold text-emerald-700 flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5" /> No Server Database
-          </span>
+          <button
+            type="button"
+            onClick={() => {
+              triggerPrintResume(resume.personalInfo.fullName);
+            }}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-indigo-600 transition-colors cursor-pointer"
+          >
+            <Printer className="w-3.5 h-3.5 text-slate-500" />
+            Print / System Print Dialog
+          </button>
         </div>
 
         {/* Close */}

@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { SAMPLE_COVER_LETTER } from '@/lib/sample-data';
 import { CoverLetterData } from '@/lib/types';
 import { triggerPrintResume } from '@/lib/print-pdf';
+import { downloadDocumentAsPdf } from '@/lib/pdf-download';
 import { generateCoverLetterFromResume } from '@/lib/ai-engine';
 import { SAMPLE_RESUME } from '@/lib/sample-data';
 import {
@@ -14,13 +15,35 @@ import {
   Copy,
   Check,
   ShieldCheck,
+  Download,
+  Loader2,
 } from 'lucide-react';
 
 export default function CoverLetterBuilderPage() {
   const [data, setData] = useState<CoverLetterData>(SAMPLE_COVER_LETTER);
   const [copied, setCopied] = useState(false);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+  const [downloadedPdf, setDownloadedPdf] = useState(false);
   const [targetCompany, setTargetCompany] = useState(data.recipient.companyName);
   const [targetRole, setTargetRole] = useState(data.recipient.jobTitle);
+
+  const handleDownloadPdf = async () => {
+    setIsDownloadingPdf(true);
+    setDownloadedPdf(false);
+    try {
+      const ok = await downloadDocumentAsPdf({
+        elementId: 'cover-letter-paper',
+        fullName: data.personalInfo.fullName,
+        documentType: 'cover-letter',
+      });
+      if (ok) {
+        setDownloadedPdf(true);
+        setTimeout(() => setDownloadedPdf(false), 3500);
+      }
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
 
   const handleGenerate = () => {
     const generated = generateCoverLetterFromResume(
@@ -199,7 +222,7 @@ export default function CoverLetterBuilderPage() {
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold cursor-pointer"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Copy className="w-3.5 h-3.5" />}
                   {copied ? 'Copied!' : 'Copy Text'}
@@ -207,10 +230,33 @@ export default function CoverLetterBuilderPage() {
                 <button
                   type="button"
                   onClick={() => triggerPrintResume(`${data.personalInfo.fullName}_Cover_Letter`)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-bold shadow-sm"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm cursor-pointer"
+                  title="Open print dialog"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  Print / Save PDF
+                  Print
+                </button>
+                <button
+                  type="button"
+                  disabled={isDownloadingPdf}
+                  onClick={handleDownloadPdf}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all disabled:opacity-75 cursor-pointer"
+                  title="Directly download PDF file"
+                >
+                  {isDownloadingPdf ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : downloadedPdf ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-300" />
+                  ) : (
+                    <Download className="w-3.5 h-3.5" />
+                  )}
+                  <span>
+                    {isDownloadingPdf
+                      ? 'Downloading...'
+                      : downloadedPdf
+                      ? 'Downloaded!'
+                      : 'Download PDF'}
+                  </span>
                 </button>
               </div>
             </div>

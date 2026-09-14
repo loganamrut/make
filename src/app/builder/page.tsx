@@ -12,6 +12,7 @@ import { AIUploadStep } from '@/components/builder/AIUploadStep';
 import { TemplateSelectorStep } from '@/components/builder/TemplateSelectorStep';
 import { SaveDownloadModal } from '@/components/builder/SaveDownloadModal';
 import { Header } from '@/components/Header';
+import { downloadDocumentAsPdf } from '@/lib/pdf-download';
 import {
   ShieldCheck,
   Edit3,
@@ -20,7 +21,10 @@ import {
   Upload,
   LayoutTemplate,
   Download,
-  ChevronRight
+  ChevronRight,
+  Loader2,
+  Check,
+  MoreHorizontal
 } from 'lucide-react';
 
 type StudioStep = 'upload' | 'templates' | 'edit';
@@ -34,7 +38,26 @@ function BuilderContent() {
   const [currentStep, setCurrentStep] = useState<StudioStep>(stepParam || 'edit');
   const [mobileTab, setMobileTab] = useState<'edit' | 'preview'>('edit');
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+  const [downloadedPdf, setDownloadedPdf] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const handleDirectDownloadPdf = async () => {
+    setIsDownloadingPdf(true);
+    setDownloadedPdf(false);
+    try {
+      const ok = await downloadDocumentAsPdf({
+        fullName: resume.personalInfo.fullName,
+        elementId: 'resume-print-area',
+      });
+      if (ok) {
+        setDownloadedPdf(true);
+        setTimeout(() => setDownloadedPdf(false), 3500);
+      }
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
 
   // Load from local storage on mount
   useEffect(() => {
@@ -139,13 +162,38 @@ function BuilderContent() {
 
           {/* Quick Action Buttons */}
           <div className="flex items-center gap-2">
+            {/* 1-Click Direct Download PDF */}
+            <button
+              type="button"
+              onClick={handleDirectDownloadPdf}
+              disabled={isDownloadingPdf}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all disabled:opacity-75 cursor-pointer"
+              title="Directly download PDF file to your device"
+            >
+              {isDownloadingPdf ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : downloadedPdf ? (
+                <Check className="w-3.5 h-3.5 text-emerald-300" />
+              ) : (
+                <Download className="w-3.5 h-3.5" />
+              )}
+              <span>
+                {isDownloadingPdf
+                  ? 'Downloading...'
+                  : downloadedPdf
+                  ? 'Downloaded!'
+                  : '4. Download PDF'}
+              </span>
+            </button>
+
+            {/* More Export Options Modal */}
             <button
               type="button"
               onClick={() => setIsDownloadModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
+              className="p-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 text-xs font-bold transition-colors cursor-pointer"
+              title="More export options (Plain text, JSON backup, Print)"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span>4. Download &amp; Save</span>
+              <MoreHorizontal className="w-4 h-4" />
             </button>
           </div>
         </div>

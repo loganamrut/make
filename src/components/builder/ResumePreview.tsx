@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { ResumeData, TemplateId } from '@/lib/types';
 import { ResumeDocument } from './ResumeDocument';
 import { triggerPrintResume } from '@/lib/print-pdf';
-import { Download, Printer, ZoomIn, ZoomOut } from 'lucide-react';
+import { downloadDocumentAsPdf } from '@/lib/pdf-download';
+import { Download, Printer, ZoomIn, ZoomOut, Loader2, Check } from 'lucide-react';
 
 interface ResumePreviewProps {
   resume: ResumeData;
@@ -14,9 +15,28 @@ interface ResumePreviewProps {
 
 export function ResumePreview({ resume, onTemplateChange, onOpenDownloadModal }: ResumePreviewProps) {
   const [zoom, setZoom] = useState<number>(100);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState<boolean>(false);
+  const [downloaded, setDownloaded] = useState<boolean>(false);
 
   const handleZoomIn = () => setZoom(prev => Math.min(130, prev + 10));
   const handleZoomOut = () => setZoom(prev => Math.max(70, prev - 10));
+
+  const handleDownloadPdf = async () => {
+    setIsDownloadingPdf(true);
+    setDownloaded(false);
+    try {
+      const ok = await downloadDocumentAsPdf({
+        fullName: resume.personalInfo.fullName,
+        elementId: 'resume-print-area',
+      });
+      if (ok) {
+        setDownloaded(true);
+        setTimeout(() => setDownloaded(false), 3500);
+      }
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -74,33 +94,52 @@ export function ResumePreview({ resume, onTemplateChange, onOpenDownloadModal }:
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Print button */}
           <button
             type="button"
             onClick={() => triggerPrintResume(resume.personalInfo.fullName)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-colors cursor-pointer"
+            title="Open browser print dialog"
           >
             <Printer className="w-4 h-4" />
             Print
           </button>
-          {onOpenDownloadModal ? (
+
+          {/* More Formats / Options */}
+          {onOpenDownloadModal && (
             <button
               type="button"
               onClick={onOpenDownloadModal}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-colors cursor-pointer"
+              title="More export options (TXT, JSON backup)"
             >
-              <Download className="w-4 h-4" />
-              Save &amp; Export
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => triggerPrintResume(resume.personalInfo.fullName)}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all"
-            >
-              <Download className="w-4 h-4" />
-              Download PDF
+              Export Options
             </button>
           )}
+
+          {/* DIRECT 1-CLICK DOWNLOAD PDF */}
+          <button
+            type="button"
+            disabled={isDownloadingPdf}
+            onClick={handleDownloadPdf}
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm shadow-indigo-200 active:scale-95 transition-all disabled:opacity-75 cursor-pointer"
+            title="Directly download PDF file to your device"
+          >
+            {isDownloadingPdf ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : downloaded ? (
+              <Check className="w-4 h-4 text-emerald-300" />
+            ) : (
+              <Download className="w-4 h-4" />
+            )}
+            <span>
+              {isDownloadingPdf
+                ? 'Downloading...'
+                : downloaded
+                ? 'Downloaded!'
+                : 'Download PDF'}
+            </span>
+          </button>
         </div>
       </div>
 
