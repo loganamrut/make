@@ -31,6 +31,9 @@ export interface UploadedDocumentFile {
   size: number;
   base64Data?: string;
   textContent?: string;
+  ocrText?: string;
+  ocrStatus?: 'pending' | 'processing' | 'completed' | 'fallback';
+  ocrConfidence?: number;
 }
 
 function generateId(prefix: string): string {
@@ -39,7 +42,7 @@ function generateId(prefix: string): string {
 
 /**
  * Parses up to 3 documents (PDF, DOCX text, images, TXT) with Gemini 2.5 Flash
- * into fully structured, ATS-optimized ResumeData.
+ * into fully structured, ATS-optimized ResumeData using OCR transcripts and multimodal vision.
  */
 export async function parseResumeDocumentsWithGemini(
   files: UploadedDocumentFile[],
@@ -54,16 +57,27 @@ export async function parseResumeDocumentsWithGemini(
   const parts: any[] = [];
 
   for (const file of files) {
+    // 1. If high-accuracy OCR text was extracted, feed it as a verified transcript
+    if (file.ocrText && file.ocrText.trim().length > 0) {
+      parts.push({
+        text: `--- Document File: ${file.name} (High-Accuracy OCR Extracted Transcript) ---\n"""\n${file.ocrText.trim()}\n"""\n--- End OCR Extracted Transcript ---`,
+      });
+    }
+
+    // 2. If native text was extracted, feed it
+    if (file.textContent && file.textContent.trim().length > 0) {
+      parts.push({
+        text: `--- Document File: ${file.name} (Native Text Content) ---\n"""\n${file.textContent.trim()}\n"""\n--- End Text Content ---`,
+      });
+    }
+
+    // 3. Include visual document bytes (PDF / Image) for spatial layout & hierarchy correlation
     if (file.base64Data && (file.mimeType.startsWith('image/') || file.mimeType === 'application/pdf')) {
       parts.push({
         inlineData: {
           mimeType: file.mimeType,
           data: file.base64Data,
         },
-      });
-    } else if (file.textContent) {
-      parts.push({
-        text: `--- Document File: ${file.name} ---\n${file.textContent}\n--- End Document ---`,
       });
     }
   }
@@ -74,6 +88,11 @@ Analyze the provided resume document(s) and transform the candidate's career his
 
 ${targetRole ? `Target Role to optimize for: "${targetRole}"` : ''}
 ${targetJobDescription ? `Target Job Description to align keywords with:\n"""\n${targetJobDescription}\n"""` : ''}
+
+OCR & Multimodal Integration Directives:
+- If OCR Extracted Transcripts are provided above, cross-reference them with the visual document layout to ensure zero missed words, exact spelling of names, companies, dates, technical acronyms, phone numbers, and emails.
+- If an image or PDF was uploaded without OCR text, perform end-to-end neural optical character recognition directly on the image/PDF bytes.
+- Never hallucinate jobs or degrees not present in the source files, but actively enhance and quantify bullet points using the Google XYZ formula ("Accomplished [X] measured by [Y] by doing [Z]").
 
 Key Instructions:
 1. Extract or deduce Full Name, Job Title, Email, Phone, Location, and social links (LinkedIn, GitHub, Portfolio).
