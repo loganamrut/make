@@ -43,130 +43,86 @@ export async function downloadDocumentAsPdf({
   const targetWidthPx = isA4 ? 794 : 816; // 96 DPI pixel equivalent
   const targetHeightPx = Math.round(targetWidthPx * (pdfHeightMm / pdfWidthMm)); // 1056px Letter, 1123px A4
 
-  // Create an off-screen staging wrapper attached to document.body
-  // Positioned at top: 0, left: 0 behind page content (z-index: -9999) with full opacity: 1
-  // to ensure 100% true font metrics, subpixel anti-aliasing, and complete CSS evaluation.
-  const stagingContainer = document.createElement('div');
-  stagingContainer.id = 'pdf-staging-container';
-  stagingContainer.style.position = 'fixed';
-  stagingContainer.style.left = '0';
-  stagingContainer.style.top = '0';
-  stagingContainer.style.width = `${targetWidthPx}px`;
-  stagingContainer.style.zIndex = '-9999';
-  stagingContainer.style.opacity = '1';
-  stagingContainer.style.visibility = 'visible';
-  stagingContainer.style.overflow = 'visible';
-  stagingContainer.style.pointerEvents = 'none';
-
-  const clonedNode = target.cloneNode(true) as HTMLElement;
-  clonedNode.id = `${elementId}-export-clone`;
-  clonedNode.style.transform = 'none';
-  clonedNode.style.width = `${targetWidthPx}px`;
-  clonedNode.style.minWidth = `${targetWidthPx}px`;
-  clonedNode.style.maxWidth = `${targetWidthPx}px`;
-  clonedNode.style.minHeight = `${targetHeightPx}px`;
-  clonedNode.style.margin = '0';
-  clonedNode.style.boxShadow = 'none';
-  clonedNode.style.border = 'none';
-  clonedNode.style.boxSizing = 'border-box';
-  clonedNode.style.backgroundColor = '#ffffff';
-  clonedNode.style.display = 'flex';
-  clonedNode.style.flexDirection = 'column';
-  clonedNode.style.visibility = 'visible';
-
-  // Apply pixel-perfect normalizations to cloned DOM before html2canvas capture:
-  // 1. SVG alignment: override Lucide 24x24 attributes and center relative to text
-  clonedNode.querySelectorAll('svg').forEach((svg) => {
-    const isTiny = svg.classList.contains('w-3') || svg.classList.contains('h-3');
-    const size = isTiny ? '12' : '13';
-    svg.setAttribute('width', size);
-    svg.setAttribute('height', size);
-    svg.style.width = `${size}px`;
-    svg.style.height = `${size}px`;
-    svg.style.display = 'inline-block';
-    svg.style.verticalAlign = 'middle';
-    svg.style.flexShrink = '0';
-  });
-
-  // Contact header icons: counteract html2canvas upward bias
-  clonedNode.querySelectorAll('header .inline-flex svg, header .flex svg, .inline-flex svg').forEach((svg) => {
-    const el = svg as HTMLElement;
-    el.style.position = 'relative';
-    el.style.top = '1px';
-  });
-
-  // 2. Lock pill badge bounding box (prevents "crm go outside box")
-  clonedNode.querySelectorAll('span.rounded-md').forEach((el) => {
-    const h = el as HTMLElement;
-    h.style.display = 'inline-block';
-    h.style.lineHeight = '15px';
-    h.style.padding = '3px 8px';
-    h.style.verticalAlign = 'middle';
-    h.style.boxSizing = 'border-box';
-    h.style.whiteSpace = 'nowrap';
-  });
-
-  // 3. Section headers: prevent border collisions with text descenders
-  clonedNode.querySelectorAll('h2').forEach((el) => {
-    const h = el as HTMLElement;
-    h.style.lineHeight = '1.35';
-    if (h.classList.contains('border-b-2') || h.style.borderBottomWidth) {
-      h.style.paddingBottom = '4px';
-      h.style.marginBottom = '10px';
+  // Await web fonts to guarantee font metrics match preview 100%
+  if (typeof document !== 'undefined' && 'fonts' in document) {
+    try {
+      await (document as unknown as { fonts: { ready: Promise<unknown> } }).fonts.ready;
+    } catch {
+      // Ignore font readiness timeout
     }
-  });
+  }
 
-  // Section badge spans (e.g. Metro template headers)
-  clonedNode.querySelectorAll('h2 span').forEach((el) => {
-    const h = el as HTMLElement;
-    if (h.style.backgroundColor && h.style.backgroundColor !== 'transparent') {
-      h.style.display = 'inline-block';
-      h.style.lineHeight = '16px';
-      h.style.padding = '3px 9px';
-      h.style.verticalAlign = 'middle';
-      h.style.boxSizing = 'border-box';
-      h.style.whiteSpace = 'nowrap';
-    }
-  });
-
-  // 4. Multi-line text line-height enforcement
-  clonedNode.querySelectorAll('p').forEach((p) => {
-    const el = p as HTMLElement;
-    const computed = window.getComputedStyle(el);
-    if (computed.lineHeight === 'normal' || parseInt(computed.lineHeight) < 18) {
-      el.style.lineHeight = '19px';
-    }
-  });
-
-  stagingContainer.appendChild(clonedNode);
-  document.body.appendChild(stagingContainer);
+  // Give a brief rendering frame for any layout recalculations
+  await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 60)));
 
   try {
-    // Wait for all web fonts and styles to be 100% rendered
-    if (typeof document !== 'undefined' && 'fonts' in document) {
-      try {
-        await (document as unknown as { fonts: { ready: Promise<unknown> } }).fonts.ready;
-      } catch {
-        // Fallback to timeout
-      }
-    }
-    await new Promise((resolve) => setTimeout(resolve, 150));
-
-    // Dynamically import html2canvas and jsPDF to preserve SSR and zero initial bundle overhead
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
       import('html2canvas'),
       import('jspdf'),
     ]);
 
-    // Render with 2.5x scale for retina 240+ DPI print quality
-    const canvas = await html2canvas(clonedNode, {
-      scale: 2.5,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      logging: false,
-      windowWidth: targetWidthPx,
-    });
+    // Save live target's parent transform if zoomed in editor
+    const parent = target.parentElement;
+    const originalParentTransform = parent ? parent.style.transform : '';
+    const originalParentTransition = parent ? parent.style.transition : '';
+
+    // Temporarily reset parent scale so html2canvas renders the true base document
+    if (parent) {
+      parent.style.transition = 'none';
+      parent.style.transform = 'none';
+    }
+
+    let canvas: HTMLCanvasElement;
+    try {
+      canvas = await html2canvas(target, {
+        scale: 2.8, // Ultra-sharp 270+ DPI print quality
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        windowWidth: targetWidthPx,
+        onclone: (clonedDoc) => {
+          const el = clonedDoc.getElementById(elementId);
+          if (!el) return;
+
+          // Strip preview shadow & border so the PDF canvas is pure paper
+          el.style.boxShadow = 'none';
+          el.style.border = 'none';
+          el.style.transform = 'none';
+          el.style.margin = '0 auto';
+          el.style.width = `${targetWidthPx}px`;
+
+          // Ensure Lucide SVGs have explicit XML attributes matching computed size
+          el.querySelectorAll('svg').forEach((svg) => {
+            const isTiny = svg.classList.contains('w-3') || svg.classList.contains('h-3');
+            const size = isTiny ? '12' : '13';
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size);
+            svg.style.width = `${size}px`;
+            svg.style.height = `${size}px`;
+            svg.style.display = 'inline-block';
+            svg.style.verticalAlign = 'middle';
+          });
+
+          // Lock badge and pill bounding boxes (Metro section headers, skill pills)
+          el.querySelectorAll('h2 span, span.rounded-md').forEach((badge) => {
+            const h = badge as HTMLElement;
+            if (h.style.backgroundColor && h.style.backgroundColor !== 'transparent') {
+              h.style.display = 'inline-block';
+              h.style.verticalAlign = 'middle';
+              h.style.boxSizing = 'border-box';
+              h.style.whiteSpace = 'nowrap';
+            }
+          });
+        },
+      });
+    } finally {
+      // Restore parent zoom transform immediately after canvas capture
+      if (parent) {
+        parent.style.transform = originalParentTransform;
+        parent.style.transition = originalParentTransition;
+      }
+    }
 
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -175,59 +131,61 @@ export async function downloadDocumentAsPdf({
       compress: true,
     });
 
-    // Calculate height of one standard page in canvas pixels
+    // Height of one standard page in canvas coordinates
     const pageCanvasHeight = Math.round(canvas.width * (pdfHeightMm / pdfWidthMm));
     const totalHeight = canvas.height;
 
     // Single-page vs multi-page threshold:
-    // If total content fits within 1 page (or slight <= 9% overflow),
-    // proportionally scale onto 1 single page so users never get an accidental 2-line second page!
-    const maxSinglePageThreshold = Math.round(pageCanvasHeight * 1.09);
+    // If the document fits within 1 page OR has minor overflow (up to 15%),
+    // fit it onto EXACTLY 1 page! Never cut lines in half or create an empty 2nd page!
+    const singlePageLimit = Math.round(pageCanvasHeight * 1.15);
 
-    if (totalHeight <= maxSinglePageThreshold) {
+    if (totalHeight <= singlePageLimit) {
       const pageCanvas = document.createElement('canvas');
       pageCanvas.width = canvas.width;
       pageCanvas.height = pageCanvasHeight;
 
-      const pageCtx = pageCanvas.getContext('2d');
-      if (pageCtx) {
-        pageCtx.fillStyle = '#ffffff';
-        pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
+      const ctx = pageCanvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
 
         if (totalHeight <= pageCanvasHeight) {
-          pageCtx.drawImage(canvas, 0, 0);
+          // 100% 1:1 unscaled print
+          ctx.drawImage(canvas, 0, 0);
         } else {
-          // Proportionally fit slightly overflowing content onto 1 clean page
-          const scaleFactor = pageCanvasHeight / totalHeight;
-          const scaledWidth = canvas.width * scaleFactor;
+          // Slight overflow: proportionally scale to fit the single sheet perfectly
+          const scale = pageCanvasHeight / totalHeight;
+          const scaledWidth = canvas.width * scale;
           const offsetX = (canvas.width - scaledWidth) / 2;
-          pageCtx.drawImage(canvas, offsetX, 0, scaledWidth, pageCanvasHeight);
+          ctx.drawImage(canvas, offsetX, 0, scaledWidth, pageCanvasHeight);
         }
 
-        const pageData = pageCanvas.toDataURL('image/png');
-        pdf.addImage(pageData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
+        const imgData = pageCanvas.toDataURL('image/png', 1.0);
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
       }
     } else {
-      // Multi-page document: slice canvas page-by-page
+      // Genuinely multi-page document (e.g. 2 full pages):
+      // Slice cleanly page-by-page
       const totalPages = Math.ceil(totalHeight / pageCanvasHeight);
 
-      for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) {
-        if (pageIndex > 0) {
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) {
           pdf.addPage(isA4 ? 'a4' : 'letter', 'portrait');
         }
 
-        const sourceY = pageIndex * pageCanvasHeight;
+        const sourceY = page * pageCanvasHeight;
         const sourceHeight = Math.min(pageCanvasHeight, totalHeight - sourceY);
 
         const pageCanvas = document.createElement('canvas');
         pageCanvas.width = canvas.width;
         pageCanvas.height = pageCanvasHeight;
 
-        const pageCtx = pageCanvas.getContext('2d');
-        if (pageCtx) {
-          pageCtx.fillStyle = '#ffffff';
-          pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
-          pageCtx.drawImage(
+        const ctx = pageCanvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
+          ctx.drawImage(
             canvas,
             0,
             sourceY,
@@ -239,24 +197,17 @@ export async function downloadDocumentAsPdf({
             sourceHeight
           );
 
-          const pageData = pageCanvas.toDataURL('image/png');
-          pdf.addImage(pageData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
+          const imgData = pageCanvas.toDataURL('image/png', 1.0);
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
         }
       }
     }
 
-    // Direct browser file download of the .pdf file
     pdf.save(fileName);
     return true;
   } catch (error) {
-    console.error('In-browser PDF generation encountered an error:', error);
-    // Graceful fallback: trigger native print dialog if canvas rendering fails
+    console.error('PDF export engine encountered an error:', error);
     triggerPrintResume(fullName);
     return false;
-  } finally {
-    // Clean up staging container
-    if (stagingContainer.parentNode) {
-      stagingContainer.parentNode.removeChild(stagingContainer);
-    }
   }
 }

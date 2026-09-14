@@ -35,13 +35,12 @@ body {
 @media print {
   @page {
     size: letter portrait;
-    margin: 0.5in;
+    margin: 0;
   }
 
   html, body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 10.5pt !important;
     margin: 0 !important;
     padding: 0 !important;
     -webkit-print-color-adjust: exact !important;
@@ -55,6 +54,7 @@ body {
   .print-container {
     padding: 0 !important;
     margin: 0 !important;
+    background: transparent !important;
     box-shadow: none !important;
     border: none !important;
     width: 100% !important;
@@ -64,10 +64,10 @@ body {
   .resume-paper {
     box-shadow: none !important;
     border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: auto !important;
+    margin: 0 auto !important;
+    width: 8.5in !important;
+    min-height: 11in !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
 }
