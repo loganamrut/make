@@ -94,22 +94,32 @@ const HOMEPAGE_FAQS = [
   {
     question: 'Can I use the AI resume builder for free without a subscription?',
     answer:
-      'Yes. CVMake provides full, unrestricted access to the resume builder, all 9 ATS templates, AI writing suggestions, live preview, and vector PDF downloads without hidden paywalls or subscription traps.',
+      'Yes. CVMake provides full, unrestricted access to the resume builder, all 17 ATS templates, AI writing suggestions, live preview, and vector PDF downloads without hidden paywalls, watermarks, or subscription traps.',
+  },
+  {
+    question: 'How does the Neural OCR & document upload work?',
+    answer:
+      'CVMake is equipped with a client-side Tesseract 4.0.0_best LSTM neural OCR engine alongside pdfjs-dist. You can upload existing PDFs, Word documents, or even photos and scans of physical paper resumes. All text extraction runs locally in your browser memory without uploading your documents to any remote server.',
   },
   {
     question: 'What is the difference between a Resume and a Curriculum Vitae (CV)?',
     answer:
-      'A resume is typically a 1-2 page summary prioritizing recent job achievements, skills, and business impact for corporate roles. A Curriculum Vitae (CV) is an exhaustive record of academic credentials, research publications, teaching appointments, and honors, common in international, healthcare, and higher-education applications. CVMake supports both formats.',
+      'A resume is typically a 1-2 page summary prioritizing recent job achievements, skills, and business impact for corporate roles. A Curriculum Vitae (CV) is an exhaustive record of academic credentials, research publications, teaching appointments, and honors, common in international, healthcare, and higher-education applications. CVMake supports both formats with specialized templates.',
   },
   {
     question: 'Can I customize the resume templates, fonts, and colors?',
     answer:
-      'Yes. You can effortlessly switch between 9 professionally designed ATS and modern templates, choose from carefully curated color palettes, customize typography (Sans-Serif, Serif, Monospace), adjust line spacing, and reorder sections.',
+      'Yes. You can effortlessly switch between 17 professionally designed ATS and modern templates (including ATS Standard, Modern Accent, Banner, Infographic, Timeline, Metro Modular, Tech, Hybrid, Compact, and Executive), choose from curated color palettes, customize typography (Sans-Serif, Serif, Monospace), and adjust line spacing.',
   },
   {
     question: 'How does the AI writing assistant help my resume?',
     answer:
       'Our AI assistant uses proven recruiter-backed models like the Google XYZ formula ("Accomplished X measured by Y by doing Z") to convert passive job duties into quantifiable business achievements, generate executive summaries, and suggest relevant technical and soft skills for your industry.',
+  },
+  {
+    question: 'Can I build a resume manually from scratch without AI?',
+    answer:
+      'Yes! In addition to the AI Resume Studio, CVMake provides a dedicated Manual Builder mode with a clean canvas, pre-formatted sections, and optional realistic sample profiles so you can type, edit, and style your resume completely by hand.',
   },
 ];
 
@@ -123,16 +133,16 @@ export default function HomePage() {
         description="Learn how to generate an ATS-optimized resume using CVMake in four easy steps without saving data on external servers."
         steps={[
           {
-            name: "Enter Your Experience and Information",
-            text: "Add your contact details, work history, education, and skills or load sample profile data.",
+            name: "Upload Existing Documents or Start Manually",
+            text: "Upload up to 3 files (PDF, DOCX, or scanned images with built-in Neural OCR) or start with a clean manual canvas.",
           },
           {
             name: "Enhance Resume Content with AI",
-            text: "Transform passive job duties into quantifiable XYZ achievement bullets and generate executive summaries.",
+            text: "Transform passive job duties into quantifiable XYZ achievement bullets and generate tailored executive summaries.",
           },
           {
             name: "Choose an ATS-Friendly Resume Template",
-            text: "Select from 9 ATS-friendly layouts engineered for high parser readability, and customize fonts and colors.",
+            text: "Select from 17 ATS-friendly layouts engineered for high parser readability, and customize fonts and colors.",
           },
           {
             name: "Download Clean Vector PDF",
@@ -190,7 +200,7 @@ export default function HomePage() {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-base shadow-sm transition-all"
             >
               <FileCheck className="w-5 h-5 text-slate-500" />
-              18 Templates
+              17 Pro Templates
             </Link>
           </div>
 
@@ -198,7 +208,7 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-700 font-medium">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-              100% Free & Unrestricted
+              100% Free &amp; Unrestricted
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-700" />
@@ -218,45 +228,39 @@ export default function HomePage() {
 
       {/* Introduction Section */}
       <section className="py-16 bg-white border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Create Your Resume With AI — Privately & Accurately
-          </h2>
-          <p className="text-slate-700 text-base sm:text-lg leading-relaxed text-justify sm:text-center">
-            Welcome to CVMake, the privacy-first AI resume builder and AI CV maker designed to give job seekers an authentic competitive edge. In a job market dominated by automated applicant tracking algorithms and high-volume recruiting pipelines, your resume must communicate measurable value in seconds.
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
+          <p className="text-justify sm:text-left">
+            Whether you need a modern <strong>AI resume builder</strong>, an academic <strong>AI CV maker</strong>, or an ATS-optimized <strong>resume maker AI</strong>, CVMake delivers recruiter-tested formatting and high-impact writing suggestions directly inside your browser. No subscription sign-ups, no hidden paywalls, and zero cloud database storage.
           </p>
-          <p className="text-slate-700 text-base leading-relaxed text-justify sm:text-center">
-            Unlike other platforms that monetize your personal employment records or lock your finished PDF behind deceitful subscription traps, CVMake executes entirely within your browser. You retain complete ownership of your career data while benefiting from state-of-the-art AI achievement drafting and real-time ATS optimization.
+          <p className="text-justify sm:text-left">
+            Applicant Tracking Systems (ATS) reject over 75% of resumes due to unparseable tables, image text, and complex multi-column grids. CVMake is engineered from the ground up to generate single-column and structured two-column hybrid documents featuring standard semantic headings, clean action verbs, and pure vector text guaranteed to achieve high parsing fidelity in Taleo, Workday, Greenhouse, and Lever.
           </p>
         </div>
       </section>
 
-      {/* How Our AI Resume Builder Works */}
+      {/* How It Works Section */}
       <section className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
-              Simple 4-Step Process
-            </span>
-            <h2 className="mt-3 text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              How Our AI Resume Builder Works
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              How It Works: 4 Simple Steps
             </h2>
-            <p className="mt-3 text-slate-600 max-w-xl mx-auto text-base">
-              Move from a blank page to a polished, ATS-ready resume in under 10 minutes.
+            <p className="mt-3 text-slate-600 max-w-2xl mx-auto text-base">
+              From raw work history to an interview-ready, recruiter-approved resume in under 5 minutes.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Step 1 */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
               <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-lg flex items-center justify-center mb-4">
                 1
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Upload Documents (Max 3)
+                Upload or Start Manually
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Upload up to 3 files (PDF, DOCX, scans/images, or plain text). Our advanced AI engine automatically extracts your career history, contacts, and skills.
+                Upload up to 3 files (PDF, DOCX, scans/images with Neural OCR) or start fresh on our blank manual canvas with preloaded sample profiles.
               </p>
             </div>
 
@@ -266,10 +270,10 @@ export default function HomePage() {
                 2
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Choose from 18 Pro Templates
+                Choose from 17 Pro Templates
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Preview your actual data live across 18 ATS-tested layouts: Banner, Infographic, Timeline, Metro, Tech, Hybrid, Compact, and Executive styles.
+                Preview your live data across 17 ATS-tested layouts: ATS Standard, Modern Accent, Banner, Infographic, Timeline, Metro, Tech, Hybrid, and Executive.
               </p>
             </div>
 
@@ -282,7 +286,7 @@ export default function HomePage() {
                 Edit &amp; Polish with AI
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Enhance bullet points into Google XYZ quantified achievements, generate executive summaries, and check live ATS compatibility scores.
+                Enhance bullet points into Google XYZ quantified achievements, generate executive summaries, and check live 0-100 ATS compatibility scores.
               </p>
             </div>
 
@@ -292,10 +296,10 @@ export default function HomePage() {
                 4
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Save &amp; Multi-Format Export
+                Vector PDF &amp; Print Export
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Download unwatermarked vector ATS PDFs, plain text for legacy portals, or JSON data backups. 100% free with zero database storage.
+                Download unwatermarked, 100% design-matched vector ATS PDFs, native print exports, plain text, or JSON backups. 100% free forever.
               </p>
             </div>
           </div>
@@ -342,9 +346,9 @@ export default function HomePage() {
 
             <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/50">
               <Layers className="w-6 h-6 text-indigo-600 mb-3" />
-              <h3 className="font-bold text-slate-900 text-base mb-1.5">9 Professional Templates</h3>
+              <h3 className="font-bold text-slate-900 text-base mb-1.5">17 Pro Templates</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Switch between ATS, Modern, Executive, Student, and Minimalist templates in real time with a single click.
+                Switch between ATS Standard, Modern, Timeline, Metro, Tech, Hybrid, Compact, and Executive styles with a single click.
               </p>
             </div>
 
@@ -366,25 +370,25 @@ export default function HomePage() {
 
             <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/50">
               <Sliders className="w-6 h-6 text-indigo-600 mb-3" />
-              <h3 className="font-bold text-slate-900 text-base mb-1.5">Easy Real-Time Editing</h3>
+              <h3 className="font-bold text-slate-900 text-base mb-1.5">Live ATS Scorecard (0-100)</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Split-screen live rendering shows changes instantly as you type with zero delay.
+                Interactive real-time diagnostics audit keyword density, bullet metrics, formatting pitfalls, and section balance.
               </p>
             </div>
 
             <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/50">
               <Download className="w-6 h-6 text-indigo-600 mb-3" />
-              <h3 className="font-bold text-slate-900 text-base mb-1.5">Instant PDF Download</h3>
+              <h3 className="font-bold text-slate-900 text-base mb-1.5">100% Vector PDF Export</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Clean, selectable vector text PDFs formatted for standard US Letter and international A4 sheets.
+                Clean, selectable vector text PDFs and native print export matching the on-screen preview with zero design distortion.
               </p>
             </div>
 
             <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/50">
               <Zap className="w-6 h-6 text-indigo-600 mb-3" />
-              <h3 className="font-bold text-slate-900 text-base mb-1.5">No Complicated Setup</h3>
+              <h3 className="font-bold text-slate-900 text-base mb-1.5">Neural OCR Document Scanner</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                No software installs, no subscriptions, and no trial countdowns. Ready to build right away.
+                Extract text from scanned physical resumes and photo images right in your browser using client-side LSTM neural OCR.
               </p>
             </div>
           </div>
@@ -502,7 +506,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">Resume Templates</h3>
               <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                Choose from 9 recruiter-approved templates tailored for different career stages: ATS, Modern, Executive, Student, Graduate, and Minimalist.
+                Choose from 17 recruiter-approved templates tailored for every career stage: ATS Standard, Modern, Banner, Infographic, Timeline, Metro, Tech, Hybrid, and Executive.
               </p>
               <Link href="/resume-templates" className="text-xs font-bold text-indigo-600 hover:underline">
                 Browse All Templates &rarr;

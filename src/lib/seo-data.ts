@@ -50,46 +50,56 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
     ],
     keyFeatures: [
       {
-        title: 'Instant Action-Verb Metrics',
+        title: 'Neural OCR & Multi-Doc Import',
         description:
-          'Convert mundane duty statements into quantifiable XYZ achievements proven to catch the recruiter’s eye.',
+          'Upload up to 3 files (PDF, DOCX, or scanned photos). Our client-side Tesseract LSTM neural engine extracts your full history in sub-seconds.',
       },
       {
-        title: 'Real-Time ATS Parsing Audit',
+        title: 'Google XYZ Bullet Optimization',
         description:
-          'Audit your resume layout, headings, and keyword density against top applicant tracking algorithms before applying.',
+          'Convert mundane duty statements into quantifiable XYZ achievements ("Accomplished X measured by Y by doing Z") powered by Gemini 1.5 Flash AI.',
       },
       {
-        title: 'Privacy-First Architecture',
+        title: '17 Recruiter-Approved ATS Templates',
         description:
-          'Your personal contact details, compensation history, and career steps remain on your device, never in a remote database.',
+          'Switch seamlessly between ATS Standard, Modern, Timeline, Metro, Tech, Hybrid, Compact, and Executive layouts with live preview.',
       },
       {
-        title: 'Clean Vector PDF Export',
+        title: 'Real-Time 0-100 ATS Scorecard',
         description:
-          'Generate pixel-perfect, selectable-text PDFs formatted for both US Letter and A4 standards.',
+          'Audit your resume layout, action verbs, keyword density, and formatting against top ATS algorithms (Taleo, Workday, Greenhouse) before applying.',
+      },
+      {
+        title: '100% Vector PDF & Native Print Engine',
+        description:
+          'Export crystal-clear, selectable-text vector PDFs and native print copies that match the on-screen preview 100% with zero design distortion.',
+      },
+      {
+        title: '100% In-Browser Privacy',
+        description:
+          'Your personal contact details, compensation history, and career trajectory remain exclusively on your device. Zero cloud database storage.',
       },
     ],
     howItWorksSteps: [
       {
         step: '1',
-        title: 'Input Your Career History',
-        description: 'Fill in your past positions, education, and credentials, or load our realistic sample profile to get started.',
+        title: 'Upload Documents or Start Fresh',
+        description: 'Upload existing resumes (PDF, DOCX, or scanned images with built-in Neural OCR) or use our blank Manual Builder with sample profiles.',
       },
       {
         step: '2',
-        title: 'Refine Bullets with AI Assistance',
-        description: 'Use the built-in AI bullet optimizer to inject high-impact action verbs and quantified outcomes.',
+        title: 'Refine Content with Gemini AI',
+        description: 'Use our AI writing assistant to generate impactful XYZ bullet points, professional executive summaries, and targeted skills.',
       },
       {
         step: '3',
-        title: 'Audit Your ATS Compatibility',
-        description: 'Review your real-time ATS score and implement actionable suggestions to eliminate parser bottlenecks.',
+        title: 'Audit Your Live ATS Score',
+        description: 'Review your real-time 0-100 ATS compatibility score and resolve structural or keyword warnings before downloading.',
       },
       {
         step: '4',
-        title: 'Download Ready-to-Send PDF',
-        description: 'Export clean, unwatermarked vector PDFs ready for submission on LinkedIn, Indeed, or company portals.',
+        title: 'Download Design-Matched Vector PDF',
+        description: 'Export unwatermarked, 100% design-matched vector PDFs formatted for US Letter and A4 standards ready for application portals.',
       },
     ],
     faqs: [
@@ -104,28 +114,34 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
           'Yes. Our templates adhere to strict ATS formatting guidelines: standard semantic headings, single-column reading hierarchy, selectable vector text, and zero complex graphic tables that confuse parsers.',
       },
       {
-        question: 'Can I customize the resume templates?',
+        question: 'How does the Neural OCR scanner work?',
         answer:
-          'Absolutely. You can switch between 9 tailored templates, adjust primary accent colors, modify typography styles, and rearrange sections in real time.',
+          'CVMake includes a client-side Tesseract 4.0.0_best LSTM neural OCR engine. You can upload photos or scans of physical paper resumes, and the OCR engine reads the text in memory without transmitting images to external servers.',
       },
       {
-        question: 'Is CVMake really free to use?',
+        question: 'Can I build a resume manually from scratch without AI?',
         answer:
-          'Yes, the core resume builder, client-side AI suggestions, live preview, and vector PDF exports are completely free without hidden paywalls.',
+          'Absolutely. CVMake provides a dedicated Manual Builder mode with clean blank fields and pre-loaded sample profiles, giving you complete manual control over every bullet point, header, and section.',
+      },
+      {
+        question: 'Why is CVMake vector PDF export superior?',
+        answer:
+          'Instead of capturing low-resolution canvas screenshots that create blurry PDFs, CVMake utilizes an isolated browser vector print engine that outputs genuine vector text, sharp SVG icons, and 100% layout fidelity matching the on-screen preview.',
       },
     ],
     relatedLinks: [
       { title: 'AI CV Maker', href: '/ai-cv-maker' },
-      { title: 'ATS Resume Builder', href: '/ats-resume-builder' },
-      { title: 'Resume Bullet Generator', href: '/tools/resume-bullet-generator' },
       { title: 'Resume Templates', href: '/resume-templates' },
+      { title: 'ATS Resume Builder', href: '/ats-resume-builder' },
+      { title: 'AI Resume Writer', href: '/ai-resume-writer' },
+      { title: 'Cover Letter Builder', href: '/cover-letter-builder' },
     ],
   },
   'ai-cv-maker': {
     slug: 'ai-cv-maker',
     title: 'AI CV Maker – Free Online Curriculum Vitae Builder | CVMake',
     metaDescription:
-      'Craft a professional academic or international Curriculum Vitae with our free AI CV maker. Multi-section templates, research sections, and instant vector PDF download.',
+      'Craft a professional academic or international Curriculum Vitae with our free AI CV maker. 17 ATS templates, research sections, and instant vector PDF download.',
     h1: 'AI CV Maker',
     subtitle:
       'Design comprehensive, multi-page Curriculum Vitae with intelligent AI drafting for academic, European, and international career paths.',
@@ -135,54 +151,58 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
     secondaryCtaLink: '/cv-templates',
     badge: 'Global & Academic Ready',
     introParagraphs: [
-      'Curriculum Vitae (CV) applications demand a thorough accounting of your professional life, including research, publications, certifications, and technical proficiencies. CVMake’s AI CV maker streamlines this process.',
-      'Our intelligent browser-based tool structures lengthy CVs with clean visual hierarchy, ensuring academic boards and international employers can quickly pinpoint your greatest achievements.',
+      'Curriculum Vitae (CV) applications demand a thorough accounting of your professional life, including research, publications, certifications, and technical proficiencies. CVMake’s AI CV maker streamlines this process with cutting-edge client-side technology.',
+      'Our intelligent browser-based tool structures lengthy CVs with clean visual hierarchy and selectable vector typography, ensuring academic boards and international employers can quickly pinpoint your greatest achievements.',
     ],
     keyFeatures: [
       {
-        title: 'Multi-Section Versatility',
-        description: 'Easily organize publications, teaching experience, grants, awards, and industry credentials.',
+        title: 'Multi-Document Ingestion & OCR',
+        description: 'Upload past CVs, transcripts, or scanned research papers. Client-side OCR and PDF parsing extracts your credentials in seconds.',
       },
       {
-        title: 'International & Academic Standards',
-        description: 'Supports UK, European (Europass-friendly), and North American academic CV layouts.',
+        title: '17 Academic & International Layouts',
+        description: 'Supports UK, European (Europass-friendly), and North American academic CV layouts across 17 versatile templates.',
       },
       {
-        title: 'Section Reordering',
-        description: 'Prioritize research over corporate experience or vice versa with simple drag-and-drop controls.',
+        title: 'Smart AI Section Structuring',
+        description: 'Easily organize publications, teaching appointments, grants, patents, awards, and industry credentials with Gemini AI.',
       },
       {
-        title: 'Private & Secure',
-        description: 'All drafts remain strictly on your computer with zero server logging or credential storage.',
+        title: '100% Vector Multi-Page PDF Export',
+        description: 'Download standard A4 or US Letter documents with consistent margins, crisp selectable text, and zero watermarks.',
+      },
+      {
+        title: 'Private & Zero Cloud Storage',
+        description: 'All drafts remain strictly on your computer with zero server logging, database storage, or account tracking.',
       },
     ],
     howItWorksSteps: [
       {
         step: '1',
         title: 'Select a Comprehensive CV Layout',
-        description: 'Choose from structured academic, modern international, or executive CV styles.',
+        description: 'Choose from structured academic, modern international, or executive CV styles across 17 templates.',
       },
       {
         step: '2',
         title: 'Populate Academic & Industry Records',
-        description: 'Add your education, publications, patents, conference presentations, and technical expertise.',
+        description: 'Add your education, publications, patents, conference presentations, and technical expertise, or import via OCR.',
       },
       {
         step: '3',
         title: 'Polish Summaries & Descriptions',
-        description: 'Use the AI assistant to articulate your research scope and institutional impact clearly.',
+        description: 'Use the AI assistant to articulate your research scope and institutional impact with Google XYZ formulas.',
       },
       {
         step: '4',
-        title: 'Export Multi-Page PDF',
-        description: 'Download standard A4 or US Letter documents with consistent margins and page breaks.',
+        title: 'Export Multi-Page Vector PDF',
+        description: 'Download standard A4 or US Letter documents with consistent margins, selectable vector typography, and page breaks.',
       },
     ],
     faqs: [
       {
         question: 'What is the difference between a Resume and a CV on CVMake?',
         answer:
-          'A resume is typically a concise 1-2 page summary focused on corporate work experience, whereas a CV is a comprehensive record of academic background, research, publications, and specialized credentials.',
+          'A resume is typically a concise 1-2 page summary focused on corporate work experience, whereas a CV is a comprehensive record of academic background, research, publications, and specialized credentials. CVMake fully supports both with 17 specialized templates.',
       },
       {
         question: 'Can I add custom sections like Publications and Grants?',
@@ -192,12 +212,19 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageData> = {
       {
         question: 'Is the generated CV suitable for European job applications?',
         answer:
-          'Yes. The clean typography and standardized section layouts meet European and international recruitment standards.',
+          'Yes. The clean typography, Europass-friendly formatting, and standardized section layouts meet European and international recruitment standards.',
+      },
+      {
+        question: 'How do I download my finished CV as a PDF?',
+        answer:
+          'Click the Download PDF button to generate a 100% vector PDF file matching your on-screen design with selectable text, zero watermarks, and no sign-up fees.',
       },
     ],
     relatedLinks: [
       { title: 'AI Resume Builder', href: '/ai-resume-builder' },
       { title: 'CV Templates', href: '/cv-templates' },
+      { title: 'Cover Letter Builder', href: '/cover-letter-builder' },
+      { title: 'ATS Resume Builder', href: '/ats-resume-builder' },
       { title: 'Resume vs CV Guide', href: '/blog/resume-vs-cv' },
       { title: 'Executive Resume Template', href: '/resume-templates/executive' },
     ],
@@ -1333,6 +1360,62 @@ export const TEMPLATE_SHOWCASES = [
     tagline: 'Sophisticated typography pairing with portfolio links and modern styling',
     bestFor: 'Marketers, copywriters, creative directors, UX designers',
     features: ['Portfolio highlight links', 'Distinguished font pairing', 'Distinctive visual accents'],
+  },
+  {
+    slug: 'banner',
+    title: 'Vibrant Banner Resume Template',
+    tagline: 'Bold colored header banner with clean contact pills and modern spacing',
+    bestFor: 'Designers, modern tech professionals, growth marketers, consultants',
+    features: ['High-impact colored banner', 'Backdrop blur contact pills', 'Crisp section dividers', 'Modern flair'],
+  },
+  {
+    slug: 'infographic',
+    title: 'Modern Infographic Resume Template',
+    tagline: 'Visual two-column layout with sidebar stats and card blocks',
+    bestFor: 'Product managers, marketers, data analysts, technical leaders',
+    features: ['30/70 visual split', 'Compact sidebar for skills & education', 'Card styling', 'High density'],
+  },
+  {
+    slug: 'timeline',
+    title: 'Career Timeline Resume Template',
+    tagline: 'Connected chronological milestone rail showcasing rapid career progression',
+    bestFor: 'Rising professionals, fast-promoted engineers, career climbers',
+    features: ['Connected timeline line', 'Milestone badges', 'Visual career progression', 'Promotions focus'],
+  },
+  {
+    slug: 'metro',
+    title: 'Metro Modular Resume Template',
+    tagline: 'Contemporary flat UI with top colored bar and badge pill headers',
+    bestFor: 'UI/UX designers, frontend engineers, digital creatives, product leads',
+    features: ['Colored top accent bar', 'Badge-style section pills', 'Clean box layout', 'Modern typography'],
+  },
+  {
+    slug: 'tech',
+    title: 'Tech Engineer Resume Template',
+    tagline: 'Dark terminal-inspired slate header with monospace skill tags',
+    bestFor: 'Software developers, DevOps engineers, cloud architects, cybersecurity',
+    features: ['Dark slate header', 'Terminal-inspired monospace tags', 'Technical skill grid', 'Developer aesthetic'],
+  },
+  {
+    slug: 'hybrid',
+    title: 'Two-Column Hybrid Resume Template',
+    tagline: 'Balanced two-column architecture prioritizing technical skills & work history',
+    bestFor: 'Full-stack engineers, IT managers, multi-disciplinary professionals',
+    features: ['Permanent sidebar', 'Border-separated columns', 'Dual-axis scanning', 'ATS parser safe'],
+  },
+  {
+    slug: 'compact',
+    title: 'Compact 1-Page Pro Resume Template',
+    tagline: 'High-density spatial engineering guaranteed to fit dense experience on 1 sheet',
+    bestFor: 'Experienced professionals aiming for strict 1-page limits, finance, law',
+    features: ['Dense information hierarchy', 'Zero wasted whitespace', 'Single-page guarantee', 'Crisp margins'],
+  },
+  {
+    slug: 'elegant',
+    title: 'Elegant Serif Resume Template',
+    tagline: 'Refined classical serif typography with understated corporate accents',
+    bestFor: 'Lawyers, executive directors, academia, consulting, luxury industries',
+    features: ['Editorial serif typography', 'Subtle horizontal rules', 'Distinguished aesthetic', 'Timeless look'],
   },
 ];
 

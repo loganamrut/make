@@ -613,7 +613,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
   };
 
   // Section: Certifications & Awards
-  const renderCertifications = () => {
+  const renderCertifications = (isSidebar: boolean = false) => {
     const hasCerts = resume.certifications.length > 0;
     const hasAwards = resume.awards.length > 0;
     if (!hasCerts && !hasAwards) return null;

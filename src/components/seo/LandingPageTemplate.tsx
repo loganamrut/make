@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
-import { WebApplicationSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/JsonLd';
+import { WebApplicationSchema, BreadcrumbSchema, HowToSchema, FAQSchema } from '@/components/seo/JsonLd';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { SeoLandingPageData } from '@/lib/seo-data';
 import {
@@ -30,6 +30,7 @@ export function LandingPageTemplate({ data }: LandingPageTemplateProps) {
         url={`https://cvmake.dev/${data.slug}/`}
       />
       <BreadcrumbSchema items={breadcrumbItems} />
+      {data.faqs && data.faqs.length > 0 && <FAQSchema faqs={data.faqs} />}
       {data.howItWorksSteps && data.howItWorksSteps.length > 0 && (
         <HowToSchema
           name={`How to use ${data.h1}`}

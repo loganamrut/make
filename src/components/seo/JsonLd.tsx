@@ -41,12 +41,16 @@ export function WebApplicationSchema({
     softwareVersion: '2.0',
     browserRequirements: 'Requires JavaScript. Requires HTML5.',
     featureList: [
-      'Client-side AI resume drafting',
-      'Real-time ATS parsing audit',
-      'Google XYZ formula achievement bullet generator',
-      '9 professional ATS-friendly resume templates',
-      'Clean vector PDF export and print formatting',
-      'Zero database architecture – 100% browser privacy',
+      'Client-side Google Gemini 1.5 Flash AI resume parsing & drafting',
+      'Tesseract 4.0.0_best Neural LSTM OCR scanner for physical & image resumes',
+      'pdfjs-dist digital vector PDF text extractor',
+      'Real-time live ATS scoring & diagnostic scorecard (0-100 audit)',
+      'Google XYZ formula achievement bullet point generator',
+      'AI professional summary generator with customizable executive tones',
+      '17 recruiter-approved ATS-friendly resume & CV templates',
+      'Dual-mode builder: AI Resume Studio & Manual Canvas',
+      '100% vector PDF & native print export with zero layout distortion',
+      'Zero database architecture – 100% private in-browser processing',
     ],
   };
 
