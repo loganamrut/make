@@ -111,8 +111,21 @@ export async function downloadDocumentAsPdf({
     const h = el as HTMLElement;
     h.style.lineHeight = '1.35';
     if (h.classList.contains('border-b-2') || h.style.borderBottomWidth) {
-      h.style.paddingBottom = '5px';
-      h.style.marginBottom = '12px';
+      h.style.paddingBottom = '4px';
+      h.style.marginBottom = '10px';
+    }
+  });
+
+  // Section badge spans (e.g. Metro template headers)
+  clonedNode.querySelectorAll('h2 span').forEach((el) => {
+    const h = el as HTMLElement;
+    if (h.style.backgroundColor && h.style.backgroundColor !== 'transparent') {
+      h.style.display = 'inline-block';
+      h.style.lineHeight = '16px';
+      h.style.padding = '3px 9px';
+      h.style.verticalAlign = 'middle';
+      h.style.boxSizing = 'border-box';
+      h.style.whiteSpace = 'nowrap';
     }
   });
 
@@ -166,10 +179,12 @@ export async function downloadDocumentAsPdf({
     const pageCanvasHeight = Math.round(canvas.width * (pdfHeightMm / pdfWidthMm));
     const totalHeight = canvas.height;
 
-    // Single-page document:
-    // If total content fits within one page, fill the full page so page background and
-    // layout proportions look identical to standard printed sheets.
-    if (totalHeight <= pageCanvasHeight + 40) {
+    // Single-page vs multi-page threshold:
+    // If total content fits within 1 page (or slight <= 9% overflow),
+    // proportionally scale onto 1 single page so users never get an accidental 2-line second page!
+    const maxSinglePageThreshold = Math.round(pageCanvasHeight * 1.09);
+
+    if (totalHeight <= maxSinglePageThreshold) {
       const pageCanvas = document.createElement('canvas');
       pageCanvas.width = canvas.width;
       pageCanvas.height = pageCanvasHeight;
@@ -178,7 +193,16 @@ export async function downloadDocumentAsPdf({
       if (pageCtx) {
         pageCtx.fillStyle = '#ffffff';
         pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
-        pageCtx.drawImage(canvas, 0, 0);
+
+        if (totalHeight <= pageCanvasHeight) {
+          pageCtx.drawImage(canvas, 0, 0);
+        } else {
+          // Proportionally fit slightly overflowing content onto 1 clean page
+          const scaleFactor = pageCanvasHeight / totalHeight;
+          const scaledWidth = canvas.width * scaleFactor;
+          const offsetX = (canvas.width - scaledWidth) / 2;
+          pageCtx.drawImage(canvas, offsetX, 0, scaledWidth, pageCanvasHeight);
+        }
 
         const pageData = pageCanvas.toDataURL('image/png');
         pdf.addImage(pageData, 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
