@@ -309,7 +309,7 @@ function BuilderContent() {
 
             {/* Right Column: Live Resume Preview */}
             <div
-              className={`w-full lg:w-[52%] xl:w-[55%] h-full overflow-y-auto ${
+              className={`w-full lg:w-[52%] xl:w-[55%] h-full overflow-y-auto preview-column-container print:!block print:!w-full print:!h-auto print:!overflow-visible ${
                 mobileTab === 'preview' ? 'block' : 'hidden lg:block'
               }`}
             >
