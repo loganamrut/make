@@ -46,8 +46,8 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
   const renderContactItem = (icon: React.ReactNode, text?: string, href?: string) => {
     if (!text) return null;
     return (
-      <span className="inline-flex items-center gap-1.5 text-slate-600">
-        <span className="w-3.5 h-3.5 inline-flex items-center justify-center flex-shrink-0 text-slate-500">
+      <span className="inline-flex items-center gap-1.5 text-slate-600 text-xs leading-[18px]">
+        <span className="w-3.5 h-3.5 flex items-center justify-center flex-shrink-0 text-slate-500 pt-[2px]">
           {icon}
         </span>
         {href ? (
@@ -55,12 +55,12 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
             href={href.startsWith('http') ? href : `https://${href}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:underline text-slate-700"
+            className="hover:underline text-slate-700 leading-[18px]"
           >
             {text}
           </a>
         ) : (
-          <span>{text}</span>
+          <span className="leading-[18px]">{text}</span>
         )}
       </span>
     );
@@ -69,7 +69,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
   const renderSectionHeader = (title: string, icon?: React.ReactNode) => {
     if (template === 'tech') {
       return (
-        <h2 className="text-xs font-mono font-bold uppercase tracking-wider mb-2 pb-0.5 border-b border-slate-300 flex items-center gap-1.5" style={{ color: primaryColor }}>
+        <h2 className="text-xs font-mono font-bold uppercase tracking-wider mb-3 pb-1 border-b border-slate-300 flex items-center gap-1.5 leading-normal" style={{ color: primaryColor }}>
           <span className="text-slate-400">{'//'}</span>
           {icon && <span className="w-3.5 h-3.5">{icon}</span>}
           {title}
@@ -78,9 +78,9 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     }
     if (template === 'metro') {
       return (
-        <div className="mb-2.5 flex items-center gap-2">
+        <div className="mb-3.5 flex items-center gap-2">
           <span
-            className="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded text-white shadow-xs inline-flex items-center gap-1.5"
+            className="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded text-white shadow-xs inline-flex items-center gap-1.5 leading-none"
             style={{ backgroundColor: primaryColor }}
           >
             {icon && <span className="w-3 h-3">{icon}</span>}
@@ -93,7 +93,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     if (template === 'banner') {
       return (
         <h2
-          className="text-xs font-extrabold uppercase tracking-wider mb-2.5 pb-1 border-b-2 flex items-center justify-between"
+          className="text-xs font-extrabold uppercase tracking-wider mb-3.5 pb-1.5 border-b-2 flex items-center justify-between leading-normal"
           style={{ borderColor: primaryColor, color: primaryColor }}
         >
           <span className="flex items-center gap-1.5">
@@ -107,11 +107,11 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     if (template === 'infographic') {
       return (
         <h2
-          className="text-xs font-black uppercase tracking-wider mb-2.5 pb-1 flex items-center gap-2"
+          className="text-xs font-black uppercase tracking-wider mb-3 pb-1 flex items-center gap-2 leading-normal"
           style={{ color: primaryColor }}
         >
           <span
-            className="w-2.5 h-2.5 rounded-full shadow-xs"
+            className="w-2.5 h-2.5 rounded-full flex-shrink-0 shadow-xs"
             style={{ backgroundColor: primaryColor }}
           />
           <span>{title}</span>
@@ -122,7 +122,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     if (template === 'timeline') {
       return (
         <h2
-          className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"
+          className="text-xs font-bold uppercase tracking-wider mb-3.5 flex items-center gap-2 leading-normal"
           style={{ color: primaryColor }}
         >
           <span
@@ -138,8 +138,8 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     }
     if (template === 'elegant') {
       return (
-        <div className="mb-2 text-center">
-          <h2 className="text-xs font-serif font-bold uppercase tracking-widest text-slate-900 pb-1">
+        <div className="mb-3 text-center">
+          <h2 className="text-xs font-serif font-bold uppercase tracking-widest text-slate-900 pb-1.5 leading-normal">
             {title}
           </h2>
           <div className="w-16 h-px mx-auto" style={{ backgroundColor: primaryColor }} />
@@ -149,7 +149,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     if (template === 'modern') {
       return (
         <h2
-          className="text-xs font-bold uppercase tracking-wider mb-2 pl-2 border-l-3"
+          className="text-xs font-bold uppercase tracking-wider mb-3 pl-2 border-l-3 leading-normal"
           style={{ borderColor: primaryColor, color: primaryColor }}
         >
           {title}
@@ -158,7 +158,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     }
     return (
       <h2
-        className="text-xs font-bold uppercase tracking-wider mb-2 pb-1 border-b-2"
+        className="text-xs font-bold uppercase tracking-wider mb-3.5 pb-1.5 border-b-2 leading-normal"
         style={{ borderColor: primaryColor, color: primaryColor }}
       >
         {title}
@@ -172,7 +172,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     return (
       <section className="mb-5">
         {renderSectionHeader('Professional Summary')}
-        <p className="text-slate-800 leading-relaxed text-[13px] text-justify">{resume.summary}</p>
+        <p className="text-slate-800 text-[13px] leading-[21px] text-justify">{resume.summary}</p>
       </section>
     );
   };
@@ -212,13 +212,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
                   </div>
                 </div>
                 {exp.bullets.length > 0 && (
-                  <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
+                  <div className="mt-1.5 space-y-1.5 text-slate-700 text-[12.5px]">
                     {exp.bullets
                       .filter(b => b.trim().length > 0)
                       .map((bullet, idx) => (
-                        <div key={idx} className="flex items-start gap-2 leading-relaxed">
-                          <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
-                          <span className="flex-1 min-w-0">{bullet}</span>
+                        <div key={idx} className="flex items-start gap-2.5 leading-[19px]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0 mt-[6.5px] inline-block" />
+                          <span className="flex-1 min-w-0 leading-[19px]">{bullet}</span>
                         </div>
                       ))}
                   </div>
@@ -257,13 +257,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
                   </div>
                 </div>
                 {exp.bullets.length > 0 && (
-                  <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
+                  <div className="mt-1.5 space-y-1.5 text-slate-700 text-[12.5px]">
                     {exp.bullets
                       .filter(b => b.trim().length > 0)
                       .map((bullet, idx) => (
-                        <div key={idx} className="flex items-start gap-2 leading-relaxed">
-                          <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
-                          <span className="flex-1 min-w-0">{bullet}</span>
+                        <div key={idx} className="flex items-start gap-2.5 leading-[19px]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0 mt-[6.5px] inline-block" />
+                          <span className="flex-1 min-w-0 leading-[19px]">{bullet}</span>
                         </div>
                       ))}
                   </div>
@@ -301,13 +301,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
                 </div>
               </div>
               {exp.bullets.length > 0 && (
-                <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
+                <div className="mt-1.5 space-y-1.5 text-slate-700 text-[12.5px]">
                   {exp.bullets
                     .filter(b => b.trim().length > 0)
                     .map((bullet, idx) => (
-                      <div key={idx} className="flex items-start gap-2 leading-relaxed">
-                        <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
-                        <span className="flex-1 min-w-0">{bullet}</span>
+                      <div key={idx} className="flex items-start gap-2.5 leading-[19px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0 mt-[6.5px] inline-block" />
+                        <span className="flex-1 min-w-0 leading-[19px]">{bullet}</span>
                       </div>
                     ))}
                 </div>
@@ -403,14 +403,14 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
             <div key={edu.id} className="text-slate-800">
               {isSidebar ? (
                 // Clean stacked layout for narrow sidebar (prevents 5-line awkward wrapping)
-                <div className="space-y-0.5">
-                  <div className="font-bold text-slate-900 leading-snug text-[12.5px]">
+                <div className="space-y-1">
+                  <div className="font-bold text-slate-900 text-[12.5px] leading-[18px]">
                     {edu.degree} in {edu.field}
                   </div>
-                  <div className="text-slate-600 font-medium text-xs">
+                  <div className="text-slate-600 font-medium text-xs leading-[16px]">
                     {edu.school}
                   </div>
-                  <div className="text-slate-500 text-[11px] font-semibold">
+                  <div className="text-slate-500 text-[11.5px] font-semibold leading-[16px]">
                     {edu.startDate} – {edu.endDate}
                     {edu.gpa && <span className="ml-1.5">• GPA: {edu.gpa}</span>}
                     {edu.honors && <span className="ml-1.5">• {edu.honors}</span>}
@@ -462,16 +462,20 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
           <div className="space-y-3 text-xs text-slate-800">
             {hasTech && (
               <div>
-                <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Technical Stack:</span>
+                <span className="font-bold text-slate-900 block mb-1.5 text-[11.5px]">Technical Stack:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {resume.skills.technical.map((s, idx) => (
                     <span
                       key={idx}
-                      className="px-2 py-0.5 rounded-md text-[11px] font-semibold transition-colors"
+                      className="rounded-md text-[11px] font-semibold"
                       style={{
                         backgroundColor: `${primaryColor}15`,
                         color: primaryColor,
                         border: `1px solid ${primaryColor}30`,
+                        display: 'inline-block',
+                        lineHeight: '15px',
+                        padding: '3px 8px',
+                        verticalAlign: 'middle',
                       }}
                     >
                       {s}
@@ -482,12 +486,18 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
             )}
             {hasTools && (
               <div>
-                <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Tools & Platforms:</span>
+                <span className="font-bold text-slate-900 block mb-1.5 text-[11.5px]">Tools & Platforms:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {resume.skills.tools.map((t, idx) => (
                     <span
                       key={idx}
-                      className="px-2 py-0.5 bg-slate-100 text-slate-700 text-[11px] font-medium rounded-md border border-slate-200"
+                      className="bg-slate-100 text-slate-700 text-[11px] font-medium rounded-md border border-slate-200"
+                      style={{
+                        display: 'inline-block',
+                        lineHeight: '15px',
+                        padding: '3px 8px',
+                        verticalAlign: 'middle',
+                      }}
                     >
                       {t}
                     </span>
@@ -498,13 +508,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
             {hasSoft && (
               <div>
                 <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Core Competencies:</span>
-                <p className="text-slate-700 text-xs leading-relaxed">{resume.skills.soft.join(' • ')}</p>
+                <p className="text-slate-700 text-xs leading-[19px]">{resume.skills.soft.join(' • ')}</p>
               </div>
             )}
             {hasLang && (
               <div>
                 <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Languages:</span>
-                <p className="text-slate-700 text-xs">{resume.skills.languages.join(', ')}</p>
+                <p className="text-slate-700 text-xs leading-[19px]">{resume.skills.languages.join(', ')}</p>
               </div>
             )}
           </div>
@@ -577,13 +587,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
               </div>
               <p className="text-xs text-slate-700 mt-0.5 leading-relaxed">{proj.description}</p>
               {proj.bullets.length > 0 && (
-                <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
+                <div className="mt-1.5 space-y-1.5 text-slate-700 text-[12.5px]">
                   {proj.bullets
                     .filter(b => b.trim().length > 0)
                     .map((b, idx) => (
-                      <div key={idx} className="flex items-start gap-2 leading-relaxed">
-                        <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
-                        <span className="flex-1 min-w-0">{b}</span>
+                      <div key={idx} className="flex items-start gap-2.5 leading-[19px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0 mt-[6.5px] inline-block" />
+                        <span className="flex-1 min-w-0 leading-[19px]">{b}</span>
                       </div>
                     ))}
                 </div>

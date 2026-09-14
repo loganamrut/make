@@ -74,6 +74,57 @@ export async function downloadDocumentAsPdf({
   clonedNode.style.flexDirection = 'column';
   clonedNode.style.visibility = 'visible';
 
+  // Apply pixel-perfect normalizations to cloned DOM before html2canvas capture:
+  // 1. SVG alignment: override Lucide 24x24 attributes and center relative to text
+  clonedNode.querySelectorAll('svg').forEach((svg) => {
+    const isTiny = svg.classList.contains('w-3') || svg.classList.contains('h-3');
+    const size = isTiny ? '12' : '13';
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    svg.style.width = `${size}px`;
+    svg.style.height = `${size}px`;
+    svg.style.display = 'inline-block';
+    svg.style.verticalAlign = 'middle';
+    svg.style.flexShrink = '0';
+  });
+
+  // Contact header icons: counteract html2canvas upward bias
+  clonedNode.querySelectorAll('header .inline-flex svg, header .flex svg, .inline-flex svg').forEach((svg) => {
+    const el = svg as HTMLElement;
+    el.style.position = 'relative';
+    el.style.top = '1px';
+  });
+
+  // 2. Lock pill badge bounding box (prevents "crm go outside box")
+  clonedNode.querySelectorAll('span.rounded-md').forEach((el) => {
+    const h = el as HTMLElement;
+    h.style.display = 'inline-block';
+    h.style.lineHeight = '15px';
+    h.style.padding = '3px 8px';
+    h.style.verticalAlign = 'middle';
+    h.style.boxSizing = 'border-box';
+    h.style.whiteSpace = 'nowrap';
+  });
+
+  // 3. Section headers: prevent border collisions with text descenders
+  clonedNode.querySelectorAll('h2').forEach((el) => {
+    const h = el as HTMLElement;
+    h.style.lineHeight = '1.35';
+    if (h.classList.contains('border-b-2') || h.style.borderBottomWidth) {
+      h.style.paddingBottom = '5px';
+      h.style.marginBottom = '12px';
+    }
+  });
+
+  // 4. Multi-line text line-height enforcement
+  clonedNode.querySelectorAll('p').forEach((p) => {
+    const el = p as HTMLElement;
+    const computed = window.getComputedStyle(el);
+    if (computed.lineHeight === 'normal' || parseInt(computed.lineHeight) < 18) {
+      el.style.lineHeight = '19px';
+    }
+  });
+
   stagingContainer.appendChild(clonedNode);
   document.body.appendChild(stagingContainer);
 
