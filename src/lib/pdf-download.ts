@@ -10,16 +10,22 @@ interface GeneratePdfOptions {
 }
 
 /**
- * Downloads a pixel-perfect PDF that exactly matches the on-screen preview.
+ * Pixel-perfect PDF export that matches the on-screen preview 100%.
  *
- * Strategy: Capture the live DOM element directly (so html2canvas uses the real
- * browser stylesheet with all Tailwind classes, sm:/lg: breakpoints, and fonts
- * fully resolved). Before capture we:
- *   1. Temporarily make the preview pane visible if it is hidden (mobile tab).
- *   2. Reset any CSS zoom/scale transform on the parent wrapper.
- *   3. Use html2canvas `onclone` only for cosmetic PDF-specific tweaks
- *      (strip box-shadow, lock pill geometry, fix SVG sizes).
- *   4. Restore every mutated style in a finally block.
+ * Root cause of blank PDFs:
+ *   The builder layout has `hidden lg:block` on the preview column.
+ *   html2canvas evaluates CSS using its windowWidth parameter. When
+ *   windowWidth < 1024px, Tailwind's lg: breakpoint does NOT fire, so
+ *   getComputedStyle in the clone evaluates the column as display:none —
+ *   producing a completely blank white canvas regardless of what the real
+ *   browser viewport looks like.
+ *
+ * Solution:
+ *   1. Use windowWidth >= 1024 so lg: fires inside html2canvas's clone.
+ *   2. In onclone, ALSO force display:block with !important on every
+ *      ancestor up to <body> — belt-and-suspenders guarantee.
+ *   3. In onclone, strip the CSS scale transform from the zoom wrapper.
+ *   4. Apply cosmetic PDF-only tweaks (no shadow, crisp SVG sizes, pill locks).
  */
 export async function downloadDocumentAsPdf({
   elementId = 'resume-print-area',
@@ -31,65 +37,50 @@ export async function downloadDocumentAsPdf({
 
   const target = document.getElementById(elementId);
   if (!target) {
-    console.warn(`[PDF] Element #${elementId} not found – falling back to print dialog.`);
+    console.warn(`[PDF] #${elementId} not found — falling back to print dialog.`);
     triggerPrintResume(fullName);
     return false;
   }
 
-  // -- 1. Filename ----------
+  // -- 1. Filename -------------------------------------------------------
   const cleanName = fullName.trim()
     ? fullName.trim().replace(/[^a-zA-Z0-9_-]/g, '_')
     : 'My';
   const suffix = documentType === 'cover-letter' ? 'Cover_Letter' : 'Resume';
   const fileName = `${cleanName}_${suffix}.pdf`;
 
-  // -- 2. Paper dimensions ----------
+  // -- 2. Paper dimensions -----------------------------------------------
   const isA4 = format === 'a4';
-  const pdfWidthMm  = isA4 ? 210     : 215.9;
-  const pdfHeightMm = isA4 ? 297     : 279.4;
-  const targetWidthPx = isA4 ? 794   : 816;   // at 96 DPI
+  const pdfWidthMm  = isA4 ? 210   : 215.9;
+  const pdfHeightMm = isA4 ? 297   : 279.4;
+  const targetWidthPx = isA4 ? 794 : 816;
 
-  // -- 3. Wait for fonts ----------
+  // -- 3. Wait for fonts -------------------------------------------------
   try {
     await (document as unknown as { fonts: { ready: Promise<unknown> } }).fonts.ready;
   } catch { /* ignore */ }
 
-  // -- 4. Collect ancestors whose styles we need to temporarily mutate -------
-  // We need to:
-  //   a) Make the preview pane column visible if it is hidden.
-  //   b) Reset the CSS transform (zoom) applied by ResumePreview.
-  //   c) Make the document itself visible if somehow hidden.
-
+  // -- 4. Reset live-DOM zoom transform (restore in finally) ------------
+  // This prevents the captured canvas being zoomed if user has e.g. 80% zoom.
   interface SavedStyle { el: HTMLElement; prop: string; value: string }
   const saved: SavedStyle[] = [];
+  const save = (el: HTMLElement, prop: string) =>
+    saved.push({ el, prop, value: el.style.getPropertyValue(prop) });
 
-  const save = (el: HTMLElement, prop: keyof CSSStyleDeclaration) => {
-    saved.push({ el, prop: prop as string, value: el.style[prop as string] || '' });
-  };
-
-  // Walk up from target to find the preview pane column and scale wrapper.
-  let el: HTMLElement | null = target.parentElement;
-  while (el && el !== document.body) {
-    const cs = window.getComputedStyle(el);
-    // (a) Hidden columns: make them block so html2canvas can see the element.
-    if (cs.display === 'none') {
-      save(el, 'display');
-      el.style.display = 'block';
+  let walker: HTMLElement | null = target.parentElement;
+  while (walker && walker !== document.body) {
+    const tr = window.getComputedStyle(walker).transform;
+    if (tr && tr !== 'none' && tr !== '') {
+      save(walker, 'transform');
+      save(walker, 'transition');
+      walker.style.setProperty('transform', 'none', 'important');
+      walker.style.setProperty('transition', 'none', 'important');
     }
-    // (b) CSS transform on the zoom wrapper (transform: scale(…)).
-    if (cs.transform && cs.transform !== 'none') {
-      save(el, 'transform');
-      save(el, 'transition');
-      save(el, 'transformOrigin');
-      el.style.transform = 'none';
-      el.style.transition = 'none';
-      el.style.transformOrigin = 'top center';
-    }
-    el = el.parentElement;
+    walker = walker.parentElement;
   }
 
-  // Wait one paint for style mutations to settle.
-  await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 60)));
+  // One paint to let transform removal settle
+  await new Promise(r => requestAnimationFrame(() => setTimeout(r, 50)));
 
   try {
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
@@ -98,67 +89,87 @@ export async function downloadDocumentAsPdf({
     ]);
 
     const canvas = await html2canvas(target, {
-      // -- Capture config ----------
-      scale: 2.5,               // 240 DPI — sharp without excessive file size
+      // CRITICAL: use 1280px so Tailwind lg: (1024px) fires inside the clone.
+      // This means the preview column (hidden lg:block) evaluates as block,
+      // making #resume-print-area visible for capture.
+      windowWidth: 1280,
+      scale: 2.5,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
       logging: false,
 
-      // Fix the virtual viewport to exactly paper width so html2canvas uses
-      // sm: breakpoints correctly (816px ≥ 640px triggers sm:, ≥ 768px triggers md:).
-      windowWidth: targetWidthPx,
+      onclone: (clonedDoc: Document, clonedEl: HTMLElement) => {
+        // A. Force every ancestor visible with !important — guarantees no
+        //    display:none ancestor even if a media query still evaluates wrong.
+        let ancestor = clonedEl.parentElement;
+        while (ancestor && ancestor !== clonedDoc.body) {
+          ancestor.style.setProperty('display', 'block', 'important');
+          ancestor.style.setProperty('visibility', 'visible', 'important');
+          ancestor.style.setProperty('opacity', '1', 'important');
+          ancestor.style.setProperty('transform', 'none', 'important');
+          ancestor.style.setProperty('overflow', 'visible', 'important');
+          ancestor.style.setProperty('height', 'auto', 'important');
+          ancestor.style.setProperty('min-height', '0', 'important');
+          ancestor = ancestor.parentElement;
+        }
 
-      // -- onclone: cosmetic-only PDF tweaks ----------
-      // These run inside html2canvas's own document clone, so they don't affect
-      // what the user sees on screen.
-      onclone: (_clonedDoc, clonedEl) => {
-        // Strip preview drop-shadow and border
-        clonedEl.style.boxShadow = 'none';
-        clonedEl.style.border = 'none';
-        clonedEl.style.width = `${targetWidthPx}px`;
-        clonedEl.style.minWidth = `${targetWidthPx}px`;
-        clonedEl.style.maxWidth = `${targetWidthPx}px`;
+        // B. Strip PDF-irrelevant visuals from the resume document itself
+        clonedEl.style.setProperty('box-shadow', 'none', 'important');
+        clonedEl.style.setProperty('border', 'none', 'important');
+        clonedEl.style.setProperty('transform', 'none', 'important');
+        clonedEl.style.setProperty('margin', '0', 'important');
+        clonedEl.style.setProperty('width', `${targetWidthPx}px`, 'important');
+        clonedEl.style.setProperty('min-width', `${targetWidthPx}px`, 'important');
+        clonedEl.style.setProperty('max-width', `${targetWidthPx}px`, 'important');
 
-        // Fix Lucide SVG sizes (they default to 24×24 without explicit attrs)
-        clonedEl.querySelectorAll('svg').forEach(svg => {
+        // C. Fix Lucide SVG sizes (default 24x24 is too large)
+        clonedEl.querySelectorAll('svg').forEach(svgEl => {
+          const svg = svgEl as HTMLElement;
           const tiny = svg.classList.contains('w-3') || svg.classList.contains('h-3');
           const sz = tiny ? '12' : '14';
           svg.setAttribute('width', sz);
           svg.setAttribute('height', sz);
-          (svg as HTMLElement).style.cssText += `;width:${sz}px;height:${sz}px;display:inline-block;vertical-align:middle;flex-shrink:0`;
+          svg.style.cssText += `;width:${sz}px;height:${sz}px;display:inline-block;vertical-align:middle;flex-shrink:0;`;
         });
 
-        // Lock pill / badge bounding boxes (prevents text escaping background)
-        clonedEl.querySelectorAll<HTMLElement>('span.rounded-md,span.rounded,span.rounded-full,span.rounded-lg').forEach(h => {
-          h.style.display     = 'inline-block';
-          h.style.lineHeight  = '1.4';
+        // D. Lock pill / badge bounding boxes so text never escapes background
+        clonedEl.querySelectorAll<HTMLElement>(
+          'span.rounded-md,span.rounded,span.rounded-full,span.rounded-lg,span.rounded-xl'
+        ).forEach(h => {
+          h.style.display = 'inline-block';
+          h.style.lineHeight = '1.4';
           h.style.verticalAlign = 'middle';
-          h.style.boxSizing   = 'border-box';
-          h.style.whiteSpace  = 'nowrap';
+          h.style.boxSizing = 'border-box';
+          h.style.whiteSpace = 'nowrap';
         });
 
-        // Stabilise section h2 borders
-        clonedEl.querySelectorAll<HTMLElement>('h2').forEach(h => {
-          if (h.style.borderBottomWidth || h.classList.contains('border-b-2') || h.classList.contains('border-b')) {
-            h.style.paddingBottom = '4px';
-            h.style.marginBottom  = '10px';
-          }
-        });
-
-        // Metro badge spans
+        // E. Metro template badge spans
         clonedEl.querySelectorAll<HTMLElement>('h2 span').forEach(h => {
-          if (h.style.backgroundColor && h.style.backgroundColor !== 'transparent' && h.style.backgroundColor !== '') {
-            h.style.display      = 'inline-block';
-            h.style.lineHeight   = '16px';
-            h.style.padding      = '3px 9px';
+          const bg = h.style.backgroundColor;
+          if (bg && bg !== 'transparent' && bg !== '') {
+            h.style.display = 'inline-block';
+            h.style.lineHeight = '16px';
+            h.style.padding = '3px 9px';
             h.style.verticalAlign = 'middle';
-            h.style.boxSizing    = 'border-box';
-            h.style.whiteSpace   = 'nowrap';
+            h.style.boxSizing = 'border-box';
+            h.style.whiteSpace = 'nowrap';
           }
         });
 
-        // Animate pulse: remove animation so it freezes in rendered state
+        // F. Section h2 border stabilisation
+        clonedEl.querySelectorAll<HTMLElement>('h2').forEach(h => {
+          if (
+            h.classList.contains('border-b-2') ||
+            h.classList.contains('border-b') ||
+            (h.style.borderBottomWidth && h.style.borderBottomWidth !== '0px')
+          ) {
+            h.style.paddingBottom = '4px';
+            h.style.marginBottom = '10px';
+          }
+        });
+
+        // G. Remove animations so elements render in their final state
         clonedEl.querySelectorAll<HTMLElement>('.animate-pulse,.animate-spin').forEach(h => {
           h.style.animation = 'none';
         });
@@ -169,7 +180,7 @@ export async function downloadDocumentAsPdf({
       throw new Error('[PDF] html2canvas produced an empty canvas.');
     }
 
-    // -- 5. Build PDF pages ----------
+    // -- 5. Build PDF pages ------------------------------------------------
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -177,41 +188,35 @@ export async function downloadDocumentAsPdf({
       compress: true,
     });
 
-    const pageCanvasHeight = Math.round(canvas.width * (pdfHeightMm / pdfWidthMm));
-    const totalHeight = canvas.height;
+    const pageCanvasH = Math.round(canvas.width * (pdfHeightMm / pdfWidthMm));
+    const totalH = canvas.height;
 
-    // Single-page protection: if content fits within 1 page ±15%, force it
-    // onto exactly 1 page to avoid an accidental near-empty second page.
-    const singlePageLimit = Math.round(pageCanvasHeight * 1.15);
-
-    if (totalHeight <= singlePageLimit) {
+    // If content fits in 1 page +-15%, force onto exactly 1 page to avoid
+    // accidental near-empty second pages.
+    if (totalH <= Math.round(pageCanvasH * 1.15)) {
       const pg = document.createElement('canvas');
       pg.width  = canvas.width;
-      pg.height = pageCanvasHeight;
+      pg.height = pageCanvasH;
       const ctx = pg.getContext('2d')!;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, pg.width, pg.height);
-
-      if (totalHeight <= pageCanvasHeight) {
+      if (totalH <= pageCanvasH) {
         ctx.drawImage(canvas, 0, 0);
       } else {
-        // Scale down slightly to fit the overflow onto one page
-        const sf = pageCanvasHeight / totalHeight;
+        const sf = pageCanvasH / totalH;
         const sw = canvas.width * sf;
-        const ox = (canvas.width - sw) / 2;
-        ctx.drawImage(canvas, ox, 0, sw, pageCanvasHeight);
+        ctx.drawImage(canvas, (canvas.width - sw) / 2, 0, sw, pageCanvasH);
       }
       pdf.addImage(pg.toDataURL('image/png', 1.0), 'PNG', 0, 0, pdfWidthMm, pdfHeightMm, undefined, 'FAST');
     } else {
-      // Multi-page document: slice at exact page boundaries
-      const totalPages = Math.ceil(totalHeight / pageCanvasHeight);
+      const totalPages = Math.ceil(totalH / pageCanvasH);
       for (let p = 0; p < totalPages; p++) {
         if (p > 0) pdf.addPage(isA4 ? 'a4' : 'letter', 'portrait');
-        const sy = p * pageCanvasHeight;
-        const sh = Math.min(pageCanvasHeight, totalHeight - sy);
+        const sy = p * pageCanvasH;
+        const sh = Math.min(pageCanvasH, totalH - sy);
         const pg = document.createElement('canvas');
         pg.width  = canvas.width;
-        pg.height = pageCanvasHeight;
+        pg.height = pageCanvasH;
         const ctx = pg.getContext('2d')!;
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, pg.width, pg.height);
@@ -229,9 +234,13 @@ export async function downloadDocumentAsPdf({
     return false;
 
   } finally {
-    // -- 6. Restore all mutated styles ----------
+    // Restore live-DOM styles we mutated
     for (const { el, prop, value } of saved) {
-      (el.style as unknown as Record<string, string>)[prop] = value;
+      if (value) {
+        el.style.setProperty(prop, value);
+      } else {
+        el.style.removeProperty(prop);
+      }
     }
   }
 }
