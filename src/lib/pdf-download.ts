@@ -11,8 +11,9 @@ interface GeneratePdfOptions {
 
 /**
  * Downloads a pixel-perfect, high-resolution PDF directly to the user's browser.
- * Renders an unscaled clone of the target document to ensure zoom level,
- * mobile responsive tab states, or screen dimensions do not distort the output.
+ * Renders an unscaled clone of the target document inside an isolated staging wrapper
+ * at (0, 0) to ensure responsive layouts, mobile tabs, or zoom levels never distort
+ * or blank out the exported document.
  */
 export async function downloadDocumentAsPdf({
   elementId = 'resume-print-area',
@@ -52,8 +53,114 @@ export async function downloadDocumentAsPdf({
     }
   }
 
-  // Give a brief rendering frame for any layout recalculations
-  await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 60)));
+  // Create an isolated staging wrapper attached to document.body
+  // Positioned at top: 0, left: 0 behind page content (z-index: -9999) with full opacity: 1
+  // to ensure 100% true font metrics, subpixel anti-aliasing, and complete CSS evaluation.
+  const stagingContainer = document.createElement('div');
+  stagingContainer.id = 'pdf-staging-container';
+  stagingContainer.style.position = 'fixed';
+  stagingContainer.style.left = '0';
+  stagingContainer.style.top = '0';
+  stagingContainer.style.width = `${targetWidthPx}px`;
+  stagingContainer.style.zIndex = '-9999';
+  stagingContainer.style.opacity = '1';
+  stagingContainer.style.visibility = 'visible';
+  stagingContainer.style.overflow = 'visible';
+  stagingContainer.style.pointerEvents = 'none';
+  stagingContainer.style.margin = '0';
+  stagingContainer.style.padding = '0';
+  stagingContainer.style.background = '#ffffff';
+
+  const clonedNode = target.cloneNode(true) as HTMLElement;
+  clonedNode.id = `${elementId}-export-clone`;
+  clonedNode.style.position = 'relative';
+  clonedNode.style.left = '0';
+  clonedNode.style.top = '0';
+  clonedNode.style.transform = 'none';
+  clonedNode.style.width = `${targetWidthPx}px`;
+  clonedNode.style.minWidth = `${targetWidthPx}px`;
+  clonedNode.style.maxWidth = `${targetWidthPx}px`;
+  clonedNode.style.minHeight = `${targetHeightPx}px`;
+  clonedNode.style.margin = '0';
+  clonedNode.style.boxShadow = 'none';
+  clonedNode.style.border = 'none';
+  clonedNode.style.boxSizing = 'border-box';
+  clonedNode.style.backgroundColor = '#ffffff';
+  clonedNode.style.display = 'flex';
+  clonedNode.style.flexDirection = 'column';
+  clonedNode.style.visibility = 'visible';
+  clonedNode.style.opacity = '1';
+
+  // Apply pixel-perfect normalizations to cloned DOM before html2canvas capture:
+  // 1. SVG alignment: override Lucide 24x24 attributes and center relative to text
+  clonedNode.querySelectorAll('svg').forEach((svg) => {
+    const isTiny = svg.classList.contains('w-3') || svg.classList.contains('h-3');
+    const size = isTiny ? '12' : '13';
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    svg.style.width = `${size}px`;
+    svg.style.height = `${size}px`;
+    svg.style.display = 'inline-block';
+    svg.style.verticalAlign = 'middle';
+    svg.style.flexShrink = '0';
+  });
+
+  // Contact header icons: counteract html2canvas upward bias
+  clonedNode.querySelectorAll('header .inline-flex svg, header .flex svg, .inline-flex svg').forEach((svg) => {
+    const el = svg as HTMLElement;
+    el.style.position = 'relative';
+    el.style.top = '1px';
+  });
+
+  // 2. Lock pill badge bounding box (prevents "crm go outside box")
+  clonedNode.querySelectorAll('span.rounded-md, span.rounded, span.rounded-full').forEach((el) => {
+    const h = el as HTMLElement;
+    h.style.display = 'inline-block';
+    h.style.lineHeight = '15px';
+    h.style.padding = '3px 8px';
+    h.style.verticalAlign = 'middle';
+    h.style.boxSizing = 'border-box';
+    h.style.whiteSpace = 'nowrap';
+  });
+
+  // 3. Section headers: prevent border collisions with text descenders
+  clonedNode.querySelectorAll('h2').forEach((el) => {
+    const h = el as HTMLElement;
+    h.style.lineHeight = '1.35';
+    if (h.classList.contains('border-b-2') || h.style.borderBottomWidth) {
+      h.style.paddingBottom = '4px';
+      h.style.marginBottom = '10px';
+    }
+  });
+
+  // Section badge spans (e.g. Metro template headers)
+  clonedNode.querySelectorAll('h2 span').forEach((el) => {
+    const h = el as HTMLElement;
+    if (h.style.backgroundColor && h.style.backgroundColor !== 'transparent') {
+      h.style.display = 'inline-block';
+      h.style.lineHeight = '16px';
+      h.style.padding = '3px 9px';
+      h.style.verticalAlign = 'middle';
+      h.style.boxSizing = 'border-box';
+      h.style.whiteSpace = 'nowrap';
+    }
+  });
+
+  // 4. Multi-line text line-height enforcement to prevent collapsing lines
+  clonedNode.querySelectorAll('p, li').forEach((el) => {
+    const h = el as HTMLElement;
+    const computed = window.getComputedStyle(h);
+    const lh = parseFloat(computed.lineHeight);
+    if (isNaN(lh) || lh < 18) {
+      h.style.lineHeight = '19px';
+    }
+  });
+
+  stagingContainer.appendChild(clonedNode);
+  document.body.appendChild(stagingContainer);
+
+  // Give a brief rendering frame for staging container styles to compute
+  await new Promise((resolve) => setTimeout(resolve, 120));
 
   try {
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
@@ -61,67 +168,28 @@ export async function downloadDocumentAsPdf({
       import('jspdf'),
     ]);
 
-    // Save live target's parent transform if zoomed in editor
-    const parent = target.parentElement;
-    const originalParentTransform = parent ? parent.style.transform : '';
-    const originalParentTransition = parent ? parent.style.transition : '';
+    const capturedHeight = Math.max(clonedNode.offsetHeight, clonedNode.scrollHeight, targetHeightPx);
 
-    // Temporarily reset parent scale so html2canvas renders the true base document
-    if (parent) {
-      parent.style.transition = 'none';
-      parent.style.transform = 'none';
-    }
+    // Render with 2.5x scale for retina 240+ DPI print quality
+    // Force coordinates to (0, 0) and exact target width
+    const canvas = await html2canvas(clonedNode, {
+      scale: 2.5,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: targetWidthPx,
+      height: capturedHeight,
+      windowWidth: targetWidthPx,
+      windowHeight: capturedHeight,
+      scrollX: 0,
+      scrollY: 0,
+      x: 0,
+      y: 0,
+    });
 
-    let canvas: HTMLCanvasElement;
-    try {
-      canvas = await html2canvas(target, {
-        scale: 2.8, // Ultra-sharp 270+ DPI print quality
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        logging: false,
-        windowWidth: targetWidthPx,
-        onclone: (clonedDoc) => {
-          const el = clonedDoc.getElementById(elementId);
-          if (!el) return;
-
-          // Strip preview shadow & border so the PDF canvas is pure paper
-          el.style.boxShadow = 'none';
-          el.style.border = 'none';
-          el.style.transform = 'none';
-          el.style.margin = '0 auto';
-          el.style.width = `${targetWidthPx}px`;
-
-          // Ensure Lucide SVGs have explicit XML attributes matching computed size
-          el.querySelectorAll('svg').forEach((svg) => {
-            const isTiny = svg.classList.contains('w-3') || svg.classList.contains('h-3');
-            const size = isTiny ? '12' : '13';
-            svg.setAttribute('width', size);
-            svg.setAttribute('height', size);
-            svg.style.width = `${size}px`;
-            svg.style.height = `${size}px`;
-            svg.style.display = 'inline-block';
-            svg.style.verticalAlign = 'middle';
-          });
-
-          // Lock badge and pill bounding boxes (Metro section headers, skill pills)
-          el.querySelectorAll('h2 span, span.rounded-md').forEach((badge) => {
-            const h = badge as HTMLElement;
-            if (h.style.backgroundColor && h.style.backgroundColor !== 'transparent') {
-              h.style.display = 'inline-block';
-              h.style.verticalAlign = 'middle';
-              h.style.boxSizing = 'border-box';
-              h.style.whiteSpace = 'nowrap';
-            }
-          });
-        },
-      });
-    } finally {
-      // Restore parent zoom transform immediately after canvas capture
-      if (parent) {
-        parent.style.transform = originalParentTransform;
-        parent.style.transition = originalParentTransition;
-      }
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+      throw new Error('Canvas render produced an empty canvas');
     }
 
     const pdf = new jsPDF({
@@ -154,7 +222,7 @@ export async function downloadDocumentAsPdf({
           // 100% 1:1 unscaled print
           ctx.drawImage(canvas, 0, 0);
         } else {
-          // Slight overflow: proportionally scale to fit the single sheet perfectly
+          // Minor overflow: proportionally scale to fit the single sheet cleanly
           const scale = pageCanvasHeight / totalHeight;
           const scaledWidth = canvas.width * scale;
           const offsetX = (canvas.width - scaledWidth) / 2;
@@ -209,5 +277,9 @@ export async function downloadDocumentAsPdf({
     console.error('PDF export engine encountered an error:', error);
     triggerPrintResume(fullName);
     return false;
+  } finally {
+    if (stagingContainer.parentNode) {
+      stagingContainer.parentNode.removeChild(stagingContainer);
+    }
   }
 }
