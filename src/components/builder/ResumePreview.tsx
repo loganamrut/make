@@ -53,6 +53,10 @@ export function ResumePreview({ resume, onTemplateChange, onOpenDownloadModal }:
             >
               <option value="ats">ATS Standard (100% Safe)</option>
               <option value="modern">Modern Accent</option>
+              <option value="banner">Vibrant Banner (Colorful Header)</option>
+              <option value="infographic">Infographic Modern (Designable Sidebar)</option>
+              <option value="timeline">Career Timeline (Milestone Nodes)</option>
+              <option value="metro">Metro Modular (Clean Card Grid)</option>
               <option value="tech">Tech & Software Engineer</option>
               <option value="hybrid">Two-Column Hybrid</option>
               <option value="compact">Compact 1-Page Pro</option>

@@ -138,7 +138,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
     } catch (err: any) {
       console.error('Extraction error:', err);
       setErrorMessage(
-        err.message || 'Gemini Flash extraction encountered a network error. You can retry or proceed with sample data.'
+        err.message || 'AI extraction encountered an issue. You can retry or proceed with sample data.'
       );
     } finally {
       setIsProcessing(false);
@@ -163,7 +163,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold">
           <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-pulse" />
-          <span>Powered by Google Gemini 2.5 Flash</span>
+          <span>Advanced AI Resume Engine</span>
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
           <span className="text-[11px] text-emerald-700 font-semibold">Live Multimodal</span>
         </div>
@@ -171,7 +171,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
           AI Resume Builder &amp; AI CV Maker
         </h1>
         <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Upload up to <strong className="text-slate-900 font-semibold">3 documents</strong> (old resumes, LinkedIn PDF, certificates, job descriptions). Gemini 2.5 Flash extracts, optimizes, and transforms your experience into an interview-winning ATS resume.
+          Upload up to <strong className="text-slate-900 font-semibold">3 documents</strong> (old resumes, LinkedIn PDF, certificates, job descriptions). Our AI extracts, optimizes, and transforms your experience into an interview-winning ATS resume.
         </p>
       </div>
 
@@ -230,7 +230,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
             <div className="flex items-center justify-between text-xs font-bold text-slate-700 uppercase tracking-wider">
               <span>Attached Documents ({files.length} / {MAX_DOCUMENTS})</span>
               <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Ready for Gemini Flash
+                <CheckCircle2 className="w-3.5 h-3.5" /> Ready for AI Analysis
               </span>
             </div>
 
@@ -316,7 +316,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
             </div>
             <div>
               <h4 className="text-base font-extrabold text-slate-900">
-                Gemini 2.5 Flash Neural Engine at Work
+                Analyzing with AI...
               </h4>
               <p className="text-xs sm:text-sm text-indigo-700 font-medium mt-1">
                 {currentStatus || 'Processing uploaded documents...'}
@@ -368,7 +368,7 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
               }`}
             >
               <Sparkles className="w-4 h-4" />
-              Analyze with Gemini Flash &rarr;
+              Analyze with AI &rarr;
             </button>
           </div>
         </div>

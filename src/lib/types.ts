@@ -12,7 +12,11 @@ export type TemplateId =
   | 'compact'
   | 'elegant'
   | 'hybrid'
-  | 'academic';
+  | 'academic'
+  | 'banner'
+  | 'infographic'
+  | 'timeline'
+  | 'metro';
 
 export type FontFamily = 'sans' | 'serif' | 'mono';
 export type FontSize = 'compact' | 'normal' | 'spacious';

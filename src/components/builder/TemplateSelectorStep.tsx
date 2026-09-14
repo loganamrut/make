@@ -3,7 +3,20 @@
 import React, { useState } from 'react';
 import { ResumeData, TemplateId, FontFamily } from '@/lib/types';
 import { ResumeDocument } from './ResumeDocument';
-import { Check, ArrowRight, ArrowLeft, Palette, Type } from 'lucide-react';
+import {
+  Check,
+  ArrowRight,
+  ArrowLeft,
+  Palette,
+  Type,
+  Eye,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  Sparkles,
+} from 'lucide-react';
 
 interface TemplateSelectorStepProps {
   resume: ResumeData;
@@ -22,6 +35,34 @@ interface TemplateMetadata {
 
 const TEMPLATES: TemplateMetadata[] = [
   {
+    id: 'banner',
+    name: 'Vibrant Banner',
+    category: 'modern',
+    badge: 'NEW • Colorful Header',
+    description: 'Full-width colored header block with high-contrast typography, translucent contact pills, and modern skill badges.',
+  },
+  {
+    id: 'infographic',
+    name: 'Infographic Modern',
+    category: 'modern',
+    badge: 'NEW • Visual & Designable',
+    description: 'Soft-tinted sidebar with circular icon badges, visual skill pill tags, and clean dual-column layout.',
+  },
+  {
+    id: 'timeline',
+    name: 'Career Timeline',
+    category: 'modern',
+    badge: 'NEW • Visual Milestones',
+    description: 'Chronological timeline rail connecting career milestones with colored waypoint nodes and date pills.',
+  },
+  {
+    id: 'metro',
+    name: 'Metro Modular',
+    category: 'tech',
+    badge: 'NEW • Clean Cards',
+    description: 'Card-based modular sections with colored category chips, structured borders, and modern grid balance.',
+  },
+  {
     id: 'ats',
     name: 'ATS Standard',
     category: 'ats',
@@ -39,21 +80,21 @@ const TEMPLATES: TemplateMetadata[] = [
     id: 'tech',
     name: 'Tech & Engineer',
     category: 'tech',
-    badge: 'NEW • Software & IT',
+    badge: 'Software & IT',
     description: 'Terminal-inspired dark header, monospace accents, and categorized tech stack tags.',
   },
   {
     id: 'hybrid',
     name: 'Two-Column Hybrid',
     category: 'modern',
-    badge: 'NEW • Recruiter Favorite',
+    badge: 'Recruiter Favorite',
     description: 'Dynamic 2-column sidebar layout displaying contact, skills, and education alongside career experience.',
   },
   {
     id: 'compact',
     name: 'Compact 1-Page Pro',
     category: 'compact',
-    badge: 'NEW • High Density',
+    badge: 'High Density',
     description: 'Space-saving layout engineered to fit comprehensive careers cleanly onto a single high-impact page.',
   },
   {
@@ -67,7 +108,7 @@ const TEMPLATES: TemplateMetadata[] = [
     id: 'elegant',
     name: 'Elegant Executive',
     category: 'executive',
-    badge: 'NEW • Classic Serif',
+    badge: 'Classic Serif',
     description: 'Refined serif typography with delicate divider rules and sophisticated corporate appeal.',
   },
   {
@@ -116,7 +157,7 @@ const TEMPLATES: TemplateMetadata[] = [
     id: 'academic',
     name: 'Academic CV',
     category: 'ats',
-    badge: 'NEW • European / Research',
+    badge: 'European / Research',
     description: 'Extended multi-page CV format suited for academia, publications, fellowships, and research.',
   },
 ];
@@ -138,6 +179,8 @@ export function TemplateSelectorStep({
   onNext,
 }: TemplateSelectorStepProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [modalTemplateId, setModalTemplateId] = useState<TemplateId | null>(null);
+  const [modalZoom, setModalZoom] = useState<number>(85);
   const currentTemplate = resume.style.template;
 
   const filteredTemplates = activeCategory === 'all'
@@ -174,6 +217,23 @@ export function TemplateSelectorStep({
     });
   };
 
+  // Switch modal template with Prev / Next
+  const handleModalNavigate = (direction: 'prev' | 'next') => {
+    if (!modalTemplateId) return;
+    const currentIndex = TEMPLATES.findIndex(t => t.id === modalTemplateId);
+    if (currentIndex === -1) return;
+
+    if (direction === 'prev') {
+      const prevIndex = (currentIndex - 1 + TEMPLATES.length) % TEMPLATES.length;
+      setModalTemplateId(TEMPLATES[prevIndex].id);
+    } else {
+      const nextIndex = (currentIndex + 1) % TEMPLATES.length;
+      setModalTemplateId(TEMPLATES[nextIndex].id);
+    }
+  };
+
+  const activeModalTemplateMeta = TEMPLATES.find(t => t.id === modalTemplateId);
+
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 space-y-8">
       {/* Step Header */}
@@ -182,11 +242,14 @@ export function TemplateSelectorStep({
           <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-1">
             Step 2 of 4 • Template Gallery
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Choose Your Resume Template ({TEMPLATES.length} Styles)
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+            <span>Choose Your Resume Template</span>
+            <span className="text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-800">
+              {TEMPLATES.length} Pro Styles
+            </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 mt-1">
-            Every template is 100% customizable, ATS-compliant, and renders your data dynamically.
+            Every template is 100% customizable, ATS-compliant, and renders your data dynamically with high-definition previews.
           </p>
         </div>
 
@@ -214,10 +277,10 @@ export function TemplateSelectorStep({
         <div className="flex flex-wrap items-center gap-1.5">
           {[
             { id: 'all', label: `All (${TEMPLATES.length})` },
+            { id: 'modern', label: 'Colorful & Modern' },
             { id: 'ats', label: 'ATS Verified' },
             { id: 'tech', label: 'Tech & Engineering' },
             { id: 'executive', label: 'Executive & C-Suite' },
-            { id: 'modern', label: 'Modern & Hybrid' },
             { id: 'compact', label: 'Compact 1-Page' },
           ].map(tab => (
             <button
@@ -291,15 +354,17 @@ export function TemplateSelectorStep({
           return (
             <div
               key={tpl.id}
-              onClick={() => handleTemplateClick(tpl.id)}
-              className={`group relative rounded-2xl border-2 cursor-pointer transition-all duration-200 bg-white flex flex-col overflow-hidden shadow-sm hover:shadow-xl ${
+              className={`group relative rounded-2xl border-2 transition-all duration-200 bg-white flex flex-col overflow-hidden shadow-sm hover:shadow-xl ${
                 isSelected
-                  ? 'border-indigo-600 ring-2 ring-indigo-600 ring-offset-2 scale-[1.02]'
+                  ? 'border-indigo-600 ring-2 ring-indigo-600 ring-offset-2 scale-[1.01]'
                   : 'border-slate-200 hover:border-indigo-300'
               }`}
             >
-              {/* Top Banner with Badge */}
-              <div className="p-3.5 border-b border-slate-100 flex items-center justify-between gap-2 bg-slate-50/70">
+              {/* Top Banner with Badge & Selection indicator */}
+              <div
+                onClick={() => handleTemplateClick(tpl.id)}
+                className="p-3 border-b border-slate-100 flex items-center justify-between gap-2 bg-slate-50/80 cursor-pointer"
+              >
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
                     {tpl.name}
@@ -322,32 +387,64 @@ export function TemplateSelectorStep({
                 )}
               </div>
 
-              {/* Live Miniature Document Preview */}
-              <div className="relative h-72 bg-slate-100 overflow-hidden flex justify-center items-start p-2.5">
+              {/* Live Miniature Document Preview Container */}
+              <div
+                onClick={() => handleTemplateClick(tpl.id)}
+                className="relative h-72 bg-slate-100/70 overflow-hidden flex justify-center items-start p-2 cursor-pointer"
+              >
                 <div
                   style={{
-                    transform: 'scale(0.36)',
+                    transform: 'scale(0.34)',
                     transformOrigin: 'top center',
                     width: '800px',
                     pointerEvents: 'none',
                     userSelect: 'none',
                   }}
-                  className="shadow-md"
+                  className="shadow-md rounded-xs bg-white"
                 >
                   <ResumeDocument resume={previewResume} />
                 </div>
 
-                {/* Overlay hover prompt */}
-                <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="px-3.5 py-1.5 bg-slate-900/90 text-white text-xs font-bold rounded-lg shadow-lg">
-                    {isSelected ? 'Currently Selected' : 'Select Template'}
-                  </span>
+                {/* Hover overlay with dual actions: Select & Full Size Preview */}
+                <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-4">
+                  <button
+                    type="button"
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleTemplateClick(tpl.id);
+                    }}
+                    className="w-full max-w-[180px] py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-1.5"
+                  >
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    {isSelected ? 'Selected' : 'Use Template'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setModalTemplateId(tpl.id);
+                    }}
+                    className="w-full max-w-[180px] py-2 px-3 bg-white/95 hover:bg-white text-slate-800 text-xs font-bold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-indigo-600" />
+                    Full Size Preview
+                  </button>
                 </div>
               </div>
 
-              {/* Description footer */}
-              <div className="p-3 bg-white border-t border-slate-100 text-[11px] text-slate-600 leading-relaxed">
-                {tpl.description}
+              {/* Description footer with Quick Look button */}
+              <div className="p-3 bg-white border-t border-slate-100 flex items-center justify-between gap-2 text-[11px] text-slate-600">
+                <span className="line-clamp-2 leading-relaxed flex-1">
+                  {tpl.description}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setModalTemplateId(tpl.id)}
+                  className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-colors flex-shrink-0"
+                  title="Open Full Size Preview"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
               </div>
             </div>
           );
@@ -358,14 +455,17 @@ export function TemplateSelectorStep({
       <div className="sticky bottom-4 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-slate-300 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm">
-            ✓
+            <Sparkles className="w-5 h-5 text-indigo-600" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-slate-900">
-              Selected: <span className="text-indigo-600 capitalize">{currentTemplate}</span>
+              Selected Style:{' '}
+              <span className="text-indigo-600 uppercase tracking-wide">
+                {TEMPLATES.find(t => t.id === currentTemplate)?.name || currentTemplate}
+              </span>
             </h4>
             <p className="text-xs text-slate-500">
-              You can modify content, typography, and sections in the next step.
+              Click &quot;Continue&quot; to edit content, reorder sections, and polish bullet points.
             </p>
           </div>
         </div>
@@ -387,6 +487,140 @@ export function TemplateSelectorStep({
           </button>
         </div>
       </div>
+
+      {/* Full Size Preview Lightbox Modal */}
+      {modalTemplateId && activeModalTemplateMeta && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex flex-col justify-between p-3 sm:p-6 overflow-hidden animate-in fade-in duration-150">
+          {/* Top Modal Header */}
+          <div className="bg-white rounded-2xl shadow-xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleModalNavigate('prev')}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                title="Previous Template"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-extrabold text-slate-900">
+                    {activeModalTemplateMeta.name}
+                  </h3>
+                  {activeModalTemplateMeta.badge && (
+                    <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full">
+                      {activeModalTemplateMeta.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500 hidden sm:block">
+                  {activeModalTemplateMeta.description}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleModalNavigate('next')}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                title="Next Template"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Quick Live Color Picker & Zoom in Modal */}
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-1.5">
+                <span className="text-xs font-semibold text-slate-600">Color:</span>
+                {COLOR_PALETTES.map(p => (
+                  <button
+                    key={p.value}
+                    type="button"
+                    onClick={() => handleColorChange(p.value)}
+                    style={{ backgroundColor: p.value }}
+                    className={`w-4 h-4 rounded-full transition-transform ${
+                      resume.style.primaryColor === p.value
+                        ? 'ring-2 ring-offset-2 ring-slate-900 scale-110'
+                        : 'hover:scale-105'
+                    }`}
+                    title={p.name}
+                  />
+                ))}
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setModalZoom(z => Math.max(50, z - 10))}
+                  className="p-1 rounded text-slate-600 hover:bg-white"
+                  title="Zoom out"
+                >
+                  <ZoomOut className="w-3.5 h-3.5" />
+                </button>
+                <span className="text-[11px] font-bold text-slate-700 w-9 text-center">
+                  {modalZoom}%
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setModalZoom(z => Math.min(130, z + 10))}
+                  className="p-1 rounded text-slate-600 hover:bg-white"
+                  title="Zoom in"
+                >
+                  <ZoomIn className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Select & Close CTAs */}
+              <button
+                type="button"
+                onClick={() => {
+                  handleTemplateClick(modalTemplateId);
+                  setModalTemplateId(null);
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  currentTemplate === modalTemplateId
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200'
+                }`}
+              >
+                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                {currentTemplate === modalTemplateId ? 'Currently Active' : 'Use This Template'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setModalTemplateId(null)}
+                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                title="Close Full Screen Preview"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Modal Document Body */}
+          <div className="flex-1 overflow-auto my-3 sm:my-4 flex justify-center items-start p-2">
+            <div
+              style={{
+                transform: `scale(${modalZoom / 100})`,
+                transformOrigin: 'top center',
+                transition: 'transform 0.15s ease-out',
+              }}
+              className="shadow-2xl rounded-sm"
+            >
+              <ResumeDocument
+                resume={{
+                  ...resume,
+                  style: {
+                    ...resume.style,
+                    template: modalTemplateId,
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

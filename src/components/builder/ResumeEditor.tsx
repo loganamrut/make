@@ -40,6 +40,10 @@ interface ResumeEditorProps {
 const TEMPLATE_OPTIONS: { id: TemplateId; label: string }[] = [
   { id: 'ats', label: 'ATS Standard (100% Verified)' },
   { id: 'modern', label: 'Modern Accent' },
+  { id: 'banner', label: 'Vibrant Banner (Colorful Header)' },
+  { id: 'infographic', label: 'Infographic Modern (Designable Sidebar)' },
+  { id: 'timeline', label: 'Career Timeline (Milestone Nodes)' },
+  { id: 'metro', label: 'Metro Modular (Clean Card Grid)' },
   { id: 'tech', label: 'Tech & Software Engineer' },
   { id: 'hybrid', label: 'Two-Column Hybrid' },
   { id: 'compact', label: 'Compact 1-Page Pro' },

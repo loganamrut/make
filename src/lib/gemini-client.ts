@@ -49,7 +49,7 @@ export async function parseResumeDocumentsWithGemini(
 ): Promise<ResumeData> {
   const apiKey = getGeminiApiKey();
 
-  onProgress?.('Preparing document data for Gemini Flash multimodal analysis...');
+  onProgress?.('Preparing document data for AI analysis...');
 
   const parts: any[] = [];
 
@@ -166,7 +166,7 @@ Respond strictly in valid JSON matching this exact structure:
 
   parts.push({ text: promptText });
 
-  onProgress?.('Transmitting to Gemini 2.5 Flash neural engine...');
+  onProgress?.('Analyzing with AI...');
 
   try {
     const response = await fetch(`${API_BASE_URL}?key=${apiKey}`, {
@@ -184,7 +184,7 @@ Respond strictly in valid JSON matching this exact structure:
 
     if (!response.ok) {
       const errText = await response.text();
-      throw new Error(`Gemini API returned status ${response.status}: ${errText}`);
+      throw new Error(`AI service returned status ${response.status}: ${errText}`);
     }
 
     onProgress?.('Synthesizing structured resume hierarchy & ATS formatting...');
@@ -192,7 +192,7 @@ Respond strictly in valid JSON matching this exact structure:
     const candidateText = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!candidateText) {
-      throw new Error('No content returned from Gemini API.');
+      throw new Error('No content returned from AI service.');
     }
 
     let parsed: any;

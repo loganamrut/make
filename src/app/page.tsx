@@ -153,7 +153,7 @@ export default function HomePage() {
             </div>
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-pulse" />
-              <span>Google Gemini 2.5 Flash Powered</span>
+              <span>Advanced AI Resume Engine</span>
             </div>
           </div>
 
@@ -165,7 +165,7 @@ export default function HomePage() {
 
           {/* Hero Subtitle */}
           <p className="mt-5 text-lg sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed">
-            Upload up to 3 documents (PDF, DOCX, scans, or text) and let Gemini 2.5 Flash extract, optimize, and format an ATS-winning resume across 14 pro templates.
+            Upload up to 3 documents (PDF, DOCX, scans, or text) and let our advanced AI extract, optimize, and format an ATS-winning resume across our pro templates.
           </p>
 
           {/* CTAs */}
@@ -248,7 +248,7 @@ export default function HomePage() {
                 Upload Documents (Max 3)
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Upload up to 3 files (PDF, DOCX, scans/images, or plain text). Gemini 2.5 Flash neural engine automatically extracts your career history, contacts, and skills.
+                Upload up to 3 files (PDF, DOCX, scans/images, or plain text). Our advanced AI engine automatically extracts your career history, contacts, and skills.
               </p>
             </div>
 
@@ -258,10 +258,10 @@ export default function HomePage() {
                 2
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Choose from 14 Pro Templates
+                Choose from 18 Pro Templates
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Preview your actual data live across 14 ATS-tested layouts: Tech, Two-Column Hybrid, Compact 1-Page, Executive, and Academic styles.
+                Preview your actual data live across 18 ATS-tested layouts: Banner, Infographic, Timeline, Metro, Tech, Hybrid, Compact, and Executive styles.
               </p>
             </div>
 
@@ -271,7 +271,7 @@ export default function HomePage() {
                 3
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
-                Edit &amp; Polish with Gemini
+                Edit &amp; Polish with AI
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Enhance bullet points into Google XYZ quantified achievements, generate executive summaries, and check live ATS compatibility scores.

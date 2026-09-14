@@ -155,7 +155,7 @@ function BuilderContent() {
       <div className="bg-emerald-50 border-b border-emerald-200 py-1.5 px-4 text-center text-xs font-semibold text-emerald-950 flex items-center justify-center gap-1.5 no-print">
         <ShieldCheck className="w-4 h-4 text-emerald-700" />
         <span>
-          Private by design — Powered by Google Gemini 2.5 Flash in-browser. Zero server database storage.
+          Private by design — Powered by in-browser AI. Zero server database storage.
         </span>
       </div>
 
