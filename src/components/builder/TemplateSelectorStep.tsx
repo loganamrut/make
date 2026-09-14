@@ -190,8 +190,8 @@ function TemplatePreviewThumbnail({ resume, templateId }: TemplatePreviewThumbna
         const width = containerRef.current.clientWidth;
         // Leave 16px horizontal margin (8px on each side) for clean paper document look
         const targetWidth = Math.max(width - 16, 160);
-        // Base document design width is 800px
-        const newScale = targetWidth / 800;
+        // Base document design width is 816px (standard US Letter)
+        const newScale = targetWidth / 816;
         setScale(newScale);
       }
     };
@@ -224,15 +224,15 @@ function TemplatePreviewThumbnail({ resume, templateId }: TemplatePreviewThumbna
     >
       {/* 
         CRITICAL FIX: 
-        We enforce fixed width 800px with minWidth and flexShrink 0.
-        This prevents parent flexbox from squishing the 800px layout down to 260px,
-        which previously caused the transform to scale down to 88px with broken 1-character line wraps.
+        We enforce fixed width 816px with minWidth and flexShrink 0.
+        This prevents parent flexbox from squishing the 816px layout down,
+        matching the exact layout of the live editor and PDF export.
       */}
       <div
         style={{
-          width: '800px',
-          minWidth: '800px',
-          maxWidth: '800px',
+          width: '816px',
+          minWidth: '816px',
+          maxWidth: '816px',
           flexShrink: 0,
           transform: `scale(${scale})`,
           transformOrigin: 'top center',
@@ -660,9 +660,9 @@ export function TemplateSelectorStep({
           <div className="flex-1 overflow-auto my-3 sm:my-4 flex justify-center items-start p-2">
             <div
               style={{
-                width: '800px',
-                minWidth: '800px',
-                maxWidth: '800px',
+                width: '816px',
+                minWidth: '816px',
+                maxWidth: '816px',
                 flexShrink: 0,
                 transform: `scale(${modalZoom / 100})`,
                 transformOrigin: 'top center',

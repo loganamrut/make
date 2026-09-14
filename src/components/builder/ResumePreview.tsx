@@ -144,14 +144,18 @@ export function ResumePreview({ resume, onTemplateChange, onOpenDownloadModal }:
       </div>
 
       {/* Live Canvas Area */}
-      <div className="flex-1 overflow-auto p-4 sm:p-8 bg-slate-100 flex justify-center items-start print-container">
+      <div className="flex-1 overflow-auto p-4 sm:p-8 bg-slate-100/90 flex justify-center items-start print-container">
         <div
           style={{
+            width: '816px',
+            minWidth: '816px',
+            flexShrink: 0,
             transform: `scale(${zoom / 100})`,
             transformOrigin: 'top center',
             transition: 'transform 0.15s ease-out',
+            marginBottom: zoom > 100 ? `${Math.round((zoom - 100) * 10.56)}px` : undefined,
           }}
-          className="w-full max-w-[850px]"
+          className="flex justify-center"
         >
           <ResumeDocument resume={resume} />
         </div>

@@ -44,8 +44,8 @@ export async function downloadDocumentAsPdf({
   const targetHeightPx = Math.round(targetWidthPx * (pdfHeightMm / pdfWidthMm)); // 1056px Letter, 1123px A4
 
   // Create an off-screen staging wrapper attached to document.body
-  // Positioned at top: 0, left: 0 with opacity: 0 to ensure full font rasterization,
-  // subpixel rendering, and CSS styles are calculated cleanly by the browser.
+  // Positioned at top: 0, left: 0 behind page content (z-index: -9999) with full opacity: 1
+  // to ensure 100% true font metrics, subpixel anti-aliasing, and complete CSS evaluation.
   const stagingContainer = document.createElement('div');
   stagingContainer.id = 'pdf-staging-container';
   stagingContainer.style.position = 'fixed';
@@ -53,7 +53,8 @@ export async function downloadDocumentAsPdf({
   stagingContainer.style.top = '0';
   stagingContainer.style.width = `${targetWidthPx}px`;
   stagingContainer.style.zIndex = '-9999';
-  stagingContainer.style.opacity = '0';
+  stagingContainer.style.opacity = '1';
+  stagingContainer.style.visibility = 'visible';
   stagingContainer.style.overflow = 'visible';
   stagingContainer.style.pointerEvents = 'none';
 
@@ -69,14 +70,22 @@ export async function downloadDocumentAsPdf({
   clonedNode.style.border = 'none';
   clonedNode.style.boxSizing = 'border-box';
   clonedNode.style.backgroundColor = '#ffffff';
-  clonedNode.style.display = 'block';
+  clonedNode.style.display = 'flex';
+  clonedNode.style.flexDirection = 'column';
   clonedNode.style.visibility = 'visible';
 
   stagingContainer.appendChild(clonedNode);
   document.body.appendChild(stagingContainer);
 
   try {
-    // Brief settle time to allow cloned DOM, font metrics, and layout to evaluate
+    // Wait for all web fonts and styles to be 100% rendered
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      try {
+        await (document as unknown as { fonts: { ready: Promise<unknown> } }).fonts.ready;
+      } catch {
+        // Fallback to timeout
+      }
+    }
     await new Promise((resolve) => setTimeout(resolve, 150));
 
     // Dynamically import html2canvas and jsPDF to preserve SSR and zero initial bundle overhead

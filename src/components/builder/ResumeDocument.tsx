@@ -38,10 +38,10 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
       ? 'text-xs leading-tight'
       : fontSize === 'spacious'
       ? 'text-base leading-relaxed'
-      : 'text-sm leading-normal';
+      : 'text-[13px] leading-normal';
 
   const spacingClass =
-    lineSpacing === 'compact' ? 'space-y-3' : lineSpacing === 'relaxed' ? 'space-y-6' : 'space-y-4';
+    lineSpacing === 'compact' ? 'space-y-3.5' : lineSpacing === 'relaxed' ? 'space-y-6' : 'space-y-5';
 
   const renderContactItem = (icon: React.ReactNode, text?: string, href?: string) => {
     if (!text) return null;
@@ -170,9 +170,9 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
   const renderSummary = () => {
     if (!resume.summary.trim()) return null;
     return (
-      <section className="mb-3.5">
+      <section className="mb-5">
         {renderSectionHeader('Professional Summary')}
-        <p className="text-slate-800 leading-relaxed text-justify">{resume.summary}</p>
+        <p className="text-slate-800 leading-relaxed text-[13px] text-justify">{resume.summary}</p>
       </section>
     );
   };
@@ -183,7 +183,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
 
     if (template === 'timeline') {
       return (
-        <section className="mb-4">
+        <section className="mb-5">
           {renderSectionHeader('Work Experience', <Briefcase className="w-3 h-3" />)}
           <div className="relative pl-5 space-y-4 border-l-2 border-slate-200 ml-2 mt-2">
             {resume.workExperience.map(exp => (
@@ -192,23 +192,32 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
                   className="absolute -left-[27px] top-1 w-3 h-3 rounded-full border-2 border-white shadow-xs"
                   style={{ backgroundColor: primaryColor }}
                 />
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between font-semibold">
-                  <span className="text-slate-900 text-sm font-bold">
-                    {exp.position}{' '}
-                    <span className="font-medium text-slate-600">| {exp.company}</span>
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-slate-900 text-[13.5px] font-bold leading-snug">
+                    {exp.position}
                   </span>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 whitespace-nowrap">
+                  <span className="text-[11.5px] font-semibold text-slate-500 whitespace-nowrap flex-shrink-0">
                     {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
-                    {exp.location ? ` • ${exp.location}` : ''}
                   </span>
                 </div>
+                <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-600 mt-0.5 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-slate-700">{exp.company}</span>
+                    {exp.location && (
+                      <>
+                        <span className="text-slate-300">•</span>
+                        <span className="text-slate-500 font-normal">{exp.location}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
                 {exp.bullets.length > 0 && (
-                  <div className="mt-1.5 space-y-1 text-slate-700 text-xs sm:text-[13px]">
+                  <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
                     {exp.bullets
                       .filter(b => b.trim().length > 0)
                       .map((bullet, idx) => (
-                        <div key={idx} className="flex items-start gap-2 leading-snug">
-                          <span className="text-slate-400 font-bold select-none leading-none mt-1 flex-shrink-0">•</span>
+                        <div key={idx} className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
                           <span className="flex-1 min-w-0">{bullet}</span>
                         </div>
                       ))}
@@ -223,28 +232,37 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
 
     if (template === 'metro') {
       return (
-        <section className="mb-4">
+        <section className="mb-5">
           {renderSectionHeader('Work Experience', <Briefcase className="w-3 h-3" />)}
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             {resume.workExperience.map(exp => (
               <div key={exp.id} className="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between font-semibold">
-                  <span className="text-slate-900 text-sm font-bold">
-                    {exp.position}{' '}
-                    <span className="font-medium text-slate-600">| {exp.company}</span>
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-slate-900 text-[13.5px] font-bold leading-snug">
+                    {exp.position}
                   </span>
-                  <span className="text-xs text-slate-500 font-medium whitespace-nowrap">
+                  <span className="text-[11.5px] font-semibold text-slate-500 whitespace-nowrap flex-shrink-0">
                     {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
-                    {exp.location ? ` • ${exp.location}` : ''}
                   </span>
                 </div>
+                <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-600 mt-0.5 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-slate-700">{exp.company}</span>
+                    {exp.location && (
+                      <>
+                        <span className="text-slate-300">•</span>
+                        <span className="text-slate-500 font-normal">{exp.location}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
                 {exp.bullets.length > 0 && (
-                  <div className="mt-2 space-y-1 text-slate-700 text-xs sm:text-[13px]">
+                  <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
                     {exp.bullets
                       .filter(b => b.trim().length > 0)
                       .map((bullet, idx) => (
-                        <div key={idx} className="flex items-start gap-2 leading-snug">
-                          <span className="text-slate-400 font-bold select-none leading-none mt-1 flex-shrink-0">•</span>
+                        <div key={idx} className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
                           <span className="flex-1 min-w-0">{bullet}</span>
                         </div>
                       ))}
@@ -258,28 +276,37 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     }
 
     return (
-      <section className="mb-3.5">
+      <section className="mb-5">
         {renderSectionHeader('Work Experience', <Briefcase className="w-3 h-3" />)}
-        <div className="space-y-3">
+        <div className="space-y-3.5">
           {resume.workExperience.map(exp => (
             <div key={exp.id} className="text-slate-800">
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between font-semibold">
-                <span className="text-slate-900 text-sm font-bold">
-                  {exp.position}{' '}
-                  <span className="font-medium text-slate-600">| {exp.company}</span>
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-slate-900 text-[13.5px] font-bold leading-snug">
+                  {exp.position}
                 </span>
-                <span className="text-xs text-slate-500 font-medium whitespace-nowrap">
+                <span className="text-[11.5px] font-semibold text-slate-500 whitespace-nowrap flex-shrink-0">
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
-                  {exp.location ? ` • ${exp.location}` : ''}
                 </span>
               </div>
+              <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-600 mt-0.5 mb-1.5">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-700">{exp.company}</span>
+                  {exp.location && (
+                    <>
+                      <span className="text-slate-300">•</span>
+                      <span className="text-slate-500 font-normal">{exp.location}</span>
+                    </>
+                  )}
+                </div>
+              </div>
               {exp.bullets.length > 0 && (
-                <div className="mt-1 space-y-1 text-slate-700 text-xs sm:text-[13px]">
+                <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
                   {exp.bullets
                     .filter(b => b.trim().length > 0)
                     .map((bullet, idx) => (
-                      <div key={idx} className="flex items-start gap-2 leading-snug">
-                        <span className="text-slate-400 font-bold select-none leading-none mt-1 flex-shrink-0">•</span>
+                      <div key={idx} className="flex items-start gap-2 leading-relaxed">
+                        <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
                         <span className="flex-1 min-w-0">{bullet}</span>
                       </div>
                     ))}
@@ -292,13 +319,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     );
   };
 
-  // Section: Education
-  const renderEducation = () => {
+  // Section: Education (Adaptive for Sidebar vs Full Main Column)
+  const renderEducation = (isSidebar: boolean = false) => {
     if (resume.education.length === 0) return null;
 
     if (template === 'timeline') {
       return (
-        <section className="mb-4">
+        <section className={isSidebar ? 'mb-4' : 'mb-5'}>
           {renderSectionHeader('Education', <BookOpen className="w-3 h-3" />)}
           <div className="relative pl-5 space-y-3 border-l-2 border-slate-200 ml-2 mt-2">
             {resume.education.map(edu => (
@@ -307,14 +334,18 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
                   className="absolute -left-[27px] top-1 w-3 h-3 rounded-full border-2 border-white shadow-xs"
                   style={{ backgroundColor: primaryColor }}
                 />
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between">
-                  <span className="text-sm font-bold text-slate-900">
-                    {edu.degree} in {edu.field}{' '}
-                    <span className="font-normal text-slate-600">— {edu.school}</span>
-                  </span>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 whitespace-nowrap">
-                    {edu.startDate} – {edu.endDate}
-                  </span>
+                <div className="space-y-0.5">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-[13px] font-bold text-slate-900">
+                      {edu.degree} in {edu.field}
+                    </span>
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 whitespace-nowrap">
+                      {edu.startDate} – {edu.endDate}
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-600 font-medium">
+                    {edu.school}
+                  </div>
                 </div>
                 {(edu.gpa || edu.honors) && (
                   <p className="text-xs text-slate-600 mt-0.5">
@@ -332,19 +363,23 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
 
     if (template === 'metro') {
       return (
-        <section className="mb-3.5">
+        <section className={isSidebar ? 'mb-4' : 'mb-5'}>
           {renderSectionHeader('Education', <BookOpen className="w-3 h-3" />)}
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {resume.education.map(edu => (
               <div key={edu.id} className="p-3 rounded-xl border border-slate-200/80 bg-slate-50/50">
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between">
-                  <span className="text-sm font-bold text-slate-900">
-                    {edu.degree} in {edu.field}{' '}
-                    <span className="font-normal text-slate-600">— {edu.school}</span>
-                  </span>
-                  <span className="text-xs text-slate-500 whitespace-nowrap">
-                    {edu.startDate} – {edu.endDate}
-                  </span>
+                <div className="space-y-0.5">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-[13px] font-bold text-slate-900">
+                      {edu.degree} in {edu.field}
+                    </span>
+                    <span className="text-xs text-slate-500 whitespace-nowrap">
+                      {edu.startDate} – {edu.endDate}
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-600 font-medium">
+                    {edu.school}
+                  </div>
                 </div>
                 {(edu.gpa || edu.honors) && (
                   <p className="text-xs text-slate-600 mt-0.5">
@@ -361,26 +396,48 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     }
 
     return (
-      <section className="mb-3.5">
+      <section className={isSidebar ? 'mb-4' : 'mb-5'}>
         {renderSectionHeader('Education', <BookOpen className="w-3 h-3" />)}
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {resume.education.map(edu => (
             <div key={edu.id} className="text-slate-800">
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between">
-                <span className="text-sm font-bold text-slate-900">
-                  {edu.degree} in {edu.field}{' '}
-                  <span className="font-normal text-slate-600">— {edu.school}</span>
-                </span>
-                <span className="text-xs text-slate-500 whitespace-nowrap">
-                  {edu.startDate} – {edu.endDate}
-                </span>
-              </div>
-              {(edu.gpa || edu.honors) && (
-                <p className="text-xs text-slate-600 mt-0.5">
-                  {edu.gpa && <span className="font-medium">GPA: {edu.gpa}</span>}
-                  {edu.gpa && edu.honors && <span> • </span>}
-                  {edu.honors && <span>{edu.honors}</span>}
-                </p>
+              {isSidebar ? (
+                // Clean stacked layout for narrow sidebar (prevents 5-line awkward wrapping)
+                <div className="space-y-0.5">
+                  <div className="font-bold text-slate-900 leading-snug text-[12.5px]">
+                    {edu.degree} in {edu.field}
+                  </div>
+                  <div className="text-slate-600 font-medium text-xs">
+                    {edu.school}
+                  </div>
+                  <div className="text-slate-500 text-[11px] font-semibold">
+                    {edu.startDate} – {edu.endDate}
+                    {edu.gpa && <span className="ml-1.5">• GPA: {edu.gpa}</span>}
+                    {edu.honors && <span className="ml-1.5">• {edu.honors}</span>}
+                  </div>
+                </div>
+              ) : (
+                // Clean 2-row layout for full-width content
+                <div>
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[13.5px] font-bold text-slate-900">
+                      {edu.degree} in {edu.field}
+                    </span>
+                    <span className="text-[11.5px] font-semibold text-slate-500 whitespace-nowrap flex-shrink-0">
+                      {edu.startDate} – {edu.endDate}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 text-xs text-slate-600 mt-0.5">
+                    <span className="font-semibold text-slate-700">{edu.school}</span>
+                    {(edu.gpa || edu.honors) && (
+                      <span className="text-slate-500 text-[11px]">
+                        {edu.gpa && <span>GPA: {edu.gpa}</span>}
+                        {edu.gpa && edu.honors && <span> • </span>}
+                        {edu.honors && <span>{edu.honors}</span>}
+                      </span>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           ))}
@@ -400,12 +457,12 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
 
     if (template === 'banner' || template === 'infographic' || template === 'metro' || template === 'tech' || isSidebar) {
       return (
-        <section className="mb-3.5">
+        <section className={isSidebar ? 'mb-4' : 'mb-5'}>
           {renderSectionHeader('Skills & Proficiencies', <Layers className="w-3 h-3" />)}
-          <div className="space-y-2.5 text-xs text-slate-800">
+          <div className="space-y-3 text-xs text-slate-800">
             {hasTech && (
               <div>
-                <span className="font-bold text-slate-900 block mb-1">Technical Stack:</span>
+                <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Technical Stack:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {resume.skills.technical.map((s, idx) => (
                     <span
@@ -425,7 +482,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
             )}
             {hasTools && (
               <div>
-                <span className="font-bold text-slate-900 block mb-1">Tools & Platforms:</span>
+                <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Tools & Platforms:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {resume.skills.tools.map((t, idx) => (
                     <span
@@ -440,13 +497,13 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
             )}
             {hasSoft && (
               <div>
-                <span className="font-bold text-slate-900 block mb-1">Core Competencies:</span>
+                <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Core Competencies:</span>
                 <p className="text-slate-700 text-xs leading-relaxed">{resume.skills.soft.join(' • ')}</p>
               </div>
             )}
             {hasLang && (
               <div>
-                <span className="font-bold text-slate-900 block mb-1">Languages:</span>
+                <span className="font-bold text-slate-900 block mb-1 text-[11.5px]">Languages:</span>
                 <p className="text-slate-700 text-xs">{resume.skills.languages.join(', ')}</p>
               </div>
             )}
@@ -456,9 +513,9 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     }
 
     return (
-      <section className="mb-3.5">
+      <section className="mb-5">
         {renderSectionHeader('Skills & Proficiencies', <Layers className="w-3 h-3" />)}
-        <div className="space-y-1.5 text-xs text-slate-800">
+        <div className="space-y-2 text-xs text-slate-800">
           {hasTech && (
             <div>
               <span className="font-bold text-slate-900">Technical Skills: </span>
@@ -492,14 +549,14 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
   const renderProjects = () => {
     if (resume.projects.length === 0) return null;
     return (
-      <section className="mb-3.5">
+      <section className="mb-5">
         {renderSectionHeader('Key Projects', <Terminal className="w-3 h-3" />)}
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {resume.projects.map(proj => (
             <div key={proj.id} className="text-slate-800">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-bold text-slate-900">{proj.name}</span>
+                  <span className="text-[13.5px] font-bold text-slate-900">{proj.name}</span>
                   {proj.link && (
                     <a
                       href={proj.link}
@@ -518,14 +575,14 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-700 mt-0.5 leading-snug">{proj.description}</p>
+              <p className="text-xs text-slate-700 mt-0.5 leading-relaxed">{proj.description}</p>
               {proj.bullets.length > 0 && (
-                <div className="mt-1 space-y-0.5 text-xs text-slate-700">
+                <div className="mt-1 space-y-1 text-slate-700 text-[12.5px]">
                   {proj.bullets
                     .filter(b => b.trim().length > 0)
                     .map((b, idx) => (
-                      <div key={idx} className="flex items-start gap-2 leading-snug">
-                        <span className="text-slate-400 font-bold select-none leading-none mt-1 flex-shrink-0">•</span>
+                      <div key={idx} className="flex items-start gap-2 leading-relaxed">
+                        <span className="text-slate-400 font-bold select-none leading-none mt-1.5 flex-shrink-0 text-[10px]">•</span>
                         <span className="flex-1 min-w-0">{b}</span>
                       </div>
                     ))}
@@ -545,23 +602,23 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     if (!hasCerts && !hasAwards) return null;
 
     return (
-      <section className="mb-3.5">
+      <section className="mb-5">
         {renderSectionHeader('Certifications & Awards', <Award className="w-3 h-3" />)}
-        <div className="space-y-1.5 text-xs">
+        <div className="space-y-2 text-xs">
           {resume.certifications.map(cert => (
-            <div key={cert.id} className="flex justify-between items-baseline">
+            <div key={cert.id} className="flex justify-between items-baseline gap-2">
               <span className="font-semibold text-slate-900">
                 {cert.name} <span className="font-normal text-slate-600">— {cert.issuer}</span>
               </span>
-              <span className="text-slate-500 whitespace-nowrap">{cert.date}</span>
+              <span className="text-slate-500 whitespace-nowrap text-[11px]">{cert.date}</span>
             </div>
           ))}
           {resume.awards.map(award => (
-            <div key={award.id} className="flex justify-between items-baseline">
+            <div key={award.id} className="flex justify-between items-baseline gap-2">
               <span className="font-semibold text-slate-900">
                 {award.title} <span className="font-normal text-slate-600">— {award.issuer}</span>
               </span>
-              <span className="text-slate-500 whitespace-nowrap">{award.date}</span>
+              <span className="text-slate-500 whitespace-nowrap text-[11px]">{award.date}</span>
             </div>
           ))}
         </div>
@@ -575,19 +632,19 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     return (
       <>
         {resume.customSections.map(sec => (
-          <section key={sec.id} className="mb-3.5">
+          <section key={sec.id} className="mb-5">
             {renderSectionHeader(sec.title)}
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {sec.items.map(item => (
                 <div key={item.id} className="text-xs">
-                  <div className="flex justify-between font-semibold text-slate-900">
+                  <div className="flex justify-between font-semibold text-slate-900 gap-2">
                     <span>{item.title}</span>
-                    {item.date && <span className="text-slate-500 font-normal">{item.date}</span>}
+                    {item.date && <span className="text-slate-500 font-normal text-[11px]">{item.date}</span>}
                   </div>
                   {item.subtitle && (
                     <p className="text-slate-600 italic">{item.subtitle}</p>
                   )}
-                  <p className="text-slate-700 mt-0.5">{item.description}</p>
+                  <p className="text-slate-700 mt-0.5 leading-relaxed">{item.description}</p>
                 </div>
               ))}
             </div>
@@ -779,7 +836,7 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
 
     if (template === 'tech') {
       return (
-        <header className="mb-5 pb-3 border-b-2 border-slate-800 bg-slate-900 text-white -m-8 sm:-m-10 mb-6 p-6 sm:p-8 rounded-t-sm">
+        <header className="mb-6 border-b-2 border-slate-800 bg-slate-900 text-white -mx-9 -mt-9 p-7 rounded-t-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
@@ -857,19 +914,19 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     return (
       <div
         id={documentId}
-        className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto w-full max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass} ${className}`}
+        className={`resume-paper bg-white text-slate-900 p-9 shadow-lg border border-slate-200 rounded-sm mx-auto w-[816px] min-h-[1056px] flex flex-col ${fontClass} ${sizeClass} ${className}`}
         style={{ boxSizing: 'border-box' }}
       >
         {renderHeader()}
-        <div className="flex flex-row items-stretch gap-6 mt-2">
-          {/* Left Infographic Sidebar (33% width) */}
-          <aside className="w-[33%] flex-shrink-0 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-4">
+        <div className="flex-1 flex flex-row items-stretch gap-7 mt-3">
+          {/* Left Infographic Sidebar (30% width, stretches full height to bottom of sheet) */}
+          <aside className="w-[30%] flex-shrink-0 p-4 rounded-xl bg-slate-50/90 border border-slate-200/90 space-y-4 flex flex-col justify-start">
             {renderSkills(true)}
-            {renderEducation()}
+            {renderEducation(true)}
             {renderCertifications()}
           </aside>
-          {/* Right Main Content (67% width) */}
-          <main className="flex-1 min-w-0 space-y-4">
+          {/* Right Main Content (70% width) */}
+          <main className="flex-1 min-w-0 space-y-5">
             {renderSummary()}
             {renderExperience()}
             {renderProjects()}
@@ -885,19 +942,19 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
     return (
       <div
         id={documentId}
-        className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto w-full max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass} ${className}`}
+        className={`resume-paper bg-white text-slate-900 p-9 shadow-lg border border-slate-200 rounded-sm mx-auto w-[816px] min-h-[1056px] flex flex-col ${fontClass} ${sizeClass} ${className}`}
         style={{ boxSizing: 'border-box' }}
       >
         {renderHeader()}
-        <div className="flex flex-row items-stretch gap-6">
-          {/* Left Rail / Sidebar (33% width with solid vertical divider) */}
-          <aside className="w-[33%] flex-shrink-0 space-y-4 border-r-2 border-slate-200 pr-5">
+        <div className="flex-1 flex flex-row items-stretch gap-7 mt-3">
+          {/* Left Rail / Sidebar (30% width with continuous vertical divider stretching full height) */}
+          <aside className="w-[30%] flex-shrink-0 space-y-4 border-r border-slate-300 pr-6 flex flex-col justify-start">
             {renderSkills(true)}
-            {renderEducation()}
+            {renderEducation(true)}
             {renderCertifications()}
           </aside>
-          {/* Right Main Content (67% width) */}
-          <main className="flex-1 min-w-0 space-y-4 pl-1">
+          {/* Right Main Content (70% width) */}
+          <main className="flex-1 min-w-0 space-y-5 pl-1">
             {renderSummary()}
             {renderExperience()}
             {renderProjects()}
@@ -912,11 +969,11 @@ export function ResumeDocument({ resume, id, className = '' }: ResumeDocumentPro
   return (
     <div
       id={documentId}
-      className={`resume-paper bg-white text-slate-900 p-8 sm:p-10 shadow-lg border border-slate-200 rounded-sm mx-auto w-full max-w-[850px] min-h-[1050px] ${fontClass} ${sizeClass} ${className}`}
+      className={`resume-paper bg-white text-slate-900 p-9 shadow-lg border border-slate-200 rounded-sm mx-auto w-[816px] min-h-[1056px] flex flex-col ${fontClass} ${sizeClass} ${className}`}
       style={{ boxSizing: 'border-box' }}
     >
       {renderHeader()}
-      <div className={spacingClass}>
+      <div className={`flex-1 flex flex-col justify-start ${spacingClass}`}>
         {template === 'student' || template === 'academic' ? (
           <>
             {renderSummary()}
