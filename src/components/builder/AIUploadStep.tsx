@@ -23,16 +23,20 @@ import {
   Copy,
   Check,
   Loader2,
+  PenTool,
+  FilePlus,
 } from 'lucide-react';
 
 interface AIUploadStepProps {
   onSuccess: (extractedResume: ResumeData) => void;
   onSkip: () => void;
+  onStartBlank?: () => void;
+  onStartSample?: () => void;
 }
 
 const MAX_DOCUMENTS = 3;
 
-export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
+export function AIUploadStep({ onSuccess, onSkip, onStartBlank, onStartSample }: AIUploadStepProps) {
   const [files, setFiles] = useState<UploadedDocumentFile[]>([]);
   const [targetRole, setTargetRole] = useState('');
   const [jobDescription, setJobDescription] = useState('');
@@ -232,8 +236,56 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
           AI Resume Builder &amp; AI CV Maker
         </h1>
         <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Upload up to <strong className="text-slate-900 font-semibold">3 documents</strong> (old resumes, LinkedIn PDF, certificates, job descriptions). Our AI extracts, optimizes, and transforms your experience into an interview-winning ATS resume.
+          Choose your preferred creation method below: upload existing documents for automatic AI extraction, or build manually from scratch.
         </p>
+      </div>
+
+      {/* Choice Selector: AI Auto-Extract vs Build Manually */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Mode 1: AI Auto-Build (Active) */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/90 border-2 border-indigo-600 flex items-start gap-3.5 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-indigo-200">
+            <Sparkles className="w-5 h-5 text-emerald-300 animate-pulse" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-200/80 text-indigo-950 text-[10px] font-extrabold uppercase mb-1">
+              Active Mode
+            </div>
+            <h3 className="text-sm font-bold text-slate-900 leading-tight">
+              1. Upload Documents &amp; Build with AI
+            </h3>
+            <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              Upload PDF, scans, or DOCX below. Tesseract OCR &amp; AI extract all experience automatically.
+            </p>
+          </div>
+        </div>
+
+        {/* Mode 2: Manual Builder (1-Click Action) */}
+        <button
+          type="button"
+          onClick={onSkip}
+          className="p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-indigo-400 flex items-start justify-between gap-3.5 text-left transition-all group shadow-sm hover:shadow-md active:scale-[0.99] cursor-pointer"
+        >
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-indigo-100 text-slate-700 group-hover:text-indigo-700 flex items-center justify-center flex-shrink-0 transition-colors">
+              <PenTool className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 group-hover:bg-indigo-50 text-slate-700 group-hover:text-indigo-700 text-[10px] font-extrabold uppercase mb-1 transition-colors">
+                No Documents Needed
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">
+                2. Build Resume &amp; CV Manually
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Type details manually in our split-screen editor with real-time scoring and live preview.
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-indigo-600 flex items-center gap-0.5 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1">
+            Start &rarr;
+          </span>
+        </button>
       </div>
 
       {/* Upload Box */}
@@ -441,23 +493,27 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
         )}
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-          <button
-            type="button"
-            onClick={onSkip}
-            className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors py-2 px-3"
-          >
-            Skip &amp; Start from Scratch &rarr;
-          </button>
-
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-200">
+          <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
             <button
               type="button"
-              onClick={() => onSuccess(SAMPLE_RESUME)}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              onClick={onStartBlank || onSkip}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50/40 transition-all cursor-pointer"
             >
-              Load Sample Profile
+              <FilePlus className="w-4 h-4 text-indigo-600" />
+              Build Manually (Blank)
             </button>
+            <button
+              type="button"
+              onClick={onStartSample ? onStartSample : () => onSuccess(SAMPLE_RESUME)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50/40 transition-all cursor-pointer"
+            >
+              <PenTool className="w-3.5 h-3.5 text-slate-500" />
+              Build Manually (Sample Data)
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               type="button"
               disabled={files.length === 0 || isProcessing}
@@ -465,10 +521,10 @@ export function AIUploadStep({ onSuccess, onSkip }: AIUploadStepProps) {
               className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all ${
                 files.length === 0 || isProcessing
                   ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 hover:shadow-lg active:scale-95'
+                  : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 hover:shadow-lg active:scale-95 cursor-pointer'
               }`}
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-emerald-300" />
               Analyze with AI &rarr;
             </button>
           </div>

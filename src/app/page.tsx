@@ -22,6 +22,7 @@ import {
   Globe,
   Compass,
   Check,
+  PenTool,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -169,20 +170,27 @@ export default function HomePage() {
           </p>
 
           {/* CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/builder?step=upload"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-base shadow-lg shadow-indigo-200 active:scale-[0.98] transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-base shadow-lg shadow-indigo-200 active:scale-[0.98] transition-all"
             >
               <Sparkles className="w-5 h-5 text-emerald-300 animate-pulse" />
-              Upload Documents &amp; Build with AI
+              Upload &amp; Build with AI
+            </Link>
+            <Link
+              href="/builder?step=edit&mode=manual"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl border-2 border-indigo-600 bg-white hover:bg-indigo-50/60 text-indigo-700 font-bold text-base shadow-sm transition-all active:scale-[0.98]"
+            >
+              <PenTool className="w-5 h-5 text-indigo-600" />
+              Create Resume &amp; CV Manually
             </Link>
             <Link
               href="/builder?step=templates"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-base shadow-sm transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-base shadow-sm transition-all"
             >
-              <FileCheck className="w-5 h-5 text-indigo-600" />
-              Browse 14 ATS Templates
+              <FileCheck className="w-5 h-5 text-slate-500" />
+              18 Templates
             </Link>
           </div>
 
@@ -846,16 +854,18 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/builder"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-indigo-700 font-bold text-base shadow-lg hover:bg-indigo-50 active:scale-95 transition-all"
+              href="/builder?step=upload"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-indigo-700 font-bold text-base shadow-lg hover:bg-indigo-50 active:scale-95 transition-all inline-flex items-center justify-center gap-2"
             >
-              Start Building Free &rarr;
+              <Sparkles className="w-5 h-5 text-indigo-600" />
+              Upload &amp; Build with AI &rarr;
             </Link>
             <Link
-              href="/resume-templates"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl border-2 border-white/80 text-white font-bold text-base hover:bg-white/10 transition-all"
+              href="/builder?step=edit&mode=manual"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl border-2 border-white text-white font-bold text-base hover:bg-white/10 active:scale-95 transition-all inline-flex items-center justify-center gap-2"
             >
-              Browse Templates
+              <PenTool className="w-5 h-5" />
+              Build Manually from Scratch
             </Link>
           </div>
           <p className="mt-4 text-xs text-white font-medium">

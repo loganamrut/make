@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ResumeData, TemplateId } from '@/lib/types';
-import { SAMPLE_RESUME } from '@/lib/sample-data';
+import { SAMPLE_RESUME, BLANK_RESUME } from '@/lib/sample-data';
 import { loadSavedResume, saveResumeToLocal } from '@/lib/storage';
 import { ResumeEditor } from '@/components/builder/ResumeEditor';
 import { ResumePreview } from '@/components/builder/ResumePreview';
@@ -24,7 +24,8 @@ import {
   ChevronRight,
   Loader2,
   Check,
-  MoreHorizontal
+  MoreHorizontal,
+  PenTool,
 } from 'lucide-react';
 
 type StudioStep = 'upload' | 'templates' | 'edit';
@@ -33,14 +34,30 @@ function BuilderContent() {
   const searchParams = useSearchParams();
   const templateParam = searchParams.get('template') as TemplateId | null;
   const stepParam = searchParams.get('step') as StudioStep | null;
+  const modeParam = searchParams.get('mode');
+  const blankParam = searchParams.get('blank');
 
   const [resume, setResume] = useState<ResumeData>(SAMPLE_RESUME);
-  const [currentStep, setCurrentStep] = useState<StudioStep>(stepParam || 'edit');
+  const [currentStep, setCurrentStep] = useState<StudioStep>(
+    stepParam || (modeParam === 'manual' ? 'edit' : 'upload')
+  );
   const [mobileTab, setMobileTab] = useState<'edit' | 'preview'>('edit');
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
   const [downloadedPdf, setDownloadedPdf] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const handleStartBlank = () => {
+    setResume(BLANK_RESUME);
+    saveResumeToLocal(BLANK_RESUME);
+    setCurrentStep('edit');
+  };
+
+  const handleStartSample = () => {
+    setResume(SAMPLE_RESUME);
+    saveResumeToLocal(SAMPLE_RESUME);
+    setCurrentStep('edit');
+  };
 
   const handleDirectDownloadPdf = async () => {
     setIsDownloadingPdf(true);
@@ -61,16 +78,21 @@ function BuilderContent() {
 
   // Load from local storage on mount
   useEffect(() => {
-    const saved = loadSavedResume();
+    let saved = loadSavedResume();
+    if (blankParam === 'true') {
+      saved = { ...BLANK_RESUME };
+    }
     if (templateParam) {
       saved.style.template = templateParam;
     }
     setResume(saved);
     if (stepParam) {
       setCurrentStep(stepParam);
+    } else if (modeParam === 'manual') {
+      setCurrentStep('edit');
     }
     setMounted(true);
-  }, [templateParam, stepParam]);
+  }, [templateParam, stepParam, modeParam, blankParam]);
 
   // Autosave to client-side localStorage on change
   const handleResumeChange = (updated: ResumeData) => {
@@ -162,6 +184,18 @@ function BuilderContent() {
 
           {/* Quick Action Buttons */}
           <div className="flex items-center gap-2">
+            {currentStep === 'upload' && (
+              <button
+                type="button"
+                onClick={handleStartBlank}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 hover:border-indigo-400 bg-white hover:bg-slate-50 text-slate-700 hover:text-indigo-600 text-xs font-bold transition-all shadow-xs cursor-pointer"
+                title="Skip upload and build resume manually from scratch"
+              >
+                <PenTool className="w-3.5 h-3.5 text-indigo-600" />
+                <span>Build Manually</span>
+              </button>
+            )}
+
             {/* 1-Click Direct Download PDF */}
             <button
               type="button"
@@ -212,6 +246,8 @@ function BuilderContent() {
         <AIUploadStep
           onSuccess={handleUploadSuccess}
           onSkip={() => setCurrentStep('templates')}
+          onStartBlank={handleStartBlank}
+          onStartSample={handleStartSample}
         />
       )}
 
