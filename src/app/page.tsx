@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -131,6 +132,7 @@ export default function HomePage() {
       <HowToSchema
         name="How to Create a Professional ATS Resume with AI"
         description="Learn how to generate an ATS-optimized resume using CVMake in four easy steps without saving data on external servers."
+        image="https://cvmake.dev/images/how-it-works-ai-resume-builder.jpg"
         steps={[
           {
             name: "Upload Existing Documents or Start Manually",
@@ -249,6 +251,37 @@ export default function HomePage() {
               From raw work history to an interview-ready, recruiter-approved resume in under 5 minutes.
             </p>
           </div>
+
+          {/* Wide How It Works Infographic */}
+          <figure className="mb-12 sm:mb-16 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-md hover:shadow-xl transition-shadow duration-300">
+            <div className="relative w-full aspect-[1376/768] overflow-hidden bg-slate-950 flex items-center justify-center">
+              <Image
+                src="/images/how-it-works-ai-resume-builder.jpg"
+                alt="How CVMake AI Resume Builder Works: 4-step AI CV maker workflow showing document upload with OCR, Gemini AI resume maker bullet optimization, 17 ATS templates, and free vector PDF download"
+                width={1376}
+                height={768}
+                priority={false}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1200px"
+                className="w-full h-auto object-cover object-center"
+              />
+            </div>
+            <figcaption className="px-4 sm:px-5 py-3 sm:py-3.5 bg-slate-900 text-slate-300 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 text-xs sm:text-sm">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold border border-indigo-500/30">
+                  Infographic
+                </span>
+                <span className="font-medium text-slate-200">
+                  CVMake 4-Step Process: Ingestion &bull; AI Polish &bull; ATS Styling &bull; Instant Vector PDF
+                </span>
+              </div>
+              <span className="text-slate-400 text-xs flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                Zero Cloud Storage &bull; 100% Private In-Browser
+              </span>
+            </figcaption>
+          </figure>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Step 1 */}

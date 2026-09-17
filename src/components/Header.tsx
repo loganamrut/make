@@ -13,8 +13,6 @@ import {
   PenTool,
   Cpu,
   FileCheck,
-  Layers,
-  BookOpen,
   Target,
   Wrench,
 } from 'lucide-react';

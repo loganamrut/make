@@ -186,29 +186,44 @@ export interface HowToStep {
   name: string;
   text: string;
   url?: string;
+  image?: string;
 }
 
 export function HowToSchema({
   name,
   description,
   steps,
+  image,
 }: {
   name: string;
   description: string;
   steps: HowToStep[];
+  image?: string;
 }) {
-  const schema = {
+  const schema: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name,
     description,
     totalTime: 'PT5M',
+    ...(image
+      ? {
+          image: {
+            '@type': 'ImageObject',
+            url: image,
+            width: '1376',
+            height: '768',
+            caption: name,
+          },
+        }
+      : {}),
     step: steps.map((s, index) => ({
       '@type': 'HowToStep',
       position: index + 1,
       name: s.name,
       text: s.text,
       url: s.url,
+      ...(s.image ? { image: s.image } : {}),
     })),
   };
 
