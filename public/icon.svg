@@ -1,57 +1,84 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4338ca" />
-      <stop offset="40%" stop-color="#4f46e5" />
-      <stop offset="100%" stop-color="#3730a3" />
+    <!-- Background Gradient: Rich Indigo to Deep Royal Violet -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="50%" stop-color="#4338ca" />
+      <stop offset="100%" stop-color="#312e81" />
     </linearGradient>
-    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#34d399" />
+
+    <!-- AI Sparkle Gradient: Radiant Emerald to Vivid Mint -->
+    <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7" />
       <stop offset="50%" stop-color="#10b981" />
       <stop offset="100%" stop-color="#059669" />
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#1e1b4b" flood-opacity="0.4" />
+
+    <!-- Subtle Drop Shadow for High Contrast Depth -->
+    <filter id="elevate" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1e1b4b" flood-opacity="0.35" />
+    </filter>
+
+    <!-- Inner Glow -->
+    <filter id="sparkleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#34d399" flood-opacity="0.6" />
     </filter>
   </defs>
 
-  <!-- Squircle Base -->
-  <rect width="512" height="512" rx="116" fill="url(#bg)" />
-  <rect x="8" y="8" width="496" height="496" rx="108" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.15" />
+  <!-- Squircle Base: 512x512 with 112px smooth radius -->
+  <rect x="20" y="20" width="472" height="472" rx="112" fill="url(#bgGrad)" />
+  
+  <!-- Subtle Border Highlight for Dark & Light Mode Visibility -->
+  <rect x="20" y="20" width="472" height="472" rx="112" fill="none" stroke="#ffffff" stroke-width="6" stroke-opacity="0.2" />
 
-  <!-- Document Sheet -->
-  <g filter="url(#shadow)">
-    <path d="M136 104 C136 90.7 146.7 80 160 80 L296 80 L376 160 L376 408 C376 421.3 365.3 432 352 432 L160 432 C146.7 432 136 421.3 136 408 Z" fill="#ffffff" />
-    <!-- Folded Corner -->
-    <path d="M296 80 L376 160 L312 160 C303.2 160 296 152.8 296 144 Z" fill="#c7d2fe" />
+  <!-- Document Accent: Folded Corner Hint in Top-Left/Right -->
+  <path d="M100 80 L180 80 C184 80 188 84 188 88 L188 120 C188 124 184 128 180 128 L100 128 C96 128 92 124 92 120 L92 88 C92 84 96 80 100 80 Z" fill="#ffffff" fill-opacity="0.15" />
+  <path d="M100 104 L160 104" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-opacity="0.4" />
+
+  <!-- Main Brand Monogram "CV" (Custom Vector Geometry for 100% Crisp Font Independence) -->
+  <g filter="url(#elevate)">
+    <!-- Letter 'C' -->
+    <path d="M 232 210
+             C 214 188 186 176 156 176
+             C 106 176 68 214 68 272
+             C 68 330 106 368 156 368
+             C 186 368 214 356 232 334"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="50"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+
+    <!-- Letter 'V' -->
+    <path d="M 276 182
+             L 348 358
+             C 350 364 356 368 362 368
+             C 368 368 374 364 376 358
+             L 448 182"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="50"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
   </g>
 
-  <!-- Resume Content Bars -->
-  <!-- Name / Job Title Header -->
-  <rect x="172" y="132" width="96" height="24" rx="6" fill="#4338ca" />
-  <rect x="172" y="168" width="100" height="12" rx="4" fill="#818cf8" />
-
-  <!-- Section 1: Experience -->
-  <rect x="172" y="206" width="168" height="12" rx="4" fill="#4f46e5" />
-  <rect x="172" y="230" width="168" height="10" rx="4" fill="#94a3b8" />
-  <rect x="172" y="250" width="144" height="10" rx="4" fill="#cbd5e1" />
-  <rect x="172" y="270" width="156" height="10" rx="4" fill="#cbd5e1" />
-
-  <!-- Section 2: Skills & Impact -->
-  <rect x="172" y="304" width="120" height="12" rx="4" fill="#4f46e5" />
-  <rect x="172" y="328" width="168" height="10" rx="4" fill="#94a3b8" />
-  <rect x="172" y="348" width="136" height="10" rx="4" fill="#cbd5e1" />
-
-  <!-- Decorative Badge / Tag -->
-  <rect x="172" y="380" width="52" height="16" rx="6" fill="#e0e7ff" />
-  <rect x="232" y="380" width="52" height="16" rx="6" fill="#e0e7ff" />
-
-  <!-- Primary AI Sparkle (Top Right) -->
-  <g filter="url(#shadow)">
-    <path d="M396 68 C396 102 411 117 445 117 C411 117 396 132 396 166 C396 132 381 117 347 117 C381 117 396 102 396 68 Z" fill="url(#sparkleGrad)" />
-    <circle cx="396" cy="117" r="6" fill="#ffffff" />
+  <!-- AI Intelligence Star (4-Point Concave Sparkle) -->
+  <g filter="url(#sparkleGlow)">
+    <path d="M 404 60
+             Q 404 105 449 105
+             Q 404 105 404 150
+             Q 404 105 359 105
+             Q 404 105 404 60 Z"
+          fill="url(#aiGrad)" />
+    <!-- Glowing Center Accent -->
+    <circle cx="404" cy="105" r="7" fill="#ffffff" />
   </g>
 
-  <!-- Secondary Mini Sparkle -->
-  <path d="M446 172 C446 186 452 192 466 192 C452 192 446 198 446 212 C446 198 440 192 426 192 C440 192 446 186 446 172 Z" fill="#34d399" />
+  <!-- Mini Sparkle (Top-Right) -->
+  <path d="M 456 155
+           Q 456 173 474 173
+           Q 456 173 456 191
+           Q 456 173 438 173
+           Q 456 173 456 155 Z"
+        fill="#34d399" />
 </svg>
