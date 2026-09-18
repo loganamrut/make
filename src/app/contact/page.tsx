@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Mail, MessageSquare, ShieldCheck, Check } from 'lucide-react';
+import { SocialCardsGrid } from '@/components/SocialIcons';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -113,6 +114,19 @@ export default function ContactPage() {
             </div>
           </form>
         )}
+
+        {/* Official Social Media Community Section */}
+        <section className="mt-12 pt-10 border-t border-slate-200 space-y-4">
+          <div className="text-center sm:text-left">
+            <h2 className="text-lg font-bold text-slate-900">
+              Connect With Us Across The Web
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Follow our official profiles for product releases, resume writing guides, and community discussions.
+            </p>
+          </div>
+          <SocialCardsGrid />
+        </section>
       </main>
 
       <Footer />

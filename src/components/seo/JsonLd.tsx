@@ -70,7 +70,15 @@ export function OrganizationSchema() {
     url: 'https://cvmake.dev',
     logo: 'https://cvmake.dev/icon.svg',
     description: 'Privacy-first career development and browser-based AI resume building platform.',
-    sameAs: [],
+    sameAs: [
+      'https://www.facebook.com/cvmakedev',
+      'https://www.youtube.com/@CVMake-dev',
+      'https://www.reddit.com/user/cvmakedev/',
+      'https://www.pinterest.com/aicvmaker/',
+      'https://medium.com/@aicvmaker',
+      'https://github.com/cvmakedev',
+      'https://www.quora.com/profile/CV-Make',
+    ],
   };
 
   return (

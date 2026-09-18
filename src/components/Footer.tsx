@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, FileText, Lock } from 'lucide-react';
+import { SocialIconBar } from '@/components/SocialIcons';
 
 export function Footer() {
   return (
@@ -49,6 +50,14 @@ export function Footer() {
             <div className="pt-2 flex items-center gap-2 text-xs text-slate-300 font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               Browser-only client storage active
+            </div>
+
+            {/* Official Social Media Channels */}
+            <div className="pt-3 space-y-2">
+              <span className="text-xs font-semibold text-slate-200 block">
+                Official Channels &amp; Community:
+              </span>
+              <SocialIconBar />
             </div>
           </div>
 

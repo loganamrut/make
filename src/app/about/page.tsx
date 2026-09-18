@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Sparkles } from 'lucide-react';
+import { SocialCardsGrid } from '@/components/SocialIcons';
 
 export const metadata: Metadata = {
   title: 'About CVMake | Private AI Resume & CV Builder',
@@ -79,6 +80,16 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
+        </section>
+
+        <section className="space-y-4 pt-6 border-t border-slate-200">
+          <h2 className="text-2xl font-black text-slate-900">
+            Join Our Community
+          </h2>
+          <p className="text-slate-600 text-sm">
+            We are actively building in public and sharing career advice, ATS optimization strategies, and product updates across our official social channels:
+          </p>
+          <SocialCardsGrid />
         </section>
 
         <div className="pt-6 text-center">
