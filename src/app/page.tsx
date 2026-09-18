@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FaqSection } from '@/components/seo/FaqSection';
-import { WebApplicationSchema, OrganizationSchema, HowToSchema } from '@/components/seo/JsonLd';
+import { WebApplicationSchema, OrganizationSchema, HowToSchema, VideoSchema } from '@/components/seo/JsonLd';
+import { HowItWorksVideo } from '@/components/video/HowItWorksVideo';
 import {
   Sparkles,
   ShieldCheck,
@@ -152,6 +153,7 @@ export default function HomePage() {
           },
         ]}
       />
+      <VideoSchema />
       <Header />
 
       <main id="main-content" className="flex-1">
@@ -243,47 +245,23 @@ export default function HomePage() {
       {/* How It Works Section */}
       <section className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-3 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Step-by-Step Video Guide</span>
+            </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               How It Works: 4 Simple Steps
             </h2>
             <p className="mt-3 text-slate-600 max-w-2xl mx-auto text-base">
-              From raw work history to an interview-ready, recruiter-approved resume in under 5 minutes.
+              Watch how CVMake transforms raw work history into an interview-ready, recruiter-approved resume in under 5 minutes.
             </p>
           </div>
 
-          {/* Wide How It Works Infographic */}
-          <figure className="mb-12 sm:mb-16 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-md hover:shadow-xl transition-shadow duration-300">
-            <div className="relative w-full aspect-[1376/768] overflow-hidden bg-slate-950 flex items-center justify-center">
-              <Image
-                src="/images/how-it-works-ai-resume-builder.jpg"
-                alt="How CVMake AI Resume Builder Works: 4-step AI CV maker workflow showing document upload with OCR, Gemini AI resume maker bullet optimization, 17 ATS templates, and free vector PDF download"
-                width={1376}
-                height={768}
-                priority={false}
-                loading="lazy"
-                decoding="async"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1200px"
-                className="w-full h-auto object-cover object-center"
-              />
-            </div>
-            <figcaption className="px-4 sm:px-5 py-3 sm:py-3.5 bg-slate-900 text-slate-300 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 text-xs sm:text-sm">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold border border-indigo-500/30">
-                  Infographic
-                </span>
-                <span className="font-medium text-slate-200">
-                  CVMake 4-Step Process: Ingestion &bull; AI Polish &bull; ATS Styling &bull; Instant Vector PDF
-                </span>
-              </div>
-              <span className="text-slate-400 text-xs flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                Zero Cloud Storage &bull; 100% Private In-Browser
-              </span>
-            </figcaption>
-          </figure>
+          {/* High-Impact Interactive Video Guide with SEO Schema, Key Moments & Full Transcript */}
+          <HowItWorksVideo />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
             {/* Step 1 */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
               <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white font-black text-lg flex items-center justify-center mb-4">
@@ -336,6 +314,37 @@ export default function HomePage() {
               </p>
             </div>
           </div>
+
+          {/* Wide How It Works Infographic */}
+          <figure className="mb-12 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-md hover:shadow-xl transition-shadow duration-300">
+            <div className="relative w-full aspect-[1376/768] overflow-hidden bg-slate-950 flex items-center justify-center">
+              <Image
+                src="/images/how-it-works-ai-resume-builder.jpg"
+                alt="How CVMake AI Resume Builder Works: 4-step AI CV maker workflow showing document upload with OCR, Gemini AI resume maker bullet optimization, 17 ATS templates, and free vector PDF download"
+                width={1376}
+                height={768}
+                priority={false}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1200px"
+                className="w-full h-auto object-cover object-center"
+              />
+            </div>
+            <figcaption className="px-4 sm:px-5 py-3 sm:py-3.5 bg-slate-900 text-slate-300 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 text-xs sm:text-sm">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold border border-indigo-500/30">
+                  Infographic
+                </span>
+                <span className="font-medium text-slate-200">
+                  CVMake 4-Step Process: Ingestion &bull; AI Polish &bull; ATS Styling &bull; Instant Vector PDF
+                </span>
+              </div>
+              <span className="text-slate-400 text-xs flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                Zero Cloud Storage &bull; 100% Private In-Browser
+              </span>
+            </figcaption>
+          </figure>
 
           <div className="mt-12 text-center">
             <Link

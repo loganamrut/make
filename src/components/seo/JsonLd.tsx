@@ -234,3 +234,89 @@ export function HowToSchema({
     />
   );
 }
+
+export interface VideoClip {
+  name: string;
+  startOffset: number;
+  endOffset: number;
+  url: string;
+}
+
+export interface VideoSchemaProps {
+  name?: string;
+  description?: string;
+  thumbnailUrl?: string[];
+  uploadDate?: string;
+  contentUrl?: string;
+  embedUrl?: string;
+  duration?: string;
+  clips?: VideoClip[];
+}
+
+export function VideoSchema({
+  name = 'How CVMake AI Resume Builder & AI CV Maker Works (4-Step Video Guide)',
+  description = 'Learn how CVMake creates ATS-friendly resumes in 4 easy steps using in-browser Neural OCR, Gemini AI bullet optimization, 17 recruiter-tested templates, and vector PDF download with 100% privacy.',
+  thumbnailUrl = [
+    'https://cvmake.dev/images/how-it-works-video-poster.jpg',
+    'https://cvmake.dev/images/how-it-works-ai-resume-builder.jpg',
+  ],
+  uploadDate = '2026-09-18T00:00:00+00:00',
+  contentUrl = 'https://cvmake.dev/videos/how-it-works-ai-resume-builder.mp4',
+  embedUrl = 'https://cvmake.dev/videos/how-it-works-ai-resume-builder.mp4',
+  duration = 'PT25S',
+  clips = [
+    {
+      name: 'Step 1: Document Upload & Neural OCR',
+      startOffset: 3,
+      endOffset: 8,
+      url: 'https://cvmake.dev/#step-1',
+    },
+    {
+      name: 'Step 2: Gemini AI Bullet Optimization & Live ATS Score',
+      startOffset: 8,
+      endOffset: 14,
+      url: 'https://cvmake.dev/#step-2',
+    },
+    {
+      name: 'Step 3: 17 Recruiter-Approved ATS Templates',
+      startOffset: 14,
+      endOffset: 19,
+      url: 'https://cvmake.dev/#step-3',
+    },
+    {
+      name: 'Step 4: 1-Click Vector PDF & Print Export',
+      startOffset: 19,
+      endOffset: 25,
+      url: 'https://cvmake.dev/#step-4',
+    },
+  ],
+}: VideoSchemaProps) {
+  const schema: Record<string, any> = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name,
+    description,
+    thumbnailUrl,
+    uploadDate,
+    contentUrl,
+    embedUrl,
+    duration,
+    inLanguage: 'en',
+    caption: 'How CVMake AI Resume Builder Works',
+    hasPart: clips.map(clip => ({
+      '@type': 'Clip',
+      name: clip.name,
+      startOffset: clip.startOffset,
+      endOffset: clip.endOffset,
+      url: clip.url,
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
